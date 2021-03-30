@@ -2,15 +2,22 @@
 module.exports = {
 	"env": {
 		"browser": true,
-		"es2021": true,
-		"commonjs": true,
-		"jest": true
+		"es2021": true
 	},
-	"extends": "eslint:recommended",
+	"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended"
+	],
 	"parserOptions": {
+		"ecmaFeatures": {
+			"jsx": true
+		},
 		"ecmaVersion": 12,
 		"sourceType": "module"
 	},
+	"plugins": [
+		"react"
+	],
 	"rules": {
 		"indent": [
 			"error",
@@ -34,6 +41,6 @@ module.exports = {
 		],
 		"eqeqeq": "warn",
 		"no-trailing-spaces": "warn",
-		"no-console": 0
+		"react/prop-types": 0
 	}
 };
