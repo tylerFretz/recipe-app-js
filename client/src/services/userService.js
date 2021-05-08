@@ -7,8 +7,12 @@ const getAllUsers = async () => {
 	return response.data;
 };
 
-const createUser = async (newUser) => {
-	const request = axios.post(baseUrl, newUser);
+const createUser = async (username, email, password) => {
+	const request = axios.post(baseUrl, {
+		username,
+		email,
+		password
+	});
 	const response = await request;
 	return response.data;
 };

@@ -1,48 +1,47 @@
-import React from "react";
-import Container from "@material-ui/core/Container";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Switch, Route } from "react-router-dom";
-// import axios from "axios";
+import Notifier from "./utils/Notifier";
 
-// import mealDbApiService from "./services/mealDbApiService";
-// import  { formatRecipe } from "./utils/apiUtils";
-// import { useStateValue, setRecipeList } from "./state";
+import { setUser } from "./store/actions/authActions";
+import { initializeRecipes } from "./store/actions/recipeActions";
+import Home from "./views/Home";
+import Register from "./views/Register";
+import Login from "./views/Login";
+import Profile from "./views/Profile";
+import SingleRecipe from "./views/SingleRecipe";
+import SubmitRecipe from "./views/SubmitRecipe";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
-import Navigation from "./components/Navigation";
-import Home from "./components/Home";
-import RandomRecipe from "./components/RandomRecipe";
 
 const App = () => {
+	const dispatch = useDispatch();
 
+	useEffect(() => {
+		dispatch(setUser());
+	}, []);
 
-	// useEffect(() => {
-	// 	const fetchRecipeList = async () => {
-	// 		try {
-	// 			const { data: recipeList } = await axios.get(`${backEndBaseUrl}/recipes`);
-	// 			dispatch(setRecipeList(recipeList));
-	// 		} catch (e) {
-	// 			console.error(e);
-	// 		}
-	// 	};
-	// 	fetchRecipeList();
-	// }, []);
-
-	// const getNewRandomRecipe = () => {
-	// 	mealDbApiService
-	// 		.getRandomRecipe()
-	// 		.then(newRecipe => setRandomRecipe(formatRecipe(newRecipe)))
-	// 		.catch(err => console.error(err));
-	// 	console.log(randomRecipe);
-	// };
+	useEffect(() => {
+		dispatch(initializeRecipes());
+	}, [dispatch]);
 
 	return (
-		<Container>
-			<Navigation />
-
-			<Switch>
-				<Route path="/random" component={RandomRecipe} />
-				<Route path="/" component={Home} />
-			</Switch>
-		</Container>
+		<div>
+			<div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+				<Notifier />
+				<Header />
+				<Switch>
+					<Route path="/recipes/:id" component={SingleRecipe} />
+					<Route path="/register" component={Register} />
+					<Route path="/login" component={Login} />
+					<Route path="/profile" component={Profile} />
+					<Route path="/submit" component={SubmitRecipe} />
+					<Route path="/" component={Home} />
+				</Switch>
+			</div>
+			<Footer />
+		</div>
 	);
 };
 

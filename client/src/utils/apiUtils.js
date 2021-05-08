@@ -1,4 +1,4 @@
-export const formatRecipe = (recipeJSON) => {
+export const formatApiData = (recipeJSON) => {
 	const ingredients = getIngredients(recipeJSON);
 	const imageUrl = recipeJSON["strMealThumb"] ?? "";
 	const youtubeUrl = recipeJSON["strYoutube"] ?? "";
@@ -7,15 +7,19 @@ export const formatRecipe = (recipeJSON) => {
 
 	const recipe = {
 		id: parseInt(recipeJSON["idMeal"], 10),
-		name: recipeJSON["strMeal"],
-		category: recipeJSON["strCategory"],
-		area: recipeJSON["strArea"],
-		instructions: recipeJSON["strInstructions"],
+		name: recipeJSON["strMeal"].trim(),
+		category: recipeJSON["strCategory"].trim(),
+		area: recipeJSON["strArea"].trim(),
+		instructions: recipeJSON["strInstructions"].trim(),
 		ingredients: ingredients,
-		thumbImageUrl: imageUrl,
-		youtubeUrl: youtubeUrl,
+		thumbImageUrl: imageUrl.trim(),
+		youtubeUrl: youtubeUrl.trim(),
 		tags: tags,
-		sourceUrl: sourceUrl
+		sourceUrl: sourceUrl.trim(),
+		upvotes: null,
+		dateAdded: null,
+		summary: null,
+		user: null
 	};
 	return recipe;
 };
@@ -23,7 +27,7 @@ export const formatRecipe = (recipeJSON) => {
 
 const getTags = (recipeJson) => {
 	if (!recipeJson["strTags"]) {
-		return [""];
+		return [];
 	}
 	return recipeJson["strTags"].split(",");
 };
