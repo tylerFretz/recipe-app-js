@@ -45,20 +45,20 @@ recipesRouter.post("/dev", async (req, res) => {
 
 	const recipe = new Recipe({
 		name: body.name,
-		category: body.category || "",
-		area: body.area || "",
+		category: body.category || "Miscellaneous",
+		area: body.area,
 		instructions: body.instructions,
 		ingredients: body.ingredients,
-		thumbImageUrl: body.thumbImageUrl || "",
-		youtubeUrl: body.youtubeUrl || "",
-		tags: body.tags || [""],
-		sourceUrl: body.sourceUrl || "",
+		thumbImageUrl: body.thumbImageUrl,
+		youtubeUrl: body.youtubeUrl,
+		tags: body.tags,
+		sourceUrl: body.sourceUrl,
 		user: null,
 		upvotes: body.upvotes || 0,
-		summary: body.summary || "",
-		prepTime: body.prepTime || 0,
-		cookTime: body.cookTime || 0,
-		servings: body.servings || 0
+		summary: body.summary || "I guess the creator did not provide a summary ¯\\_(ツ)_/¯.",
+		prepTime: body.prepTime,
+		cookTime: body.cookTime,
+		servings: body.servings,
 	});
 
 	const savedRecipe = await recipe.save();
@@ -78,20 +78,20 @@ recipesRouter.post("/", async (req, res) => {
 
 	const recipe = new Recipe({
 		name: body.name,
-		category: body.category || "",
-		area: body.area || "",
+		category: body.category || "Miscellaneous",
+		area: body.area,
 		instructions: body.instructions,
 		ingredients: body.ingredients,
-		thumbImageUrl: body.thumbImageUrl || "",
-		youtubeUrl: body.youtubeUrl || "",
-		tags: body.tags || [""],
-		sourceUrl: body.sourceUrl || "",
+		thumbImageUrl: body.thumbImageUrl,
+		youtubeUrl: body.youtubeUrl,
+		tags: body.tags,
+		sourceUrl: body.sourceUrl,
 		user: user._id,
 		upvotes: body.upvotes || 0,
-		summary: body.summary || "",
-		prepTime: body.prepTime || 0,
-		cookTime: body.cookTime || 0,
-		servings: body.servings || 0
+		summary: body.summary || "I guess the creator did not provide a summary ¯\\_(ツ)_/¯.",
+		prepTime: body.prepTime,
+		cookTime: body.cookTime,
+		servings: body.servings,
 	});
 
 	const savedRecipe = await recipe.save();
