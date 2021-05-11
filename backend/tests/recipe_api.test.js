@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const supertest = require("supertest");
-const jwt = require("jsonwebtoken");
 const helper = require("./test_helper");
 const app = require("../app");
 const api = supertest(app);
@@ -8,43 +7,24 @@ const Recipe = require("../models/recipe");
 const User = require("../models/user");
 
 jest.setTimeout(60000);
-const globals = {};
+let userLoginResponse = null;
 
 beforeEach(async () => {
 	await User.deleteMany({});
 	await Recipe.deleteMany({});
 
-	const userObjects = helper.initialUsers.map(user => new User(user));
-	const userPromises = userObjects.map(user => user.save());
-	await Promise.all(userPromises);
+	for (let user of helper.initialUsers) {
+		let userObject = new User(user);
+		await userObject.save();
+	}
 
 	const savedUsers = await helper.getUsersInDb();
-	expect(savedUsers.length).toBeGreaterThan(1);
-
-	const userForAllRecipes = {
-		username: savedUsers[0].username,
-		email: savedUsers[0].email,
-		id: savedUsers[0].id,
-	};
-
-	const userForNoRecipes = {
-		username: savedUsers[1].username,
-		email: savedUsers[1].email,
-		id: savedUsers[1].id,
-	};
-
-	const token = jwt.sign(userForAllRecipes, process.env.SECRET);
-	const unauthorizedToken = jwt.sign(userForNoRecipes, process.env.SECRET);
-
-	globals.token = `Bearer ${token}`;
-	globals.tokenId = userForAllRecipes.id;
-	globals.unauthorizedToken = `Bearer ${unauthorizedToken}`;
-
 	const validUserId = savedUsers[0].id;
 
-	const recipeObjects = helper.initialRecipes.map(recipe => new Recipe({ ...recipe, user: validUserId }));
-	const recipePromises = recipeObjects.map(recipe => recipe.save());
-	await Promise.all(recipePromises);
+	for (let recipe of helper.initialRecipes) {
+		let recipeObject = new Recipe({ ...recipe, user: validUserId });
+		await recipeObject.save();
+	}
 });
 
 
@@ -103,6 +83,102 @@ describe("Fetching individual recipes: GET /api/recipes/:id", () => {
 			.expect("Content-Type", /application\/json/);
 
 		expect(resultRecipe.body).toEqual(processedRecipeToView);
+	});
+});
+
+describe("Creating a recipe: POST /api/recipes", () => {
+	beforeEach(async () => {
+		const response = await api
+			.post("/api/login")
+			.send({ usename: "username", email: "username@mail.com", password: "password" });
+
+		userLoginResponse = response.body;
+
+		console.log(userLoginResponse);
+	});
+
+	test("Fails with status 401 if unauthenticated", async () => {
+		await api
+			.post("/api/recipes")
+			.send(helper.validRecipe)
+			.expect(401);
+	});
+
+	test("Fails with status 400 if recipe is invalid", async () => {
+		await api
+			.post("/api/recipes")
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.set("Content-Type", "application/json")
+			.send(helper.recipeWithMissingName)
+			.expect(400);
+
+		await api
+			.post("/api/recipes")
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.set("Content-Type", "application/json")
+			.send(helper.recipeWithMissingInstructions)
+			.expect(400);
+
+		await api
+			.post("/api/recipes")
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.set("Content-Type", "application/json")
+			.send(helper.recipeWithMissingIngredients)
+			.expect(400);
+	});
+
+	test("Succeeds if valid", async () => {
+		const response = await api
+			.post("/api/recipes")
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.send(helper.validRecipe)
+			.expect(201)
+			.expect("Content-Type", /application\/json/);
+
+		const recipesAtEnd = await helper.getRecipesInDb();
+		expect(recipesAtEnd.length).toBe(helper.initialRecipes.length + 1);
+		const recipeIds = recipesAtEnd.map((recipe) => recipe.id);
+		expect(recipeIds).toContain(response.body.id);
+	});
+
+	test("and the saved recipe referencing the user who added it", async () => {
+		const response = await api
+			.post("/api/recipes")
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.send(helper.validRecipe)
+			.expect(201);
+
+		expect(response.user).toBe(userLoginResponse.user.id);
+	});
+
+	test("Default summary is created if not included", async () => {
+		const response = await api
+			.post("/api/recipes")
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.set("Content-Type", "application/json")
+			.send(helper.recipeWithMissingSummary);
+
+		expect(response.body.summary).toBe("I guess the creator did not provide a summary ¯\\_(ツ)_/¯.");
+	});
+
+	test("Upvotes are set to 0 if missing", async () => {
+		const response = await api
+			.post("/api/recipes")
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.set("Content-Type", "application/json")
+			.send(helper.recipeWithMissingUpvotes);
+
+		expect(response.body.upvotes).toBe(0);
+	});
+
+	test("Comments are undefined by default", async () => {
+		const response = await api
+			.post("/api/recipes")
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.set("Content-Type", "application/json")
+			.send(helper.validRecipe);
+
+		expect(response.body.comments).toBeUndefined();
 	});
 });
 

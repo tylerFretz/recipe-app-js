@@ -1,27 +1,30 @@
-const config = require("./utils/config");
 const express = require("express");
+const expressStaticGzip = require("express-static-gzip");
 require("express-async-errors");
 const cors = require("cors");
+const logger = require("./utils/logger");
+const db = require("./utils/db_helper");
+const mockDb = require("./tests/mockDb_helper");
+const middleware = require("./utils/middleware");
 const recipesRouter = require("./controllers/recipes");
 const usersRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login");
-const middleware = require("./utils/middleware");
-const logger = require("./utils/logger");
-const mongoose = require("mongoose");
+const testingRouter = require("./controllers/testing");
+
 const app = express();
 
-logger.info("Connecting to ", config.MONGODB_URI);
-
-mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
-	.then(() => {
-		logger.info("Connected to MongoDB");
-	})
-	.catch((err) => {
-		logger.err("Error connecting to MongoDB: ", err.message);
+if (process.env.NODE_ENV === "test") {
+	mockDb.connect().catch(err => {
+		logger.error(err);
 	});
+	app.use("/api/testing", testingRouter);
+} else {
+	db.connect().catch(err => {
+		logger.error(err);
+	});
+}
 
 app.use(cors());
-app.use(express.static("build"));
 app.use(express.json());
 app.use(middleware.requestLogger);
 app.use(middleware.tokenExtractor);
@@ -30,11 +33,16 @@ app.use("/api/recipes", recipesRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
 
-// eslint-disable-next-line no-undef
-if (process.env.NODE_ENV === "test") {
-	const testingRouter = require("./controllers/testing");
-	app.use("/api/testing", testingRouter);
-}
+app.use(
+	"/",
+	expressStaticGzip("build/", {
+		enableBrotli: true,
+		orderPreference: ["br", "gz"],
+		setHeaders: (res) => {
+			res.setHeader("Cache-Control", "public, max-age=31536000");
+		},
+	})
+);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);

@@ -8,7 +8,7 @@ usersRouter.get("/", async (req, res) => {
 });
 
 usersRouter.post("/", async (req, res) => {
-	const body = req.body;
+	const { body } = req;
 
 	if (body.password.length < 5) {
 		return res.status(401).json({ error: "Password must be at least 5 characters" });
@@ -24,7 +24,7 @@ usersRouter.post("/", async (req, res) => {
 	});
 
 	const savedUser = await user.save();
-	res.json(savedUser);
+	res.status(201).json(savedUser);
 });
 
 module.exports = usersRouter;

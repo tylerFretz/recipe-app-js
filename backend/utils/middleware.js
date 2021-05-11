@@ -1,3 +1,5 @@
+const fs = require("fs");
+const nodePath = require("path");
 const logger = require("./logger");
 
 const requestLogger = (req, res, next) => {
@@ -9,7 +11,14 @@ const requestLogger = (req, res, next) => {
 };
 
 const unknownEndpoint = (req, res) => {
-	res.status(404).send({ error: "unknown endpoint" });
+	const documentPath = nodePath.join(__dirname, "../build", "index.html");
+	const documentExists = fs.existsSync(documentPath);
+
+	if (documentExists) {
+		res.sendFile(documentPath);
+	} else {
+		res.status(404).send({ error: `There is no resource at ${req.url}` });
+	}
 };
 
 
@@ -20,17 +29,11 @@ const tokenExtractor = (req, res, next) => {
 	if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
 		req.token = authorization.substring(7);
 	}
-
 	next();
 };
 
 const errorHandler = (err, req, res, next) => {
 	if (!err) next();
-
-	logger.error(err.message);
-
-	logger.error("-------------");
-	logger.error(err);
 
 	if (err.name === "CastError") {
 		return res.status(400).send({ error: "malformatted id" });
@@ -44,6 +47,8 @@ const errorHandler = (err, req, res, next) => {
 	else if (err.name === "TokenExpiredError") {
 		return res.status(401).json({ error: "token expired" });
 	}
+
+	logger.error(err);
 
 	next(err);
 };
