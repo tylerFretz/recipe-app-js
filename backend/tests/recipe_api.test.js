@@ -1,17 +1,18 @@
 const mongoose = require("mongoose");
 const supertest = require("supertest");
+const mockDb = require("./mockDb_helper");
 const helper = require("./test_helper");
 const app = require("../app");
-const api = supertest(app);
 const Recipe = require("../models/recipe");
 const User = require("../models/user");
+
+const api = supertest(app);
 
 jest.setTimeout(60000);
 let userLoginResponse = null;
 
 beforeEach(async () => {
-	await User.deleteMany({});
-	await Recipe.deleteMany({});
+	await mockDb.clearDatabase();
 
 	for (let user of helper.initialUsers) {
 		let userObject = new User(user);
@@ -90,11 +91,9 @@ describe("Creating a recipe: POST /api/recipes", () => {
 	beforeEach(async () => {
 		const response = await api
 			.post("/api/login")
-			.send({ usename: "username", email: "username@mail.com", password: "password" });
+			.send({ username: "username", email: "username@mail.com", password: "password" });
 
 		userLoginResponse = response.body;
-
-		console.log(userLoginResponse);
 	});
 
 	test("Fails with status 401 if unauthenticated", async () => {
@@ -148,7 +147,7 @@ describe("Creating a recipe: POST /api/recipes", () => {
 			.send(helper.validRecipe)
 			.expect(201);
 
-		expect(response.user).toBe(userLoginResponse.user.id);
+		expect(response.body.user.id).toBe(userLoginResponse.user.id);
 	});
 
 	test("Default summary is created if not included", async () => {
@@ -182,7 +181,65 @@ describe("Creating a recipe: POST /api/recipes", () => {
 	});
 });
 
+describe("Deleting a specific recipe: DELETE /api/recipes/:id", () => {
+	beforeEach(async () => {
+		const response = await api
+			.post("/api/login")
+			.send({ username: "username", email: "username@mail.com", password: "password" });
 
-afterAll(() => {
-	mongoose.connection.close();
+		userLoginResponse = response.body;
+	});
+
+	test("Fails with status 401 if anauthenticated", async () => {
+		const recipesAtStart = await helper.getRecipesInDb();
+		const recipeToDelete = recipesAtStart[0];
+
+		await api.delete(`/api/recipes/${recipeToDelete.id}`).expect(401);
+	});
+
+	test("Fails with status 400 if id is invalid", async () => {
+		const invalidId = "IamInvalid";
+		await api
+			.delete(`/api/recipes/${invalidId}`)
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.expect(400);
+	});
+
+	test("Fails with status 404 if recipe doesn't exist", async () => {
+		const deletedValidId = await helper.getDeletedValidRecipeId();
+		await api
+			.delete(`/api/recipes/${deletedValidId}`)
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.expect(404);
+	});
+
+	test("Fails with status 403 if the recipe doesn't ref the auth user", async () => {
+		const recipesAtStart = await helper.getRecipesInDb();
+		const recipeToDelete = recipesAtStart[0];
+
+		await api
+			.delete(`/api/recipes/${recipeToDelete.id}`)
+			.set("Authorization", "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJpZ0RpY2tSaWNrIiwiZW1haWwiOiJmcmV0enR5bGVyQGdtYWlsLmNvbSIsImlkIjoiNjA3NjNkMDFhYWEwNmY0OTc4MWM4ZDZjIiwiaWF0IjoxNjIwNzYyNTQwLCJleHAiOjE2MjA3NjYxNDB9.RE_2b0RX3N5K97Kvif23hdaGRmuQvrl5UKmldkRdXWw")
+			.expect(403);
+	});
+
+	test("Deletes the recipe with that id if valid", async () => {
+		const recipesAtStart = await helper.getRecipesInDb();
+		const recipeToDelete = recipesAtStart[0];
+
+		await api
+			.delete(`/api/recipes/${recipeToDelete.id}`)
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.expect(204);
+
+		const recipesAtEnd = await helper.getRecipesInDb();
+		const recipeIds = recipesAtEnd.map(recipe => recipe.id);
+		expect(recipeIds).not.toContain(recipeToDelete.id);
+	});
+});
+
+
+afterAll(async () => {
+	await mockDb.closeDatabase();
+	await new Promise((resolve) => setTimeout(() => resolve(), 0)); // avoid jest open handle error
 });

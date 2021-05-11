@@ -200,6 +200,13 @@ const getLatestRecipeInDb = async () => {
 	return recipes.map(recipe => recipe.toJSON())[0];
 };
 
+const getDeletedValidRecipeId = async () => {
+	const recipe = new Recipe(validRecipe);
+	await recipe.save();
+	await recipe.remove();
+	return recipe._id.toString();
+};
+
 module.exports = {
 	initialRecipes,
 	initialUsers,
@@ -213,4 +220,5 @@ module.exports = {
 	getRecipesInDb,
 	getUsersInDb,
 	getLatestRecipeInDb,
+	getDeletedValidRecipeId,
 };
