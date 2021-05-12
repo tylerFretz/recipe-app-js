@@ -4,11 +4,13 @@ const recipesRouter = require("express").Router();
 const Recipe = require("../models/recipe");
 const User = require("../models/user");
 
+// get all recipes but exclude their comments field
 recipesRouter.get("/", async (req, res) => {
-	const recipes = await Recipe.find({}).populate("user", { username: 1, id: 1 });
+	const recipes = await Recipe.find({}, "-comments -upvotedUsers").populate("user", { username: 1, id: 1 });
 	res.json(recipes);
 });
 
+// get specific recipe based on it's id
 recipesRouter.get("/:id", async (req, res) => {
 	const recipe = await Recipe.findById(req.params.id);
 	if (recipe) {
@@ -19,9 +21,11 @@ recipesRouter.get("/:id", async (req, res) => {
 	}
 });
 
+// delete recipe based on it's id
 recipesRouter.delete("/:id", async (req, res) => {
 	const { token } = req;
 
+	// a user must be logged in to delete a recipe
 	const decodedToken = jwt.verify(token, process.env.SECRET);
 	if (!token || !decodedToken.id) {
 		return res.status(401).json({ error: "token missing or invalid" });
@@ -33,6 +37,7 @@ recipesRouter.delete("/:id", async (req, res) => {
 	const belongsToUser = recipe.user.toString() === decodedToken.id;
 	if (belongsToUser) {
 		await recipe.remove();
+		await User.findByIdAndUpdate(decodedToken.id, { $pull: { submittedRecipes: req.params.id } });
 		return res.status(204).end();
 	}
 	else {
@@ -40,10 +45,16 @@ recipesRouter.delete("/:id", async (req, res) => {
 	}
 });
 
+// create new recipe
 recipesRouter.post("/", async (req, res) => {
 	const { body } = req;
 	const { token } = req;
 
+	if (!body.instructions || body.ingredients.length === 0 || !body.name) {
+		return res.status(400).json({ error: "Missing required parameters" });
+	}
+
+	// a user must be logged in to add a new recipe
 	const decodedToken = jwt.verify(token, process.env.SECRET);
 	if (!token || !decodedToken.id) {
 		return res.status(401).json({ error: "token missing or invalid" });
@@ -62,7 +73,6 @@ recipesRouter.post("/", async (req, res) => {
 		tags: body.tags,
 		sourceUrl: body.sourceUrl,
 		user: user._id,
-		upvotes: body.upvotes || 0,
 		summary: body.summary || "I guess the creator did not provide a summary ¯\\_(ツ)_/¯.",
 		prepTime: body.prepTime,
 		cookTime: body.cookTime,
@@ -70,7 +80,7 @@ recipesRouter.post("/", async (req, res) => {
 	});
 
 	const savedRecipe = await recipe.save();
-	user.recipes = user.recipes.concat(savedRecipe._id);
+	user.submittedRecipes = user.submittedRecipes.concat(savedRecipe._id);
 	await user.save();
 	await savedRecipe
 		.populate("user", { username: 1, id: 1 })
@@ -78,24 +88,35 @@ recipesRouter.post("/", async (req, res) => {
 	res.status(201).json(savedRecipe);
 });
 
+// Update amount of upvotes a recipe has
+// a user can only change the amount of upvotes by +/- 1
 recipesRouter.put("/:id", async (req, res) => {
-	const { body, token } = req;
-	const { upvotes } = body;
+	const { token } = req;
 
+	// a user must be logged in to vote
 	const decodedToken = jwt.verify(token, process.env.SECRET);
 	if (!token || !decodedToken.id) {
 		return res.status(401).json({ error: "Token missing or invalid" });
 	}
 
-	const updatedRecipe = await Recipe.findByIdAndUpdate(req.params.id, { upvotes }, { new: true, runValidators: true })
-		.populate("user", { username: 1, id: 1 });
-	res.status(201).json(updatedRecipe);
+	const recipe = await Recipe.findById(req.params.id);
+	if (!recipe) return res.status(404).end();
+
+	if (recipe.upvotedUsers.includes(decodedToken.id)) {
+		await Recipe.updateOne({ _id: recipe._id }, { $inc: { upvoteCount: -1 }, $pull: { upvotedUsers: decodedToken.id } });
+	}
+	else {
+		await Recipe.updateOne({ _id: recipe._id }, { $inc: { upvoteCount: 1 }, $push: { upvotedUsers: decodedToken.id } });
+	}
+	return res.status(200);
 });
 
-recipesRouter.put("/:id/comments", async (req, res) => {
+// Add a comment to a specific recipe based on it's id
+recipesRouter.post("/:id/comments", async (req, res) => {
 	const { body, token } = req;
 	const { comment } = body;
 
+	// user must be logged in to comment
 	const decodedToken = jwt.verify(token, process.env.SECRET);
 	if (!token || !decodedToken.id) {
 		return res.status(401).json({ error: "Token missing or invalid" });
@@ -107,7 +128,7 @@ recipesRouter.put("/:id/comments", async (req, res) => {
 
 	const requestRecipe = await Recipe.findByIdAndUpdate(
 		req.params.id,
-		{ $push: { comments: { body: comment, date: new Date() } } },
+		{ $push: { comments: { commentText: comment, user: decodedToken.id, dateAdded: new Date() } } },
 		{ new: true, runValidators: true })
 		.populate("user", { username: 1, id: 1 });
 

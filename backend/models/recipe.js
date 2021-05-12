@@ -6,9 +6,12 @@ const ingredientSchema = new mongoose.Schema({
 });
 
 const commentSchema = new mongoose.Schema({
-	body: { type: String, required: true, maxLength: [20000, "Comment too long"] },
-	date: { type: Date, default: Date.now }
+	commentText: { type: String, required: true, maxLength: [20000, "Comment too long"] },
+	user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+	dateAdded: { type: Date, default: Date.now },
 });
+
+// embedding upvote user refs and comments in model for now as I am not expecting many of either
 
 const recipeSchema = new mongoose.Schema({
 	name: { type: String, required: true, maxLength: [100, "Recipe name too long"] },
@@ -23,7 +26,8 @@ const recipeSchema = new mongoose.Schema({
 	dateAdded: { type: Date, default: Date.now },
 	user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 	comments: { type: [commentSchema], default: undefined },
-	upvotes: { type: Number, default: 0 },
+	upvoteCount: { type: Number, default: 0 },
+	upvotedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 	summary: { type: String, default: "I guess the creator did not provide a summary ¯\\_(ツ)_/¯.", maxLength: [5000, "Recipe summary too long"] },
 	prepTime: { type: Number, min: [0, "Prep time can't be negative"] },
 	cookTime: { type: Number, min: [0, "cook time can't be negative"] },

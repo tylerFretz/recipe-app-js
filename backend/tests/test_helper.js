@@ -13,7 +13,6 @@ const initialRecipes = [
 		"thumbImageUrl": "https://www.themealdb.com/images/media/meals/yrstur1511816601.jpg",
 		"tags": ["Pie", "Desert"],
 		"sourceUrl": "http://allrecipes.com/recipe/213595/miraculous-canadian-sugar-pie/",
-		"upvotes": 8,
 		"summary": "Ipsum in sunt proident tempor ad ipsum non elit ad laborum occaecat commodo. Amet reprehenderit amet laboris reprehenderit tempor dolor occaecat duis nostrud proident ea. Ex officia tempor dolor veniam magna deserunt elit reprehenderit deserunt.",
 		"prepTime": 10,
 		"cookTime": 30,
@@ -28,7 +27,6 @@ const initialRecipes = [
 		"thumbImageUrl": "https://www.themealdb.com/images/media/meals/xxyupu1468262513.jpg",
 		"youtubeUrl": "https://www.youtube.com/watch?v=4MpYuaJsvRw",
 		"tags": ["Fish", "DateNight"],
-		"upvotes": 12,
 		"summary": "Non do anim nostrud labore. Deserunt aliquip consequat minim dolor nisi aute amet fugiat do consequat minim Lorem in mollit. Aliqua aliqua officia nisi pariatur pariatur est duis ullamco sint laborum velit deserunt officia dolore. Elit magna cillum est sit culpa veniam Lorem laborum nisi deserunt id incididunt consectetur. Reprehenderit pariatur ea culpa mollit culpa quis officia proident quis magna aliquip veniam pariatur in.",
 		"prepTime": 15,
 		"cookTime": 35,
@@ -43,7 +41,6 @@ const initialRecipes = [
 		"thumbImageUrl": "https://www.themealdb.com/images/media/meals/uquqtu1511178042.jpg",
 		"youtubeUrl": "https://www.youtube.com/watch?v=FLEnwZvGzOE",
 		"sourceUrl": "https://www.bbcgoodfood.com/recipes/fettucine-alfredo",
-		"upvotes": 40,
 		"summary": "Magna nulla adipisicing laborum non magna cillum ullamco tempor consequat Lorem labore cillum. Aliquip ipsum occaecat laboris duis aliqua adipisicing. Ipsum elit nisi dolore elit commodo et laboris laboris ullamco amet cillum dolore pariatur. Exercitation amet non culpa eu anim sint minim aliqua cupidatat elit cillum deserunt. Qui velit commodo dolor dolor est excepteur mollit amet adipisicing reprehenderit.",
 		"prepTime": 20,
 		"cookTime": 30,
@@ -61,91 +58,16 @@ const validRecipe = {
 	"youtubeUrl": "https://www.youtube.com/watch?v=qXPhVYpQLPA",
 	"tags": ["Egg"],
 	"sourceUrl": "https://www.bbcgoodfood.com/recipes/1669/ultimate-french-omelette",
-	"upvotes": 5,
 	"summary": "Non do anim nostrud labore. Deserunt aliquip consequat minim dolor nisi aute amet fugiat do consequat minim Lorem in mollit. Aliqua aliqua officia nisi pariatur pariatur est duis ullamco sint laborum velit deserunt officia dolore. Elit magna cillum est sit culpa veniam Lorem laborum nisi deserunt id incididunt consectetur. Reprehenderit pariatur ea culpa mollit culpa quis officia proident quis magna aliquip veniam pariatur in.",
 	"prepTime": 15,
 	"cookTime": 35,
 	"servings": 2
 };
 
-const recipeWithMissingName = {
-	"category": "Breakfast",
-	"area": "French",
-	"instructions": "Get everything ready. Warm a 20cm (measured across the top) non-stick frying pan on a medium heat. Crack the eggs into a bowl and beat them with a fork so they break up and mix, but not as completely as you would for scrambled egg. With the heat on medium-hot, drop one knob of butter into the pan. It should bubble and sizzle, but not brown. Season the eggs with the Parmesan and a little salt and pepper, and pour into the pan.\r\nLet the eggs bubble slightly for a couple of seconds, then take a wooden fork or spatula and gently draw the mixture in from the sides of the pan a few times, so it gathers in folds in the centre. Leave for a few seconds, then stir again to lightly combine uncooked egg with cooked. Leave briefly again, and when partly cooked, stir a bit faster, stopping while there’s some barely cooked egg left. With the pan flat on the heat, shake it back and forth a few times to settle the mixture. It should slide easily in the pan and look soft and moist on top. A quick burst of heat will brown the underside.\r\nGrip the handle underneath. Tilt the pan down away from you and let the omelette fall to the edge. Fold the side nearest to you over by a third with your fork, and keep it rolling over, so the omelette tips onto a plate – or fold it in half, if that’s easier. For a neat finish, cover the omelette with a piece of kitchen paper and plump it up a bit with your fingers. Rub the other knob of butter over to glaze. Serve immediately.",
-	"ingredients": [{ "name": "Egg", "measure": "3" }, { "name": "Butter", "measure": "2 knobs" }, { "name": "Parmesan", "measure": "1 tsp" }, { "name": "Tarragon", "measure": "3 chopped" }, { "name": "Parsley", "measure": "1 tbs chopped" }],
-	"thumbImageUrl": "https://www.themealdb.com/images/media/meals/xxyupu1468262513.jpg",
-	"youtubeUrl": "https://www.youtube.com/watch?v=qXPhVYpQLPA",
-	"tags": ["Egg"],
-	"sourceUrl": "https://www.bbcgoodfood.com/recipes/1669/ultimate-french-omelette",
-	"upvotes": 5,
-	"summary": "Non do anim nostrud labore. Deserunt aliquip consequat minim dolor nisi aute amet fugiat do consequat minim Lorem in mollit. Aliqua aliqua officia nisi pariatur pariatur est duis ullamco sint laborum velit deserunt officia dolore. Elit magna cillum est sit culpa veniam Lorem laborum nisi deserunt id incididunt consectetur. Reprehenderit pariatur ea culpa mollit culpa quis officia proident quis magna aliquip veniam pariatur in.",
-	"prepTime": 15,
-	"cookTime": 35,
-	"servings": 2
-};
-
-const recipeWithMissingInstructions = {
-	"name": "French Omelette",
-	"category": "Breakfast",
-	"area": "French",
-	"ingredients": [{ "name": "Egg", "measure": "3" }, { "name": "Butter", "measure": "2 knobs" }, { "name": "Parmesan", "measure": "1 tsp" }, { "name": "Tarragon", "measure": "3 chopped" }, { "name": "Parsley", "measure": "1 tbs chopped" }],
-	"thumbImageUrl": "https://www.themealdb.com/images/media/meals/xxyupu1468262513.jpg",
-	"youtubeUrl": "https://www.youtube.com/watch?v=qXPhVYpQLPA",
-	"tags": ["Egg"],
-	"sourceUrl": "https://www.bbcgoodfood.com/recipes/1669/ultimate-french-omelette",
-	"upvotes": 5,
-	"summary": "Non do anim nostrud labore. Deserunt aliquip consequat minim dolor nisi aute amet fugiat do consequat minim Lorem in mollit. Aliqua aliqua officia nisi pariatur pariatur est duis ullamco sint laborum velit deserunt officia dolore. Elit magna cillum est sit culpa veniam Lorem laborum nisi deserunt id incididunt consectetur. Reprehenderit pariatur ea culpa mollit culpa quis officia proident quis magna aliquip veniam pariatur in.",
-	"prepTime": 15,
-	"cookTime": 35,
-	"servings": 2
-};
-
-const recipeWithMissingIngredients = {
-	"name": "French Omelette",
-	"category": "Breakfast",
-	"area": "French",
-	"instructions": "Get everything ready. Warm a 20cm (measured across the top) non-stick frying pan on a medium heat. Crack the eggs into a bowl and beat them with a fork so they break up and mix, but not as completely as you would for scrambled egg. With the heat on medium-hot, drop one knob of butter into the pan. It should bubble and sizzle, but not brown. Season the eggs with the Parmesan and a little salt and pepper, and pour into the pan.\r\nLet the eggs bubble slightly for a couple of seconds, then take a wooden fork or spatula and gently draw the mixture in from the sides of the pan a few times, so it gathers in folds in the centre. Leave for a few seconds, then stir again to lightly combine uncooked egg with cooked. Leave briefly again, and when partly cooked, stir a bit faster, stopping while there’s some barely cooked egg left. With the pan flat on the heat, shake it back and forth a few times to settle the mixture. It should slide easily in the pan and look soft and moist on top. A quick burst of heat will brown the underside.\r\nGrip the handle underneath. Tilt the pan down away from you and let the omelette fall to the edge. Fold the side nearest to you over by a third with your fork, and keep it rolling over, so the omelette tips onto a plate – or fold it in half, if that’s easier. For a neat finish, cover the omelette with a piece of kitchen paper and plump it up a bit with your fingers. Rub the other knob of butter over to glaze. Serve immediately.",
-	"thumbImageUrl": "https://www.themealdb.com/images/media/meals/xxyupu1468262513.jpg",
-	"youtubeUrl": "https://www.youtube.com/watch?v=qXPhVYpQLPA",
-	"tags": ["Egg"],
-	"sourceUrl": "https://www.bbcgoodfood.com/recipes/1669/ultimate-french-omelette",
-	"upvotes": 5,
-	"summary": "Non do anim nostrud labore. Deserunt aliquip consequat minim dolor nisi aute amet fugiat do consequat minim Lorem in mollit. Aliqua aliqua officia nisi pariatur pariatur est duis ullamco sint laborum velit deserunt officia dolore. Elit magna cillum est sit culpa veniam Lorem laborum nisi deserunt id incididunt consectetur. Reprehenderit pariatur ea culpa mollit culpa quis officia proident quis magna aliquip veniam pariatur in.",
-	"prepTime": 15,
-	"cookTime": 35,
-	"servings": 2
-};
-
-const recipeWithMissingSummary = {
-	"name": "French Omelette",
-	"category": "Breakfast",
-	"area": "French",
-	"instructions": "Get everything ready. Warm a 20cm (measured across the top) non-stick frying pan on a medium heat. Crack the eggs into a bowl and beat them with a fork so they break up and mix, but not as completely as you would for scrambled egg. With the heat on medium-hot, drop one knob of butter into the pan. It should bubble and sizzle, but not brown. Season the eggs with the Parmesan and a little salt and pepper, and pour into the pan.\r\nLet the eggs bubble slightly for a couple of seconds, then take a wooden fork or spatula and gently draw the mixture in from the sides of the pan a few times, so it gathers in folds in the centre. Leave for a few seconds, then stir again to lightly combine uncooked egg with cooked. Leave briefly again, and when partly cooked, stir a bit faster, stopping while there’s some barely cooked egg left. With the pan flat on the heat, shake it back and forth a few times to settle the mixture. It should slide easily in the pan and look soft and moist on top. A quick burst of heat will brown the underside.\r\nGrip the handle underneath. Tilt the pan down away from you and let the omelette fall to the edge. Fold the side nearest to you over by a third with your fork, and keep it rolling over, so the omelette tips onto a plate – or fold it in half, if that’s easier. For a neat finish, cover the omelette with a piece of kitchen paper and plump it up a bit with your fingers. Rub the other knob of butter over to glaze. Serve immediately.",
-	"ingredients": [{ "name": "Egg", "measure": "3" }, { "name": "Butter", "measure": "2 knobs" }, { "name": "Parmesan", "measure": "1 tsp" }, { "name": "Tarragon", "measure": "3 chopped" }, { "name": "Parsley", "measure": "1 tbs chopped" }],
-	"thumbImageUrl": "https://www.themealdb.com/images/media/meals/xxyupu1468262513.jpg",
-	"youtubeUrl": "https://www.youtube.com/watch?v=qXPhVYpQLPA",
-	"tags": ["Egg"],
-	"sourceUrl": "https://www.bbcgoodfood.com/recipes/1669/ultimate-french-omelette",
-	"upvotes": 5,
-	"prepTime": 15,
-	"cookTime": 35,
-	"servings": 2
-};
-
-const recipeWithMissingUpvotes = {
-	"name": "French Omelette",
-	"category": "Breakfast",
-	"area": "French",
-	"instructions": "Get everything ready. Warm a 20cm (measured across the top) non-stick frying pan on a medium heat. Crack the eggs into a bowl and beat them with a fork so they break up and mix, but not as completely as you would for scrambled egg. With the heat on medium-hot, drop one knob of butter into the pan. It should bubble and sizzle, but not brown. Season the eggs with the Parmesan and a little salt and pepper, and pour into the pan.\r\nLet the eggs bubble slightly for a couple of seconds, then take a wooden fork or spatula and gently draw the mixture in from the sides of the pan a few times, so it gathers in folds in the centre. Leave for a few seconds, then stir again to lightly combine uncooked egg with cooked. Leave briefly again, and when partly cooked, stir a bit faster, stopping while there’s some barely cooked egg left. With the pan flat on the heat, shake it back and forth a few times to settle the mixture. It should slide easily in the pan and look soft and moist on top. A quick burst of heat will brown the underside.\r\nGrip the handle underneath. Tilt the pan down away from you and let the omelette fall to the edge. Fold the side nearest to you over by a third with your fork, and keep it rolling over, so the omelette tips onto a plate – or fold it in half, if that’s easier. For a neat finish, cover the omelette with a piece of kitchen paper and plump it up a bit with your fingers. Rub the other knob of butter over to glaze. Serve immediately.",
-	"ingredients": [{ "name": "Egg", "measure": "3" }, { "name": "Butter", "measure": "2 knobs" }, { "name": "Parmesan", "measure": "1 tsp" }, { "name": "Tarragon", "measure": "3 chopped" }, { "name": "Parsley", "measure": "1 tbs chopped" }],
-	"thumbImageUrl": "https://www.themealdb.com/images/media/meals/xxyupu1468262513.jpg",
-	"youtubeUrl": "https://www.youtube.com/watch?v=qXPhVYpQLPA",
-	"tags": ["Egg"],
-	"sourceUrl": "https://www.bbcgoodfood.com/recipes/1669/ultimate-french-omelette",
-	"prepTime": 15,
-	"cookTime": 35,
-	"servings": 2
-};
+const recipeWithMissingName = { ...validRecipe, name: "" };
+const recipeWithMissingInstructions = { ...validRecipe, instructions: "" };
+const recipeWithMissingIngredients = { ...validRecipe, ingredients: [] };
+const recipeWithMissingSummary = { ...validRecipe, summary: "" };
 
 
 const plainUsers = [
@@ -192,14 +114,6 @@ const getUsersInDb = async () => {
 	return users.map(u => u.toJSON());
 };
 
-const getLatestRecipeInDb = async () => {
-	const recipes = await Recipe.find()
-		.sort({ dateAdded: "desc" })
-		.limit(1);
-
-	return recipes.map(recipe => recipe.toJSON())[0];
-};
-
 const getDeletedValidRecipeId = async () => {
 	const recipe = new Recipe(validRecipe);
 	await recipe.save();
@@ -215,10 +129,8 @@ module.exports = {
 	recipeWithMissingInstructions,
 	recipeWithMissingIngredients,
 	recipeWithMissingSummary,
-	recipeWithMissingUpvotes,
 	plainUsers,
 	getRecipesInDb,
 	getUsersInDb,
-	getLatestRecipeInDb,
 	getDeletedValidRecipeId,
 };

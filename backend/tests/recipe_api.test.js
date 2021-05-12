@@ -8,7 +8,7 @@ const User = require("../models/user");
 
 const api = supertest(app);
 
-jest.setTimeout(60000);
+jest.setTimeout(30000); // set 30sec timeout
 let userLoginResponse = null;
 
 beforeEach(async () => {
@@ -165,9 +165,9 @@ describe("Creating a recipe: POST /api/recipes", () => {
 			.post("/api/recipes")
 			.set("Authorization", `bearer ${userLoginResponse.token}`)
 			.set("Content-Type", "application/json")
-			.send(helper.recipeWithMissingUpvotes);
+			.send(helper.validRecipe);
 
-		expect(response.body.upvotes).toBe(0);
+		expect(response.body.upvoteCount).toBe(0);
 	});
 
 	test("Comments are undefined by default", async () => {
@@ -217,9 +217,15 @@ describe("Deleting a specific recipe: DELETE /api/recipes/:id", () => {
 		const recipesAtStart = await helper.getRecipesInDb();
 		const recipeToDelete = recipesAtStart[0];
 
+		const loginResponse = await api
+			.post("/api/login")
+			.send({ username: "username2", email: "username2@mail.com", password: "password2" });
+
+		const { token } = loginResponse.body;
+
 		await api
 			.delete(`/api/recipes/${recipeToDelete.id}`)
-			.set("Authorization", "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJpZ0RpY2tSaWNrIiwiZW1haWwiOiJmcmV0enR5bGVyQGdtYWlsLmNvbSIsImlkIjoiNjA3NjNkMDFhYWEwNmY0OTc4MWM4ZDZjIiwiaWF0IjoxNjIwNzYyNTQwLCJleHAiOjE2MjA3NjYxNDB9.RE_2b0RX3N5K97Kvif23hdaGRmuQvrl5UKmldkRdXWw")
+			.set("Authorization", `bearer ${token}`)
 			.expect(403);
 	});
 
@@ -236,6 +242,80 @@ describe("Deleting a specific recipe: DELETE /api/recipes/:id", () => {
 		const recipeIds = recipesAtEnd.map(recipe => recipe.id);
 		expect(recipeIds).not.toContain(recipeToDelete.id);
 	});
+
+
+	test("Deleting a recipe removes it from a user's submittedRecipes feild", async () => {
+		const validSubmission = await api
+			.post("/api/recipes")
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.set("Content-Type", "application/json")
+			.send(helper.validRecipe);
+
+		const userBefore = await api
+			.get(`/api/users/${userLoginResponse.user.id}`);
+
+
+		expect(userBefore.body.submittedRecipes).toContain(validSubmission.body.id);
+
+		await api
+			.delete(`/api/recipes/${validSubmission.body.id}`)
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.expect(204);
+
+		const userAfter = await api
+			.get(`/api/users/${userLoginResponse.user.id}`);
+
+		expect(userAfter.body.submittedRecipes).not.toContain(validSubmission.body.id);
+	});
+});
+
+describe("Updating a recipe's upvotes: PUT /api/recipes/:id", () => {
+	beforeEach(async () => {
+		const response = await api
+			.post("/api/login")
+			.send({ username: "username", email: "username@mail.com", password: "password" });
+
+		userLoginResponse = response.body;
+	});
+
+	test("Fails with status 401 if unauthenticated", async () => {
+		const recipesAtStart = await helper.getRecipesInDb();
+		const recipeToUpdate = recipesAtStart[0];
+
+		await api.put(`/api/recipes/${recipeToUpdate.id}`).expect(401);
+	});
+
+	test("Fails with status 400 if the id is invalid", async () => {
+		const invalidId = "IamInvalid";
+		await api
+			.put(`/api/recipes/${invalidId}`)
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.expect(400);
+	});
+
+	test("Receives status 404 if the recipe doesn't exist", async () => {
+		const deletedValidId = await helper.getDeletedValidRecipeId();
+
+		await api
+			.put(`/api/recipes/${deletedValidId}`)
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.expect(404);
+	});
+
+	// test("Successfully increments upvoteCount with valid request", async () => {
+	// 	const recipesAtStart = await helper.getRecipesInDb();
+	// 	const recipeId = recipesAtStart[0].id;
+
+	// 	await api
+	// 		.put(`/api/recipes/${recipeId}`)
+	// 		.set("Authorization", `bearer ${userLoginResponse.token}`)
+	// 		.set("Content-Type", "application/json")
+	// 		.expect(200);
+
+	// 	let recipesAtEnd = await helper.getRecipesInDb();
+	// 	expect(recipesAtEnd[0].upvoteCount).toBe(1);
+	// 	expect(recipesAtEnd[0].upvotedUsers).toContain(userLoginResponse.user.id);
+	// });
 });
 
 

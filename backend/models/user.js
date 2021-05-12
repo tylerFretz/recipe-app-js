@@ -5,12 +5,18 @@ const userSchema = new mongoose.Schema({
 	username: { type: String, required: true, unique: true, match: /[a-zA-Z0-9]{3,}/ },
 	passwordHash: { type: String, required: true },
 	email: { type: String, required: true, unique: true },
-	recipes: [
+	submittedRecipes: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Recipe"
 		}
-	]
+	],
+	savedRecipes: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Recipe"
+		}
+	],
 });
 
 // Apply the uniqueValidator plugin to userSchema.
