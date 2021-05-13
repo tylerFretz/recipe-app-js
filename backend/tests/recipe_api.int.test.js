@@ -7,8 +7,6 @@ const Recipe = require("../models/recipe");
 const User = require("../models/user");
 
 const api = supertest(app);
-
-jest.setTimeout(30000); // set 30sec timeout
 let userLoginResponse = null;
 
 beforeEach(async () => {
@@ -73,7 +71,9 @@ describe("Fetching individual recipes: GET /api/recipes/:id", () => {
 
 	test("Succeeds if the recipe with that id exists", async () => {
 		const recipesInDb = await helper.getRecipesInDb();
-		const recipeToView = recipesInDb[0];
+		const usersInDb = await helper.getUsersInDb();
+		// issue with test. Api returns a user object with id and username properties instead of just the user id string.
+		const recipeToView = { ...recipesInDb[0], user: { id: recipesInDb[0].user, username: usersInDb[0].username } };
 
 		//perform similar JSON serialization and parsing as the server so that dateAdded prop is formatted correctly
 		const processedRecipeToView = JSON.parse(JSON.stringify(recipeToView));
@@ -302,20 +302,89 @@ describe("Updating a recipe's upvotes: PUT /api/recipes/:id", () => {
 			.expect(404);
 	});
 
-	// test("Successfully increments upvoteCount with valid request", async () => {
-	// 	const recipesAtStart = await helper.getRecipesInDb();
-	// 	const recipeId = recipesAtStart[0].id;
+	test("Successfully increments / decrements upvoteCount with valid request", async () => {
+		let recipes = await helper.getRecipesInDb();
+		const recipeId = recipes[0].id;
 
-	// 	await api
-	// 		.put(`/api/recipes/${recipeId}`)
-	// 		.set("Authorization", `bearer ${userLoginResponse.token}`)
-	// 		.set("Content-Type", "application/json")
-	// 		.expect(200);
+		// upvoting
+		await api
+			.put(`/api/recipes/${recipeId}`)
+			.set("Authorization", `bearer ${userLoginResponse.token}`);
 
-	// 	let recipesAtEnd = await helper.getRecipesInDb();
-	// 	expect(recipesAtEnd[0].upvoteCount).toBe(1);
-	// 	expect(recipesAtEnd[0].upvotedUsers).toContain(userLoginResponse.user.id);
-	// });
+		recipes= await helper.getRecipesInDb();
+		expect(recipes[0].upvoteCount).toBe(1);
+		expect(JSON.stringify(recipes[0].upvotedUsers)).toContain(userLoginResponse.user.id);
+
+		// downvoting
+		await api
+			.put(`/api/recipes/${recipeId}`)
+			.set("Authorization", `bearer ${userLoginResponse.token}`);
+
+		recipes = await helper.getRecipesInDb();
+		expect(recipes[0].upvoteCount).toBe(0);
+		expect(JSON.stringify(recipes[0].upvotedUsers)).not.toContain(userLoginResponse.user.id);
+
+	});
+});
+
+describe("Adding comments to a recipe: POST /api/recipes/:id/comments", () => {
+	beforeEach(async () => {
+		const response = await api
+			.post("/api/login")
+			.send({ username: "username", email: "username@mail.com", password: "password" });
+
+		userLoginResponse = response.body;
+	});
+
+	test("Fails with status 401 if unauthenticated", async () => {
+		const recipesAtStart = await helper.getRecipesInDb();
+		const recipeToUpdate = recipesAtStart[0];
+
+		await api
+			.post(`/api/recipes/${recipeToUpdate.id}/comments`)
+			.set("Content-Type", "application/json")
+			.send({ comment: "I am a comment" })
+			.expect(401);
+	});
+
+	test("Fails with status 400 if the id is invalid", async () => {
+		const invalidId = "IamInvalid";
+		await api
+			.post(`/api/recipes/${invalidId}/comments`)
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.set("Content-Type", "application/json")
+			.send({ comment: "I am a comment" })
+			.expect(400);
+	});
+
+	test("Receives status 404 if the recipe doesn't exist", async () => {
+		const deletedValidId = await helper.getDeletedValidRecipeId();
+
+		await api
+			.post(`/api/recipes/${deletedValidId}/comments`)
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.set("Content-Type", "application/json")
+			.send({ comment: "I am a comment" })
+			.expect(404);
+	});
+
+	test("Succeeds if valid", async () => {
+		const recipesAtStart = await helper.getRecipesInDb();
+		const recipeToCommentOn = recipesAtStart[0];
+
+		await api
+			.post(`/api/recipes/${recipeToCommentOn.id}/comments`)
+			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.set("Content-Type", "application/json")
+			.send({ comment: "I am a comment" })
+			.expect(200);
+
+		const recipesAtEnd = await helper.getRecipesInDb();
+		const commentedRecipe = recipesAtEnd[0];
+		expect(commentedRecipe.comments.length).toBe(1);
+		expect(commentedRecipe.comments[0].commentText).toBe("I am a comment");
+		expect(commentedRecipe.comments[0].user.toString()).toEqual(userLoginResponse.user.id);
+	});
 });
 
 

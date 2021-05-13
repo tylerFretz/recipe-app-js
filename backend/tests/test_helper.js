@@ -69,7 +69,6 @@ const recipeWithMissingInstructions = { ...validRecipe, instructions: "" };
 const recipeWithMissingIngredients = { ...validRecipe, ingredients: [] };
 const recipeWithMissingSummary = { ...validRecipe, summary: "" };
 
-
 const plainUsers = [
 	{
 		username: "username",

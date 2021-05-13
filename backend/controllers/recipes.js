@@ -6,13 +6,13 @@ const User = require("../models/user");
 
 // get all recipes but exclude their comments field
 recipesRouter.get("/", async (req, res) => {
-	const recipes = await Recipe.find({}, "-comments -upvotedUsers").populate("user", { username: 1, id: 1 });
+	const recipes = await Recipe.find({}, "-comments -upvotedUsers");
 	res.json(recipes);
 });
 
 // get specific recipe based on it's id
 recipesRouter.get("/:id", async (req, res) => {
-	const recipe = await Recipe.findById(req.params.id);
+	const recipe = await Recipe.findById(req.params.id).populate("user", { username: 1, id: 1 });
 	if (recipe) {
 		res.json(recipe);
 	}
@@ -108,7 +108,7 @@ recipesRouter.put("/:id", async (req, res) => {
 	else {
 		await Recipe.updateOne({ _id: recipe._id }, { $inc: { upvoteCount: 1 }, $push: { upvotedUsers: decodedToken.id } });
 	}
-	return res.status(200);
+	return res.status(200).end();
 });
 
 // Add a comment to a specific recipe based on it's id
