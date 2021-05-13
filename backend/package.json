@@ -9,7 +9,7 @@
     "build:client": "rm -rf build && cd ../client && npm run build --prod && cp -r build ../backend",
     "deploy:full": "npm run build:client && git add --a && git commit -m uibuild && npm run deploy",
     "deploy": "git push heroku master",
-	"logs:prod": "heroku logs --tail",
+    "logs:prod": "heroku logs --tail",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "start:test": "cross-env NODE_ENV=test node index.js",
     "lint": "eslint './**/*.{js,jsx}'"
@@ -39,6 +39,7 @@
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "express-static-gzip": "^2.1.1",
+    "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.2",
     "mongoose-unique-validator": "^2.0.3"
