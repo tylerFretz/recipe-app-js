@@ -103,12 +103,17 @@ recipesRouter.put("/:id", async (req, res) => {
 	if (!recipe) return res.status(404).end();
 
 	if (recipe.upvotedUsers.includes(decodedToken.id)) {
-		await Recipe.updateOne({ _id: recipe._id }, { $inc: { upvoteCount: -1 }, $pull: { upvotedUsers: decodedToken.id } });
+		recipe.upvoteCount -= 1;
+		recipe.upvotedUsers = recipe.upvotedUsers.filter(userId => userId.toString() !== decodedToken.id);
+		const updatedRecipe = await recipe.save();
+		res.status(200).send(updatedRecipe);
 	}
 	else {
-		await Recipe.updateOne({ _id: recipe._id }, { $inc: { upvoteCount: 1 }, $push: { upvotedUsers: decodedToken.id } });
+		recipe.upvoteCount += 1;
+		recipe.upvotedUsers = recipe.upvotedUsers.concat(decodedToken.id);
+		const updatedRecipe = await recipe.save();
+		res.status(200).send(updatedRecipe);
 	}
-	return res.status(200).end();
 });
 
 // Add a comment to a specific recipe based on it's id

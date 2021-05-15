@@ -169,16 +169,6 @@ describe("Creating a recipe: POST /api/recipes", () => {
 
 		expect(response.body.upvoteCount).toBe(0);
 	});
-
-	test("Comments are undefined by default", async () => {
-		const response = await api
-			.post("/api/recipes")
-			.set("Authorization", `bearer ${userLoginResponse.token}`)
-			.set("Content-Type", "application/json")
-			.send(helper.validRecipe);
-
-		expect(response.body.comments).toBeUndefined();
-	});
 });
 
 describe("Deleting a specific recipe: DELETE /api/recipes/:id", () => {
