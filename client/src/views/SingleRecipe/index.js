@@ -1,33 +1,40 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useRouteMatch, useHistory } from "react-router-dom";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import FullScreenRecipe from "./FullScreenRecipe";
 import MobileRecipe from "./MobileRecipe";
 
+import { upvoteRecipe } from "../../store/actions/recipeActions";
+
 const SingleRecipe = () => {
 	const theme = useTheme();
 	const history = useHistory();
-
+	const dispatch = useDispatch();
+	const renderMobile = useMediaQuery(theme.breakpoints.down("sm"));
 	const recipeMatch = useRouteMatch("/recipes/:id");
+
 	const recipe = recipeMatch
 		? useSelector(state => state.recipes.find(recipe => recipe.id === recipeMatch.params.id))
 		: null;
+
+	const handleVote = () => {
+		dispatch(upvoteRecipe(recipe.id));
+		console.log(recipe);
+	};
 
 	if (!recipe) {
 		history.push("/");
 		return null;
 	}
 
-	const renderMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
 	if (renderMobile) {
-		return <MobileRecipe recipe={recipe} />;
+		return <MobileRecipe recipe={recipe} handleVote={handleVote}/>;
 	}
 
 	return (
-		<FullScreenRecipe recipe={recipe} />
+		<FullScreenRecipe recipe={recipe} handleVote={handleVote}/>
 	);
 };
 

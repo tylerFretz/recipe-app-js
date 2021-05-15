@@ -18,7 +18,7 @@ export const login = (email, password) => {
 		} catch (err) {
 			const message = (err.response &&
 					err.response.data &&
-					err.response.data.message) ||
+					err.response.data.error) ||
 					err.message ||
 					err.toString();
 

@@ -24,7 +24,7 @@ export const addRecipe = (recipe) => {
 		} catch (err) {
 			const message = (err.response &&
 					err.response.data &&
-					err.response.data.message) ||
+					err.response.data.error) ||
 					err.message ||
 					err.toString();
 
@@ -33,19 +33,19 @@ export const addRecipe = (recipe) => {
 	};
 };
 
-export const upvoteRecipe = (recipe) => {
+export const upvoteRecipe = (id) => {
 	return async dispatch => {
 		try {
-			const updatedRecipe = await recipeService.updateRecipe(recipe);
+			const updatedRecipe = await recipeService.updateRecipe(id);
 			dispatch({
 				type: UPDATE_RECIPE,
 				payload: updatedRecipe
 			});
-			dispatch(enqueueSnackbar({ message: `Upvoted ${updatedRecipe.name}`, variant: "success" }));
+			dispatch(enqueueSnackbar({ message: "Voted", variant: "success" }));
 		} catch (err) {
 			const message = (err.response &&
 					err.response.data &&
-					err.response.data.message) ||
+					err.response.data.error) ||
 					err.message ||
 					err.toString();
 
@@ -66,7 +66,7 @@ export const deleteRecipe = (recipe) => {
 		} catch (err) {
 			const message = (err.response &&
 					err.response.data &&
-					err.response.data.message) ||
+					err.response.data.error) ||
 					err.message ||
 					err.toString();
 
@@ -87,7 +87,7 @@ export const addComment = (id, comment) => {
 		} catch (err) {
 			const message = (err.response &&
 					err.response.data &&
-					err.response.data.message) ||
+					err.response.data.error) ||
 					err.message ||
 					err.toString();
 

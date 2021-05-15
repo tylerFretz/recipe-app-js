@@ -53,7 +53,7 @@ const useStyles = makeStyles({
 	},
 });
 
-const FullScreenRecipe = ({ recipe }) => {
+const FullScreenRecipe = ({ recipe, handleVote }) => {
 	const classes = useStyles();
 
 	return (
@@ -66,12 +66,13 @@ const FullScreenRecipe = ({ recipe }) => {
 					<HeaderText
 						category={recipe.category}
 						name={recipe.name}
-						upvotes={recipe.upvotes}
+						upvoteCount={recipe.upvoteCount}
 						comments={recipe.comments}
 						summary={recipe.summary}
 						dateAdded={recipe.dateAdded}
 						tags={recipe.tags}
 						user={recipe.user}
+						handleVote={handleVote}
 					/>
 				</Container>
 				<Content

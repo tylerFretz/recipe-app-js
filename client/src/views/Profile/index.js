@@ -16,7 +16,7 @@ const Profile = () => {
 			<p>Email: {user.email}</p>
 			<p>Created Recipes:</p>
 			<ul>
-				{user.recipes.map(recipe => <li key={uuid()}>{recipe.name}</li>)}
+				{user.submittedRecipes.map(recipe => <li key={uuid()}>{recipe.name}</li>)}
 			</ul>
 		</div>
 	);

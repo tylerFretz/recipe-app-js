@@ -10,10 +10,10 @@ const RecipeCardRow = ({ queryType }) => {
 	let recipes = [];
 	switch(queryType) {
 	case "Top Rated":
-		recipes = useSelector(state => state.recipes).sort((a, b) => b.upvotes - a.upvotes).slice(0, 3);
+		recipes = useSelector(state => state.recipes).sort((a, b) => b.upvoteCount - a.upvoteCount).slice(0, 3);
 		break;
 	case "Latest":
-		recipes = useSelector(state => state.recipes).sort((a, b) => b.dateAdded - a.dateAdded).slice(0, 3);
+		recipes = useSelector(state => state.recipes).sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded)).slice(0, 3);
 		break;
 	default:
 		break;
@@ -27,7 +27,7 @@ const RecipeCardRow = ({ queryType }) => {
 						key={recipe.id}
 						user={recipe.user}
 						summary={recipe.summary}
-						upvotes={recipe.upvotes}
+						upvoteCount={recipe.upvoteCount}
 						thumbImageUrl={recipe.thumbImageUrl}
 						id={recipe.id}
 						name={recipe.name}

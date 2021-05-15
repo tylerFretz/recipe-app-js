@@ -31,8 +31,8 @@ const createRecipe = async (newRecipe) => {
 	return res.data;
 };
 
-const updateRecipe = async (updatedRecipe) => {
-	const req = axios.put(`${baseUrl}/${updatedRecipe.id}`, updatedRecipe, getConfig());
+const updateRecipe = async (id) => {
+	const req = axios.put(`${baseUrl}/${id}`, id, getConfig());
 	const res = await req;
 	return res.data;
 };
@@ -44,7 +44,7 @@ const deleteRecipe = async (id) => {
 };
 
 const addComment = async (id, comment) => {
-	const req = axios.put(`${baseUrl}/${id}/comments`, { comment });
+	const req = axios.put(`${baseUrl}/${id}/comments`, { comment }, getConfig());
 	const res = await req;
 	return res.data;
 };

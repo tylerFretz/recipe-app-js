@@ -6,7 +6,7 @@ const User = require("../models/user");
 
 // get all recipes but exclude their comments field
 recipesRouter.get("/", async (req, res) => {
-	const recipes = await Recipe.find({}, "-comments -upvotedUsers");
+	const recipes = await Recipe.find({}, "-comments -upvotedUsers").populate("user", { username: 1, id: 1 });
 	res.json(recipes);
 });
 

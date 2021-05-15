@@ -5,28 +5,23 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import Icon from "@material-ui/core/Icon";
 
-const RecipeCardStats = ({ upvotes, prepTime, cookTime, servings }) => {
-
-	if (!upvotes) {
-		upvotes = 0;
-	}
-
-	if (!prepTime) {
-		prepTime = 0;
-	}
-
-	if (!cookTime) {
-		cookTime = 0;
-	}
+const RecipeStats = ({ upvoteCount, prepTime, cookTime, servings }) => {
+	let totalTime = "";
+	(prepTime && cookTime)
+		? totalTime = Number(prepTime) + Number(cookTime)
+		: totalTime = "?";
 
 	if (!servings) {
-		servings = 0;
+		servings = "?";
 	}
 
+	if (!upvoteCount) {
+		upvoteCount = 0;
+	}
 
 	const stats = [
-		{ value: upvotes, tooltipText: "Upvotes", icon: "thumb_up" },
-		{ value: Number(prepTime) + Number(cookTime), tooltipText: "Prep time + cook time", icon: "schedule" },
+		{ value: upvoteCount, tooltipText: "Upvotes", icon: "thumb_up" },
+		{ value: totalTime, tooltipText: "Prep time + cook time", icon: "schedule" },
 		{ value: servings, tooltipText: "Servings", icon: "people" }
 	];
 
@@ -37,7 +32,6 @@ const RecipeCardStats = ({ upvotes, prepTime, cookTime, servings }) => {
 				alignSelf: "flex-end",
 				justifyContent: "space-around",
 				padding: "1% 5%",
-				borderTop: "1px solid #eee",
 			}}
 		>
 			{stats.map((item) => (
@@ -52,5 +46,5 @@ const RecipeCardStats = ({ upvotes, prepTime, cookTime, servings }) => {
 	);
 };
 
-export default RecipeCardStats;
+export default RecipeStats;
 

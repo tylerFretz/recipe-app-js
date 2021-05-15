@@ -11,9 +11,11 @@ const useStyles = makeStyles({
 		display: "flex",
 		justifyContent: "space-between",
 		alignItems: "center",
+		padding: "1% 0%",
 		borderTop: "1px dashed #999",
 		borderBottom: "1px dashed #999",
-		marginTop: "7%"
+		marginTop: "7%",
+		marginBottom: "2%"
 	},
 });
 

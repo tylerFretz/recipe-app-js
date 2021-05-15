@@ -7,6 +7,7 @@ import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ModeCommentIcon from "@material-ui/icons/ModeComment";
 import Chip from "@material-ui/core/Chip";
@@ -76,7 +77,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	tagContainer: {
 		display: "inline-flex",
-		justifyContent: "space-around",
 		padding: 0,
 		letterSpacing: 0,
 		fontWeight: 500,
@@ -85,19 +85,20 @@ const useStyles = makeStyles(theme => ({
 	tag: {
 		color: "white",
 		backgroundColor: "red",
+		marginLeft: "10%"
 	}
 }));
 
-const HeaderText = ({ category, name, upvotes, comments, summary, dateAdded, user, tags }) => {
+const HeaderText = ({ category, name, upvoteCount, comments, summary, dateAdded, user, tags, handleVote }) => {
 	const classes = useStyles();
 	const formattedDate = format( new Date(dateAdded), "MMMM dd, yyyy");
 
-	// TODO: fix theMealDb formater so that if a recipe doesn't have tags, an empty string is not put in array
-	tags = tags.filter(tag => tag !== "");
+	if (!comments) {
+		comments = [];
+	}
 
-	// recipes from theMealDb do not include a summary
-	if (!summary) {
-		summary = "I guess the creator did not provide a summary ¯\\_(ツ)_/¯. Sorry...";
+	if (!user.username) {
+		user = { id: user, username: "Recipe App" };
 	}
 
 	return (
@@ -116,8 +117,10 @@ const HeaderText = ({ category, name, upvotes, comments, summary, dateAdded, use
 			<Typography className={classes.title}>{name}</Typography>
 			<Container className={classes.metaCount}>
 				<Container style={{ display: "flex", padding: 0 }}>
-					<ThumbUpAltIcon />
-					<Typography>{upvotes}</Typography>
+					<IconButton color="primary" aira-label="like" onClick={() => handleVote()}>
+						<ThumbUpAltIcon />
+					</IconButton>
+					<Typography>{upvoteCount}</Typography>
 				</Container>
 				<Container style={{ display: "flex", padding: 0 }}>
 					<ModeCommentIcon />
@@ -138,7 +141,7 @@ const HeaderText = ({ category, name, upvotes, comments, summary, dateAdded, use
 			<Divider />
 			{tags.length > 0 && (
 				<Container className={classes.tagContainer}>
-					<Typography style={{ alignSelf: "center" }}>Tags: </Typography>
+					<Typography>Tags:</Typography>
 					{tags.map(tag => (
 						<NavLink key={tag} to={`/tags/${tag}`}>
 							<Chip label={tag} className={classes.tag} clickable={true} size="small" />
