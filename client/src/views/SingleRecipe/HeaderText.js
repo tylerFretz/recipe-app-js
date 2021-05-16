@@ -7,7 +7,6 @@ import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ModeCommentIcon from "@material-ui/icons/ModeComment";
 import Chip from "@material-ui/core/Chip";
@@ -89,17 +88,11 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-const HeaderText = ({ category, name, upvoteCount, comments, summary, dateAdded, user, tags, handleVote }) => {
+const HeaderText = ({ category, name, upvoteCount, comments, summary, dateAdded, user, tags }) => {
 	const classes = useStyles();
 	const formattedDate = format( new Date(dateAdded), "MMMM dd, yyyy");
 
-	if (!comments) {
-		comments = [];
-	}
-
-	if (!user.username) {
-		user = { id: user, username: "Recipe App" };
-	}
+	if (!comments) comments = [];
 
 	return (
 		<Container className={classes.root}>
@@ -117,9 +110,7 @@ const HeaderText = ({ category, name, upvoteCount, comments, summary, dateAdded,
 			<Typography className={classes.title}>{name}</Typography>
 			<Container className={classes.metaCount}>
 				<Container style={{ display: "flex", padding: 0 }}>
-					<IconButton color="primary" aira-label="like" onClick={() => handleVote()}>
-						<ThumbUpAltIcon />
-					</IconButton>
+					<ThumbUpAltIcon />
 					<Typography>{upvoteCount}</Typography>
 				</Container>
 				<Container style={{ display: "flex", padding: 0 }}>

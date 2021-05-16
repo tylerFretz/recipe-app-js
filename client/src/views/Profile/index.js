@@ -1,7 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { v4 as uuid } from "uuid";
 
 const Profile = () => {
 	const { user, isLoggedIn } = useSelector(state => state.auth);
@@ -14,10 +13,7 @@ const Profile = () => {
 		<div>
 			<p>Username: {user.username}</p>
 			<p>Email: {user.email}</p>
-			<p>Created Recipes:</p>
-			<ul>
-				{user.submittedRecipes.map(recipe => <li key={uuid()}>{recipe.name}</li>)}
-			</ul>
+			<p>Created Recipes: {user.submittedRecipes.length}</p>
 		</div>
 	);
 };

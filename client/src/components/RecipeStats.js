@@ -29,7 +29,6 @@ const RecipeStats = ({ upvoteCount, prepTime, cookTime, servings }) => {
 		<Container
 			style={{
 				display: "flex",
-				alignSelf: "flex-end",
 				justifyContent: "space-around",
 				padding: "1% 5%",
 			}}

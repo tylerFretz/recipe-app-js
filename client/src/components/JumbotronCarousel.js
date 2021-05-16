@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Carousel from "react-material-ui-carousel";
 import Paper from "@material-ui/core/Paper";
-//import Button from "@material-ui/core/Button";
+import Hidden from "@material-ui/core/Hidden";
 
 import RecipeStats from "./RecipeStats";
 
@@ -38,12 +38,13 @@ const useStyles = makeStyles({
 		left: 0,
 		height: "33%",
 		width: "100%",
-		backgroundColor: "rgba( 255, 255, 255, 0.5)",
+		backgroundColor: "rgba( 255, 255, 255, 0.6)",
 		zIndex: 2,
+		minHeight: "100px",
+		filter: "blur(0.001px)",
 	},
 	captionContent: {
 		padding: "2% 5%",
-		position: "absolute",
 		bottom: 0,
 		left: 0,
 		width: "100%",
@@ -57,7 +58,9 @@ const useStyles = makeStyles({
 		display: "inline-block"
 	},
 	recipeStatsContainer: {
-		display: "flex"
+		display: "flex",
+		width: "40%",
+		alignItems: "center"
 	}
 });
 
@@ -68,7 +71,7 @@ const JumboTronCarousel = () => {
 		<Carousel
 			animation="slide"
 			indicators={false}
-			interval={5000}
+			interval={10000}
 		>
 			{
 				randomRecipes.map((recipe, i) => <CarouselItem key={i} recipe={recipe} />)
@@ -89,12 +92,12 @@ const CarouselItem = ({ recipe }) => {
 					<NavLink to={`/recipes/${recipe.id}`} className={classes.linkText}>
 						<h1>{recipe.name}</h1>
 					</NavLink>
-					<div className={classes.recipeStatsContainer}>
-						<h3>By {recipe.user.username}</h3>
-						<div style={{ width: "25%" }}>
+					<Hidden smDown>
+						<div className={classes.recipeStatsContainer}>
+							<h3>By {recipe.user.username}</h3>
 							<RecipeStats upvoteCount={recipe.upvoteCount} prepTime={recipe.prepTime} cookTime={recipe.cookTime} servings={recipe.servings} />
 						</div>
-					</div>
+					</Hidden>
 				</div>
 			</div>
 		</Paper>

@@ -8,21 +8,16 @@ import ToggleableList from "../../components/ToggleableList";
 const useStyles = makeStyles({
 	contentContainer: {
 		padding: "5%",
-		marginTop: "10%",
-		border: "1px solid black"
+		marginTop: "5%",
 	},
 	listContainer: {
-		padding: 0
+		padding: 0,
+		marginTop: "8%"
 	}
 });
 
 const ContentInnerMobile = ({ name, summary, ingredients, instructions }) => {
 	const classes = useStyles();
-
-	// recipes from theMealDb do not include a summary
-	if (!summary) {
-		summary = "I guess the creator did not provide a summary ¯\\_(ツ)_/¯. Sorry...";
-	}
 
 	const ingredientValues = ingredients.map(i => i.measure + " " + i.name);
 
@@ -30,7 +25,7 @@ const ContentInnerMobile = ({ name, summary, ingredients, instructions }) => {
 	instructions = instructions.replace(/\d\./g, "");
 
 	// instructions from theMealDb come as a long string with occaisonal linebreaks. Let's split that into steps
-	const instructionsArray = instructions.split(/\r?\n/).filter(instruction => instruction !== "");
+	const instructionsArray = instructions.split(/\r?\n/).filter(instruction => instruction !== "").filter(instruction => instruction.length > 1);
 
 	return (
 		<Container className={classes.contentContainer}>

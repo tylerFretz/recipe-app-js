@@ -1,11 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Grid from "@material-ui/core/Grid";
 
 import RecipeCard from "../../components/RecipeCard";
 
 const RecipeCardRow = ({ queryType }) => {
+	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
 	let recipes = [];
 	switch(queryType) {
@@ -20,12 +24,12 @@ const RecipeCardRow = ({ queryType }) => {
 	}
 
 	return (
-		<Grid container item spacing={2}>
+		<Grid container item spacing={2} style={{ flexDirection: isMobile ? "column" : "row" }}>
 			{recipes.map(recipe => (
-				<Grid container item xs={4} key={recipe.id}>
+				<Grid container item xs={isMobile ? 12 : 4} key={recipe.id}>
 					<RecipeCard
 						key={recipe.id}
-						user={recipe.user}
+						username={recipe.user.username}
 						summary={recipe.summary}
 						upvoteCount={recipe.upvoteCount}
 						thumbImageUrl={recipe.thumbImageUrl}

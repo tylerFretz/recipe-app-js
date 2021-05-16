@@ -12,7 +12,13 @@ let theme = createMuiTheme({
 		secondary: {
 			main: "#7AA93C",
 			contrastText: "#333333"
-		}
+		},
+		darkGrey: {
+			main: "#676767"
+		},
+		primarycta: {
+			main: "#3B4332"
+		},
 	},
 });
 

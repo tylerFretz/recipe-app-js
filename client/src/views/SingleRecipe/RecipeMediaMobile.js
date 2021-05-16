@@ -38,7 +38,7 @@ const useStyles = makeStyles({
 	}
 });
 
-const RecipeMediaMobile = ({ youtubeUrl, thumbImageUrl }) => {
+const RecipeMediaMobile = ({ youtubeUrl, thumbImageUrl, name }) => {
 	const classes = useStyles();
 	const [mediaUrl, setMediaUrl] = useState(thumbImageUrl);
 
@@ -50,7 +50,7 @@ const RecipeMediaMobile = ({ youtubeUrl, thumbImageUrl }) => {
 			<Container className={classes.mediaContainer}>
 				{mediaUrl === thumbImageUrl ?
 					<Container className={classes.embededResponsive16by9}>
-						<img className={classes.embededResponsiveItem} src={thumbImageUrl} />
+						<img className={classes.embededResponsiveItem} src={thumbImageUrl} alt={`Image of ${name}`} title={name} />
 					</Container>
 					:
 					youtubeUrl
@@ -66,7 +66,7 @@ const RecipeMediaMobile = ({ youtubeUrl, thumbImageUrl }) => {
 						)
 						: (
 							<Container className={classes.embededResponsive16by9}>
-								<img className={classes.embededResponsiveItem} src={noVideo} />
+								<img className={classes.embededResponsiveItem} src={noVideo} alt="No image available" />
 							</Container>
 						)
 				}

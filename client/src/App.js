@@ -24,7 +24,7 @@ const App = () => {
 
 	useEffect(() => {
 		dispatch(initializeRecipes());
-	}, [dispatch]);
+	}, []);
 
 	return (
 		<div>

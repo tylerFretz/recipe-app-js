@@ -12,7 +12,7 @@ const SingleRecipe = () => {
 	const theme = useTheme();
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const renderMobile = useMediaQuery(theme.breakpoints.down("sm"));
+	const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 	const recipeMatch = useRouteMatch("/recipes/:id");
 
 	const recipe = recipeMatch
@@ -29,7 +29,7 @@ const SingleRecipe = () => {
 		return null;
 	}
 
-	if (renderMobile) {
+	if (isMobile) {
 		return <MobileRecipe recipe={recipe} handleVote={handleVote}/>;
 	}
 

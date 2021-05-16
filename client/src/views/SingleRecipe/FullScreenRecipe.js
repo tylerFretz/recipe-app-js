@@ -61,7 +61,7 @@ const FullScreenRecipe = ({ recipe, handleVote }) => {
 			<Container className={classes.primaryContentArea}>
 				<Container className={classes.contentHeader}>
 					<div className={classes.headerMediaContainer}>
-						<img className={classes.headerMedia} src={recipe.thumbImageUrl} />
+						<img className={classes.headerMedia} src={recipe.thumbImageUrl} alt={`Image of ${recipe.name}`} title={recipe.name} />
 					</div>
 					<HeaderText
 						category={recipe.category}

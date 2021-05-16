@@ -43,7 +43,7 @@ const ToggleableList = ({ items, isNumbered }) => {
 						</ListItemIcon>
 						{isNumbered
 							? <ListItemText id={labelId} primary={`Step ${index + 1}`} secondary={value} />
-							: <ListItemText id={labelId} primary={value} />
+							: <ListItemText id={labelId} secondary={value} />
 						}
 					</ListItem>
 				);

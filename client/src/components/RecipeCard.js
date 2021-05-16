@@ -1,21 +1,32 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
-import Hidden from "@material-ui/core/Hidden";
 
 import RecipeStats from "./RecipeStats";
 
-const RecipeCard = ({ user, summary, upvoteCount, thumbImageUrl, id, name, prepTime, cookTime, servings }) => {
+const useStyles = makeStyles((theme) => ({
+	recipeCard: {
+		height: "100%",
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "spaceBetween",
+		color: theme.palette.darkGrey.main
+	}
+}));
+
+const RecipeCard = ({ username, summary, upvoteCount, thumbImageUrl, id, name, prepTime, cookTime, servings }) => {
 	const history = useHistory();
+	const classes = useStyles();
 
 	const handleClick = () => history.push(`/recipes/${id}`);
 
 	return (
-		<Card style={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+		<Card className={classes.recipeCard}>
 			<div style={{ overflow: "hidden" }}>
 				<CardMedia
 					component="img"
@@ -26,18 +37,11 @@ const RecipeCard = ({ user, summary, upvoteCount, thumbImageUrl, id, name, prepT
 				/>
 			</div>
 			<CardContent style={{ borderBottom: "1px solid #eee" }}>
-				<Typography variant="h6">{name}</Typography>
-				<Hidden smDown>
-					{summary && (
-						<Typography variant="body2">{summary}</Typography>
-					)}
-					{user && (
-						<Typography variant="subtitle2">By {user.username}</Typography>
-					)}
-					{!user && (
-						<Typography variant="subtitle2">By Recipe App</Typography>
-					)}
-				</Hidden>
+				<Typography variant="h5">{name}</Typography>
+				{summary && (
+					<Typography variant="body2">{summary}</Typography>
+				)}
+				<Typography variant="subtitle2">By <span style={{ fontSize: "1.2em" }}>{username}</span></Typography>
 			</CardContent>
 			<RecipeStats upvoteCount={upvoteCount} prepTime={prepTime} cookTime={cookTime} servings={servings} />
 		</Card>
@@ -45,7 +49,7 @@ const RecipeCard = ({ user, summary, upvoteCount, thumbImageUrl, id, name, prepT
 };
 
 RecipeCard.propTypes = {
-	user: PropTypes.string,
+	username: PropTypes.string,
 	summary: PropTypes.string,
 	upvoteCount: PropTypes.number,
 	thumbImageUrl: PropTypes.string,
