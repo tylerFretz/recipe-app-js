@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 const jwt = require("jsonwebtoken");
+const { body, validationResult } = require("express-validator");
 const recipesRouter = require("express").Router();
 const Recipe = require("../models/recipe");
 const User = require("../models/user");
@@ -46,47 +47,61 @@ recipesRouter.delete("/:id", async (req, res) => {
 });
 
 // create new recipe
-recipesRouter.post("/", async (req, res) => {
-	const { body } = req;
-	const { token } = req;
+recipesRouter.post("/",
+	body("name").not().isEmpty().isLength({ max: 100 }).trim().escape().withMessage("Name must not have more than 100 characters."),
+	body("instructions").not().isEmpty().isLength({ max: 10000 }).trim().escape().withMessage("Instructions too long"),
+	body("ingredients").isArray({ min: 1 }).withMessage("Need at least 1 ingredient"),
+	body("category").optional().isString().trim().escape().withMessage("Category must be a string"),
+	body("area").optional().isString().trim().escape().withMessage("Area must be a string"),
+	body("thumbImageUrl").optional().isURL().trim().escape().withMessage("Thumb image must be provided as a url"),
+	body("youtubeUrl").optional().isURL().trim().escape().withMessage("Youtube url must be provided as a url"),
+	tags("tags.*").optional().isString().trim().escape().withMessage("Tags must be strings"),
+	body("sourceUrl").optional().trim().escape().isURL("Source url must be a url"),
+	body("prepTime").optional().isInt().withMessage("Prep time must be an integer"),
+	body("cookTime").optional().isInt().withMessage("Cook time must be an integer"),
+	body("servings").optional().isInt().withMessage("Servings must be an integer"),
+	async (req, res) => {
+		const errors = validationResult(req);
 
-	if (!body.instructions || body.ingredients.length === 0 || !body.name) {
-		return res.status(400).json({ error: "Missing required parameters" });
-	}
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
+		}
 
-	// a user must be logged in to add a new recipe
-	const decodedToken = jwt.verify(token, process.env.SECRET);
-	if (!token || !decodedToken.id) {
-		return res.status(401).json({ error: "token missing or invalid" });
-	}
+		const { body } = req;
+		const { token } = req;
+		// a user must be logged in to add a new recipe
+		const decodedToken = jwt.verify(token, process.env.SECRET);
+		if (!token || !decodedToken.id) {
+			return res.status(401).json({ error: "token missing or invalid" });
+		}
 
-	const user = await User.findById(decodedToken.id);
+		const user = await User.findById(decodedToken.id);
 
-	const recipe = new Recipe({
-		name: body.name,
-		category: body.category || "Miscellaneous",
-		area: body.area,
-		instructions: body.instructions,
-		ingredients: body.ingredients,
-		thumbImageUrl: body.thumbImageUrl,
-		youtubeUrl: body.youtubeUrl,
-		tags: body.tags,
-		sourceUrl: body.sourceUrl,
-		user: user._id,
-		summary: body.summary || "I guess the creator did not provide a summary ¯\\_(ツ)_/¯.",
-		prepTime: body.prepTime,
-		cookTime: body.cookTime,
-		servings: body.servings,
+		const recipe = new Recipe({
+			name: body.name,
+			category: body.category || "Miscellaneous",
+			area: body.area,
+			instructions: body.instructions,
+			ingredients: body.ingredients,
+			thumbImageUrl: body.thumbImageUrl,
+			youtubeUrl: body.youtubeUrl,
+			tags: body.tags,
+			sourceUrl: body.sourceUrl,
+			user: user._id,
+			summary: body.summary || "I guess the creator did not provide a summary ¯\\_(ツ)_/¯.",
+			prepTime: body.prepTime,
+			cookTime: body.cookTime,
+			servings: body.servings,
+		});
+
+		const savedRecipe = await recipe.save();
+		user.submittedRecipes = user.submittedRecipes.concat(savedRecipe._id);
+		await user.save();
+		await savedRecipe
+			.populate("user", { username: 1, id: 1 })
+			.execPopulate();
+		res.status(201).json(savedRecipe);
 	});
-
-	const savedRecipe = await recipe.save();
-	user.submittedRecipes = user.submittedRecipes.concat(savedRecipe._id);
-	await user.save();
-	await savedRecipe
-		.populate("user", { username: 1, id: 1 })
-		.execPopulate();
-	res.status(201).json(savedRecipe);
-});
 
 // Update amount of upvotes a recipe has
 // a user can only change the amount of upvotes by +/- 1
@@ -117,27 +132,31 @@ recipesRouter.put("/:id", async (req, res) => {
 });
 
 // Add a comment to a specific recipe based on it's id
-recipesRouter.post("/:id/comments", async (req, res) => {
-	const { body, token } = req;
-	const { comment } = body;
+recipesRouter.post("/:id/comments",
+	body("comment").not().isEmpty().isLength({ max: 20000 }).trim().escape().withMessage("Comment max length is 20000"),
+	async (req, res) => {
+		const errors = validationResult(req);
 
-	// user must be logged in to comment
-	const decodedToken = jwt.verify(token, process.env.SECRET);
-	if (!token || !decodedToken.id) {
-		return res.status(401).json({ error: "Token missing or invalid" });
-	}
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
+		}
 
-	if (typeof comment !== "string") {
-		res.status(400).json({ error: "Comment is not a string" });
-	}
+		const { body, token } = req;
+		const { comment } = body;
 
-	const requestRecipe = await Recipe.findByIdAndUpdate(
-		req.params.id,
-		{ $push: { comments: { commentText: comment, user: decodedToken.id, dateAdded: new Date() } } },
-		{ new: true, runValidators: true })
-		.populate("user", { username: 1, id: 1 });
+		// user must be logged in to comment
+		const decodedToken = jwt.verify(token, process.env.SECRET);
+		if (!token || !decodedToken.id) {
+			return res.status(401).json({ error: "Token missing or invalid" });
+		}
 
-	res.status(requestRecipe ? 200 : 404).json(requestRecipe);
-});
+		const requestRecipe = await Recipe.findByIdAndUpdate(
+			req.params.id,
+			{ $push: { comments: { commentText: comment, user: decodedToken.id, dateAdded: new Date() } } },
+			{ new: true, runValidators: true })
+			.populate("user", { username: 1, id: 1 });
+
+		res.status(requestRecipe ? 200 : 404).json(requestRecipe);
+	});
 
 module.exports = recipesRouter;

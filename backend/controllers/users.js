@@ -1,4 +1,6 @@
+/* eslint-disable indent */
 const bcrypt = require("bcrypt");
+const { body, validationResult } = require("express-validator");
 const usersRouter = require("express").Router();
 const User = require("../models/user");
 
@@ -17,11 +19,17 @@ usersRouter.get("/:id", async (req, res) => {
 	}
 });
 
-usersRouter.post("/", async (req, res) => {
+usersRouter.post("/",
+	body("username").not().isEmpty().isLength({ min: 3, max: 50 }).trim().escape().withMessage("Username must be between 3 and 50 characters"),
+	body("email").not().isEmpty().isEmail().withMessage("Improper Email format"),
+	body("password").not().isStrongPassword().withMessage("Password specifications: Min length: 8, Min lowercase: 1, Min uppercase: 1, minNumbers: 1, minSymbols: 1"),
+async (req, res) => {
 	const { body } = req;
 
-	if (body.password.length < 5) {
-		return res.status(401).json({ error: "Password must be at least 5 characters" });
+	const errors = validationResult(req);
+
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
 	}
 
 	const saltRounds = 10;
