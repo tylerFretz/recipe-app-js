@@ -1,14 +1,63 @@
 import recipeService from "../../services/recipeService";
 import { enqueueSnackbar } from "../actions/notificationActions";
-import { ADD_RECIPE, UPDATE_RECIPE, DELETE_RECIPE, INIT_ALL_RECIPES } from "../../constants/actionTypes";
+import {
+	ADD_RECIPE,
+	ADD_RECIPES,
+	UPDATE_RECIPE,
+	DELETE_RECIPE,
+	INIT_ALL_RECIPES
+} from "../../constants/actionTypes";
 
-export const initializeRecipes = () => {
+export const getAllRecipes = () => {
 	return async dispatch => {
 		const recipes = await recipeService.getAllRecipes();
 		dispatch({
 			type: INIT_ALL_RECIPES,
 			payload: recipes
 		});
+	};
+};
+
+export const getDefaultInitialRecipes = () => {
+	return async dispatch => {
+		try {
+			const topRatedQuery = { "sortBy": "upvoteCount", "order": "desc", "limit": "3" };
+			const latestQuery = { "sortBy": "dateAdded", "order": "desc", "limit": "3" };
+			const topRatedRecipes = await recipeService.queryRecipes(topRatedQuery);
+			const latestRecipes = await recipeService.queryRecipes(latestQuery);
+			dispatch({
+				type: ADD_RECIPES,
+				payload: [...topRatedRecipes, ...latestRecipes]
+			});
+		} catch (err) {
+			const message = (err.response &&
+					err.response.data &&
+					err.response.data.error) ||
+					err.message ||
+					err.toString();
+
+			dispatch(enqueueSnackbar({ message, variant: "error" }));
+		}
+	};
+};
+
+export const queryRecipes = (queryOptions) => {
+	return async dispatch => {
+		try {
+			const recipes = await recipeService.queryRecipes(queryOptions);
+			dispatch({
+				type: ADD_RECIPES,
+				payload: recipes
+			});
+		} catch (err) {
+			const message = (err.response &&
+					err.response.data &&
+					err.response.data.error) ||
+					err.message ||
+					err.toString();
+
+			dispatch(enqueueSnackbar({ message, variant: "error" }));
+		}
 	};
 };
 
@@ -20,7 +69,6 @@ export const addRecipe = (recipe) => {
 				type: ADD_RECIPE,
 				payload: newRecipe
 			});
-			dispatch(enqueueSnackbar({ message: `Added ${recipe.name}`, variant: "success" }));
 		} catch (err) {
 			const message = (err.response &&
 					err.response.data &&
@@ -41,7 +89,6 @@ export const upvoteRecipe = (id) => {
 				type: UPDATE_RECIPE,
 				payload: updatedRecipe
 			});
-			dispatch(enqueueSnackbar({ message: "Voted", variant: "success" }));
 		} catch (err) {
 			const message = (err.response &&
 					err.response.data &&

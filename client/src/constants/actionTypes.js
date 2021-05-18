@@ -5,6 +5,7 @@ export const CLOSE_SNACKBAR = "CLOSE_SNACKBAR";
 export const REMOVE_SNACKBAR = "REMOVE_SNACKBAR";
 export const INIT_ALL_RECIPES = "INIT_ALL_RECIPES";
 export const ADD_RECIPE = "ADD_RECIPE";
+export const ADD_RECIPES = "ADD_RECIPES";
 export const UPDATE_RECIPE = "UPDATE_RECIPE";
 export const DELETE_RECIPE = "DELETE_RECIPE";
 export const INIT_ALL_USERS = "INIT_ALL_USERS";

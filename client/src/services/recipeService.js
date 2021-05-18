@@ -19,6 +19,17 @@ const getAllRecipes = async () => {
 	return res.data;
 };
 
+const queryRecipes = async (queryOptions) => {
+	const esc = encodeURIComponent;
+	const queryString = `${baseUrl}?`.concat(Object.keys(queryOptions).map(k => esc(k) + "=" + esc(queryOptions[k])).join("&"));
+	const req = axios.get(queryString);
+	const res = await req;
+	console.log(queryOptions);
+	console.log(queryString);
+	console.log(res.data);
+	return res.data;
+};
+
 const getSingleRecipe = async (id) => {
 	const req = axios.get(`${baseUrl}/${id}`, getConfig());
 	const res = await req;
@@ -59,4 +70,14 @@ const saveApiRecipe = async (newRecipe) => {
 	}
 };
 
-export default { getAllRecipes, getSingleRecipe, createRecipe, updateRecipe, deleteRecipe, addComment, saveApiRecipe };
+export default
+{
+	getAllRecipes,
+	queryRecipes,
+	getSingleRecipe,
+	createRecipe,
+	updateRecipe,
+	deleteRecipe,
+	addComment,
+	saveApiRecipe
+};

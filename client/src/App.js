@@ -4,7 +4,6 @@ import { Switch, Route } from "react-router-dom";
 import Notifier from "./utils/Notifier";
 
 import { setUser } from "./store/actions/authActions";
-import { initializeRecipes } from "./store/actions/recipeActions";
 import Home from "./views/Home";
 import Register from "./views/Register";
 import Login from "./views/Login";
@@ -22,12 +21,9 @@ const App = () => {
 		dispatch(setUser());
 	}, []);
 
-	useEffect(() => {
-		dispatch(initializeRecipes());
-	}, []);
 
 	return (
-		<div>
+		<>
 			<div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
 				<Notifier />
 				<Header />
@@ -41,7 +37,7 @@ const App = () => {
 				</Switch>
 			</div>
 			<Footer />
-		</div>
+		</>
 	);
 };
 
