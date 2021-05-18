@@ -7,6 +7,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+
 const useStyles = makeStyles({
 	fullScreenContainer: {
 		display: "flex",
@@ -15,8 +16,8 @@ const useStyles = makeStyles({
 		padding: "1% 0%",
 		borderTop: "1px dashed #999",
 		borderBottom: "1px dashed #999",
-		marginTop: "7%",
-		marginBottom: "2%"
+		marginTop: "3%",
+		marginBottom: "1%"
 	},
 	mobileContainer: {
 		display: "flex",
@@ -24,7 +25,6 @@ const useStyles = makeStyles({
 		borderTop: "1px dashed #999",
 		borderBottom: "1px dashed #999",
 		alignItems: "center",
-		marginTop: "15%",
 	}
 });
 
@@ -37,10 +37,10 @@ const SectionTitle = ({ title }) => {
 	const handleClick = () => {
 		switch (title) {
 		case "Top Rated":
-			history.push("/recipes/?sort=ratings-desc");
+			history.push("/recipes/?sortBy=upvoteCount&order=desc");
 			break;
 		case "Latest":
-			history.push("/recipes/?sort=date-desc");
+			history.push("/recipes/?sortBy=dateAdded&order=desc");
 			break;
 		default:
 			break;

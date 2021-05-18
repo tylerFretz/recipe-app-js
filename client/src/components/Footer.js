@@ -9,8 +9,8 @@ const useStyles = makeStyles({
 		justifyContent: "space-between",
 		alignItems: "center",
 		width: "100%",
-		backgroundColor: "black",
-		color: "white",
+		backgroundColor: "#333333",
+		color: "#FFF",
 		marginTop: "50px"
 	},
 	section: {

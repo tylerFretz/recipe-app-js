@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 	linkText: {
 		textDecoration: "none",
 		textTransform: "uppercase",
-		color: "white"
+		color: "#FFF"
 	},
 	logoContainer: {
 		display: "inline-flex",
@@ -140,7 +140,7 @@ const Header = () => {
 								<Hidden smDown>
 									<img className={classes.logo} src={chefHat} alt="logo"  />
 								</Hidden>
-								<Typography variant="h5" style={{ fontFamily: "Courgette, cursive" }}>RECIPE APP</Typography>
+								<Typography variant="h3" style={{ fontFamily: "Courgette, cursive", fontSize: "2.2em" }}>RECIPE APP</Typography>
 							</NavLink>
 							<Hidden smDown>
 								<List component="nav" aria-labelledby="main navigation" className={classes.navDisplayFlex}>
@@ -171,7 +171,7 @@ const Header = () => {
 			</HideOnScroll>
 			<Toolbar id="back-to-top-anchor" />
 			<BackToTop>
-				<Fab color="secondary" size="large" aria-label="scroll back to top">
+				<Fab color="secondary" size="small" aria-label="scroll back to top">
 					<KeyboardArrowUp />
 				</Fab>
 			</BackToTop>

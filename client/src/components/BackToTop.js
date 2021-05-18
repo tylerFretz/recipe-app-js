@@ -3,8 +3,8 @@ import { Zoom, useScrollTrigger } from "@material-ui/core";
 
 const style = {
 	position: "fixed",
-	bottom: "50px",
-	right: "10%",
+	bottom: "1%",
+	right: "3%",
 	zIndex: "99",
 };
 

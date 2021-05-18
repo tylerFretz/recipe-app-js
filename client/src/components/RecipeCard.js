@@ -8,26 +8,35 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 
 import RecipeStats from "./RecipeStats";
+import noImageAvailable from "../assets/noImageAvailable.jpg";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
 	recipeCard: {
 		height: "100%",
 		display: "flex",
 		flexDirection: "column",
-		justifyContent: "spaceBetween",
-		color: theme.palette.darkGrey.main
+		justifyContent: "flex-end",
+	},
+	cardContent: {
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "space-around",
+		borderBottom: "1px solid #EEE",
+		flexGrow: 1
 	}
-}));
+});
 
 const RecipeCard = ({ username, summary, upvoteCount, thumbImageUrl, id, name, prepTime, cookTime, servings }) => {
 	const history = useHistory();
 	const classes = useStyles();
 
+	if (!thumbImageUrl) thumbImageUrl = noImageAvailable;
+
 	const handleClick = () => history.push(`/recipes/${id}`);
 
 	return (
 		<Card className={classes.recipeCard}>
-			<div style={{ overflow: "hidden" }}>
+			<div style={{ overflow: "hidden", height: "50%" }}>
 				<CardMedia
 					component="img"
 					alt={name}
@@ -36,8 +45,8 @@ const RecipeCard = ({ username, summary, upvoteCount, thumbImageUrl, id, name, p
 					onClick={() => handleClick()}
 				/>
 			</div>
-			<CardContent style={{ borderBottom: "1px solid #eee" }}>
-				<Typography variant="h5">{name}</Typography>
+			<CardContent className={classes.cardContent}>
+				<Typography variant="h5" style={{ fontWeight: "bold" }}>{name}</Typography>
 				{summary && (
 					<Typography variant="body2">{summary}</Typography>
 				)}

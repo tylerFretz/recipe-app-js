@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React from "react";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -38,10 +39,8 @@ const useStyles = makeStyles({
 		left: 0,
 		height: "33%",
 		width: "100%",
-		backgroundColor: "rgba( 255, 255, 255, 0.6)",
-		zIndex: 2,
 		minHeight: "100px",
-		filter: "blur(0.001px)",
+		zIndex: 1,
 	},
 	captionContent: {
 		padding: "2% 5%",
@@ -50,7 +49,7 @@ const useStyles = makeStyles({
 		width: "100%",
 		zIndex: 2,
 		color: "#ffff",
-		textShadow: "1px 1px 2px rgba(0,0,0,0.5)",
+		textShadow: "1px 1px 2px rgba(0,0,0,1)",
 	},
 	linkText: {
 		color: "#ffff",
@@ -77,7 +76,6 @@ const JumboTronCarousel = () => {
 				randomRecipes.map((recipe, i) => <CarouselItem key={i} recipe={recipe} />)
 			}
 		</Carousel>
-
 	);
 };
 
@@ -85,6 +83,7 @@ const CarouselItem = ({ recipe }) => {
 	const classes = useStyles();
 
 	return (
+		<>
 		<Paper className={classes.imageContainer}>
 			<img src={recipe.thumbImageUrl} className={classes.image} />
 			<div className={classes.imageOverlay}>
@@ -94,13 +93,22 @@ const CarouselItem = ({ recipe }) => {
 					</NavLink>
 					<Hidden smDown>
 						<div className={classes.recipeStatsContainer}>
-							<h3>By {recipe.user.username}</h3>
+							<h3 style={{ fontSize: "1.3em" }}>By {recipe.user.username}</h3>
 							<RecipeStats upvoteCount={recipe.upvoteCount} prepTime={recipe.prepTime} cookTime={recipe.cookTime} servings={recipe.servings} />
 						</div>
 					</Hidden>
 				</div>
 			</div>
 		</Paper>
+		<svg style={{ position: "absolute", top: "66%", width: "100%", minHeight: "66%", rotate: "180deg" }}>
+			<defs>
+				<filter id="blur">
+					<feGaussianBlur in="SourceGraphic" stdDeviation="20" />
+				</filter>
+			</defs>
+			<image filter="url(#blur)" xlinkHref={recipe.thumbImageUrl} x="0" y="0" width="100%" />
+		</svg>
+		</>
 	);
 };
 

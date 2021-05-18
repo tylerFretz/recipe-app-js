@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -9,6 +10,8 @@ import JumboTronCarousel from "../../components/JumbotronCarousel";
 import RecipeCardRow from "./RecipeCardRow";
 import SectionTitle from "./SectionTitle";
 
+import { getDefaultInitialRecipes } from "../../store/actions/recipeActions";
+
 const useStyles = makeStyles({
 	root: {
 		display: "flex",
@@ -18,9 +21,14 @@ const useStyles = makeStyles({
 });
 
 const Home = () => {
+	const dispatch = useDispatch();
 	const classes = useStyles();
 	const theme = useTheme();
 	const isMobile= useMediaQuery(theme.breakpoints.down("sm"));
+
+	useEffect(() => {
+		dispatch(getDefaultInitialRecipes());
+	}, []);
 
 	const renderMobile = () => (
 		<>

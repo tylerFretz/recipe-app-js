@@ -4,6 +4,7 @@ import Container from "@material-ui/core/Container";
 
 import HeaderText from "./HeaderText";
 import Content from "./Content";
+import noImageAvailable from "../../assets/noImageAvailable.jpg";
 
 const useStyles = makeStyles({
 	fullScreenContainer: {
@@ -55,6 +56,8 @@ const useStyles = makeStyles({
 
 const FullScreenRecipe = ({ recipe, handleVote }) => {
 	const classes = useStyles();
+
+	if (!recipe.thumbImageUrl) recipe.thumbImageUrl = noImageAvailable;
 
 	return (
 		<Container className={classes.fullScreen}>

@@ -16,9 +16,6 @@ let theme = createMuiTheme({
 		darkGrey: {
 			main: "#676767"
 		},
-		primarycta: {
-			main: "#3B4332"
-		},
 	},
 });
 
@@ -31,7 +28,17 @@ theme.props = {
 theme.overrides = {
 	MuiButton: {
 		root: {
-			boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.1)"
+			boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.1)",
+		},
+		contained: {
+			color: "#FFFFFF",
+			backgroundColor: "#7AA93C",
+			"&:hover": {
+				backgroundColor: "#000",
+			},
+			"&:focus": {
+				backgroundColor: "#000",
+			},
 		}
 	},
 	MuiCard: {
@@ -39,6 +46,7 @@ theme.overrides = {
 			marginTop: theme.spacing(1),
 			maxWidth: "360px",
 			borderRadius: "3px",
+			color: "#676767"
 		}
 	},
 	MuiCardContent: {
@@ -56,17 +64,29 @@ theme.overrides = {
 			}
 		}
 	},
+	MuiFab: {
+		label: {
+			color: "#FFF",
+		}
+	},
 	MuiTypography: {
 		h1: {
 			[theme.breakpoints.down("sm")]: {
 				fontSize: pxToRem(46)
 			}
 		},
+		h5: {
+			color: "#676767",
+		},
 		h6: {
 			[theme.breakpoints.down("sm")]: {
 				fontSize: pxToRem(14)
-			}
-		}
+			},
+			color: "#676767"
+		},
+		body2: {
+			color: "#676767"
+		},
 	}
 };
 
