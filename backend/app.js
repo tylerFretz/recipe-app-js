@@ -1,7 +1,6 @@
 const express = require("express");
 require("express-async-errors");
 const expressStaticGzip = require("express-static-gzip");
-const expressValidator = require("express-validator");
 const cors = require("cors");
 const helmet = require("helmet");
 const logger = require("./utils/logger");
@@ -29,7 +28,6 @@ if (process.env.NODE_ENV === "test") {
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-app.use(expressValidator());
 app.use(middleware.requestLogger);
 app.use(middleware.tokenExtractor);
 

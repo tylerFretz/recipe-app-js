@@ -58,6 +58,64 @@ describe("Fetching existing recipes collection: GET /api/recipes", () => {
 	});
 });
 
+describe ("Fetching exisiting recipes collection with query parameters: GET /api/recipes?[queryOpts]", () => {
+	test("Returns a recipe by name", async () => {
+		const usersInDb = await helper.getUsersInDb();
+		const recipesInDb = await helper.getRecipesInDb();
+		const sugarPieRecipe = recipesInDb[0];
+		const recipeName = sugarPieRecipe.name.replace(" ", "%20");
+
+		const recipeToView = { ...sugarPieRecipe, user: { id: sugarPieRecipe.user, username: usersInDb[0].username } };
+		const processedRecipeToView = JSON.parse(JSON.stringify(recipeToView));
+
+		const response = await api.get(`/api/recipes?name=${recipeName}`)
+			.expect(200)
+			.expect("Content-Type", /application\/json/);
+
+		expect(response.body[0]).toEqual(processedRecipeToView);
+	});
+
+	test("Returns a recipe by category", async () => {
+		const usersInDb = await helper.getUsersInDb();
+		const recipesInDb = await helper.getRecipesInDb();
+		const salmonRecipe = recipesInDb[1];
+
+		const recipeToView = { ...salmonRecipe, user: { id: salmonRecipe.user, username: usersInDb[0].username } };
+		const processedRecipeToView = JSON.parse(JSON.stringify(recipeToView));
+
+		const response = await api.get(`/api/recipes?category=${salmonRecipe.category}`)
+			.expect(200)
+			.expect("Content-Type", /application\/json/);
+
+		expect(response.body[0]).toEqual(processedRecipeToView);
+	});
+
+	test("Returns a recipe by area", async () => {
+		const usersInDb = await helper.getUsersInDb();
+		const recipesInDb = await helper.getRecipesInDb();
+		const salmonRecipe = recipesInDb[1];
+
+		const recipeToView = { ...salmonRecipe, user: { id: salmonRecipe.user, username: usersInDb[0].username } };
+		const processedRecipeToView = JSON.parse(JSON.stringify(recipeToView));
+
+		const response = await api.get(`/api/recipes?area=${salmonRecipe.area}`)
+			.expect(200)
+			.expect("Content-Type", /application\/json/);
+
+		expect(response.body[0]).toEqual(processedRecipeToView);
+	});
+
+	test("Returns a recipe by userId", async () => {
+		const usersInDb = await helper.getUsersInDb();
+
+		const response = await api.get(`/api/recipes?user=${usersInDb[0].id}`)
+			.expect(200)
+			.expect("Content-Type", /application\/json/);
+
+		expect(response.body.length).toBe(helper.initialRecipes.length);
+	});
+});
+
 describe("Fetching individual recipes: GET /api/recipes/:id", () => {
 	test("Fails with status 400 if the id is invalid", async () => {
 		const invalidId = "iaminvalid";
@@ -130,9 +188,9 @@ describe("Creating a recipe: POST /api/recipes", () => {
 		const response = await api
 			.post("/api/recipes")
 			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.set("Content-Type", "application/json")
 			.send(helper.validRecipe)
-			.expect(201)
-			.expect("Content-Type", /application\/json/);
+			.expect(201);
 
 		const recipesAtEnd = await helper.getRecipesInDb();
 		expect(recipesAtEnd.length).toBe(helper.initialRecipes.length + 1);
@@ -144,6 +202,7 @@ describe("Creating a recipe: POST /api/recipes", () => {
 		const response = await api
 			.post("/api/recipes")
 			.set("Authorization", `bearer ${userLoginResponse.token}`)
+			.set("Content-Type", "application/json")
 			.send(helper.validRecipe)
 			.expect(201);
 

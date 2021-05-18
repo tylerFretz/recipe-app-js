@@ -1,15 +1,71 @@
 /* eslint-disable no-undef */
 const jwt = require("jsonwebtoken");
-const { body, validationResult } = require("express-validator");
+const { body, param, validationResult } = require("express-validator");
+const ObjectId = require("mongoose").Types.ObjectId;
 const recipesRouter = require("express").Router();
 const Recipe = require("../models/recipe");
 const User = require("../models/user");
 
-// get all recipes but exclude their comments field
-recipesRouter.get("/", async (req, res) => {
-	const recipes = await Recipe.find({}, "-comments -upvotedUsers").populate("user", { username: 1, id: 1 });
-	res.json(recipes);
-});
+/*
+* 	@Summary - get all recipes in their db based on query. Defaults to returning all recipes but excludes thier comments and upvotedUsers list
+* 	@Params (all optional)
+*	- sortBy [upvoteCount, dateAdded]
+*	- order [desc, asc]
+*   - limit [any integer]
+*	- category [any string]
+*	- area [any string]
+*	- user [userId]
+*   - tag [any string]
+*   - name [any string]
+*	@Returns - list of recipes in JSON that match query params.
+*/
+recipesRouter.get("/",
+	param("sortBy").trim().escape().isIn(["upvoteCount", "dateAdded"]).optional(),
+	param("order").trim().escape().isIn(["desc", "asc"]).optional(),
+	param("limit").isInt({ min: 1 }).optional(),
+	param("category").trim().escape().isString().optional(),
+	param("area").trim().escape().isString().optional(),
+	param("user").trim().escape().isString().optional(),
+	param("tag").trim().escape().isString().optional(),
+	param("name").trim().escape().isString().optional(),
+	async (req, res) => {
+		const errors = validationResult(req);
+
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
+		}
+
+		const { query } = req;
+
+		let conditions = {};
+
+		if (query.name) conditions.name = query.name;
+		if (query.tag) conditions.tags = query.tag;
+		if (query.user) conditions.user = new ObjectId(query.user);
+		if (query.area) conditions.area = query.area;
+		if (query.category) conditions.category = query.category;
+
+		let dbQuery = Recipe.find(conditions);
+
+		if (query.sortBy && query.sortBy === "upvoteCount") {
+			if (query.order && query.order === "desc") {
+				dbQuery.sort("-upvoteCount");
+			} else {
+				dbQuery.sort("upvoteCount");
+			}
+		} else if (query.sortBy && query.sortBy === "dateAdded") {
+			if (query.order && query.order === "desc") {
+				dbQuery.sort("-dateAdded");
+			} else {
+				dbQuery.sort("dateAdded");
+			}
+		}
+
+		if (query.limit) dbQuery.limit(Number(query.limit));
+
+		const recipes = await dbQuery.populate("user", { username: 1, id: 1 }).exec();
+		res.json(recipes);
+	});
 
 // get specific recipe based on it's id
 recipesRouter.get("/:id", async (req, res) => {
@@ -51,15 +107,15 @@ recipesRouter.post("/",
 	body("name").not().isEmpty().isLength({ max: 100 }).trim().escape().withMessage("Name must not have more than 100 characters."),
 	body("instructions").not().isEmpty().isLength({ max: 10000 }).trim().escape().withMessage("Instructions too long"),
 	body("ingredients").isArray({ min: 1 }).withMessage("Need at least 1 ingredient"),
-	body("category").optional().isString().trim().escape().withMessage("Category must be a string"),
-	body("area").optional().isString().trim().escape().withMessage("Area must be a string"),
-	body("thumbImageUrl").optional().isURL().trim().escape().withMessage("Thumb image must be provided as a url"),
-	body("youtubeUrl").optional().isURL().trim().escape().withMessage("Youtube url must be provided as a url"),
-	tags("tags.*").optional().isString().trim().escape().withMessage("Tags must be strings"),
-	body("sourceUrl").optional().trim().escape().isURL("Source url must be a url"),
-	body("prepTime").optional().isInt().withMessage("Prep time must be an integer"),
-	body("cookTime").optional().isInt().withMessage("Cook time must be an integer"),
-	body("servings").optional().isInt().withMessage("Servings must be an integer"),
+	body("category").isString().trim().escape().withMessage("Category must be a string").optional(),
+	body("area").isString().trim().escape().withMessage("Area must be a string").optional(),
+	body("thumbImageUrl").matches(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/).withMessage("Thumb image must be provided as a url").optional(),
+	body("youtubeUrl").matches(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/).withMessage("Youtube url must be provided as a url").optional(),
+	body("tags.*").isString().trim().escape().withMessage("Tags must be strings").optional(),
+	body("sourceUrl").matches(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/).withMessage("Source url must be a valid url").optional(),
+	body("prepTime").isInt().withMessage("Prep time must be an integer").optional(),
+	body("cookTime").isInt().withMessage("Cook time must be an integer").optional(),
+	body("servings").isInt().withMessage("Servings must be an integer").optional(),
 	async (req, res) => {
 		const errors = validationResult(req);
 
