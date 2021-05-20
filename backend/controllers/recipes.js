@@ -11,7 +11,7 @@ const User = require("../models/user");
 * 	@Params (all optional)
 *	- sortBy [upvoteCount, dateAdded]
 *	- order [desc, asc]
-*   - limit [any integer]
+*   - limit [any positive integer]
 *	- category [any string]
 *	- area [any string]
 *	- user [userId]
@@ -107,6 +107,7 @@ recipesRouter.post("/",
 	body("name").not().isEmpty().isLength({ max: 100 }).trim().escape().withMessage("Name must not have more than 100 characters."),
 	body("instructions").not().isEmpty().isLength({ max: 10000 }).trim().escape().withMessage("Instructions too long"),
 	body("ingredients").isArray({ min: 1 }).withMessage("Need at least 1 ingredient"),
+	body("summary").isString().isLength({ max: 500 }).trim().escape().withMessage("Summary must not have more than 500 characters.").optional(),
 	body("category").isString().trim().escape().withMessage("Category must be a string").optional(),
 	body("area").isString().trim().escape().withMessage("Area must be a string").optional(),
 	body("thumbImageUrl").matches(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/).withMessage("Thumb image must be provided as a url").optional(),
@@ -144,7 +145,7 @@ recipesRouter.post("/",
 			tags: body.tags,
 			sourceUrl: body.sourceUrl,
 			user: user._id,
-			summary: body.summary || "I guess the creator did not provide a summary ¯\\_(ツ)_/¯.",
+			summary: body.summary || "Sint Lorem dolore sunt elit esse nostrud aliqua voluptate incididunt ipsum aliquip cillum Lorem ad. Eiusmod veniam eu nulla voluptate duis pariatur esse minim. Dolore dolore officia velit quis elit laborum minim non et et voluptate exercitation irure.",
 			prepTime: body.prepTime,
 			cookTime: body.cookTime,
 			servings: body.servings,

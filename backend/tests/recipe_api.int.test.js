@@ -216,7 +216,7 @@ describe("Creating a recipe: POST /api/recipes", () => {
 			.set("Content-Type", "application/json")
 			.send(helper.recipeWithMissingSummary);
 
-		expect(response.body.summary).toBe("I guess the creator did not provide a summary ¯\\_(ツ)_/¯.");
+		expect(response.body.summary).toBe("Sint Lorem dolore sunt elit esse nostrud aliqua voluptate incididunt ipsum aliquip cillum Lorem ad. Eiusmod veniam eu nulla voluptate duis pariatur esse minim. Dolore dolore officia velit quis elit laborum minim non et et voluptate exercitation irure.");
 	});
 
 	test("Upvotes are set to 0 if missing", async () => {

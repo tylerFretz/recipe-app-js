@@ -28,7 +28,7 @@ const recipeSchema = new mongoose.Schema({
 	comments: { type: [commentSchema] },
 	upvoteCount: { type: Number, default: 0 },
 	upvotedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-	summary: { type: String, default: "I guess the creator did not provide a summary ¯\\_(ツ)_/¯.", maxLength: [5000, "Recipe summary too long"] },
+	summary: { type: String, default: "Sint Lorem dolore sunt elit esse nostrud aliqua voluptate incididunt ipsum aliquip cillum Lorem ad. Eiusmod veniam eu nulla voluptate duis pariatur esse minim. Dolore dolore officia velit quis elit laborum minim non et et voluptate exercitation irure.", maxLength: [5000, "Recipe summary too long"] },
 	prepTime: { type: Number, min: [0, "Prep time can't be negative"] },
 	cookTime: { type: Number, min: [0, "cook time can't be negative"] },
 	servings: { type: Number, min: [1, "Must have at least 1 serving"] },
