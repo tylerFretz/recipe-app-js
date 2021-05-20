@@ -10,7 +10,7 @@ import Hidden from "@material-ui/core/Hidden";
 import RecipeStats from "./RecipeStats";
 
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
 	imageContainer: {
 		display: "block",
 		position: "relative",
@@ -43,6 +43,7 @@ const useStyles = makeStyles({
 		zIndex: 1,
 	},
 	captionContent: {
+		position: "absolute",
 		padding: "2% 5%",
 		bottom: 0,
 		left: 0,
@@ -54,14 +55,29 @@ const useStyles = makeStyles({
 	linkText: {
 		color: "#ffff",
 		textDecoration: "none",
-		display: "inline-block"
+		display: "inline-block",
+		[theme.breakpoints.down("sm")]: {
+			fontSize: "0.8em"
+		},
 	},
 	recipeStatsContainer: {
 		display: "flex",
 		width: "40%",
 		alignItems: "center"
+	},
+	svgOverlay: {
+		position: "absolute",
+		[theme.breakpoints.down("sm")]: {
+			top: "55%"
+		},
+		[theme.breakpoints.up("md")]: {
+			top: "66%"
+		},
+		width: "100%",
+		minHeight: "66%",
+		rotate: "180deg"
 	}
-});
+}));
 
 const JumboTronCarousel = () => {
 	const randomRecipes = useSelector(state => state.recipes.sort(() => Math.random() - Math.random()).slice(0, 3));
@@ -100,7 +116,7 @@ const CarouselItem = ({ recipe }) => {
 				</div>
 			</div>
 		</Paper>
-		<svg style={{ position: "absolute", top: "66%", width: "100%", minHeight: "66%", rotate: "180deg" }}>
+		<svg className={classes.svgOverlay}>
 			<defs>
 				<filter id="blur">
 					<feGaussianBlur in="SourceGraphic" stdDeviation="20" />

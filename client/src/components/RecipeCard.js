@@ -13,9 +13,11 @@ import noImageAvailable from "../assets/noImageAvailable.jpg";
 const useStyles = makeStyles({
 	recipeCard: {
 		height: "100%",
+		maxHeight: "475px",
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "flex-end",
+		maxWidth: 360
 	},
 	cardContent: {
 		display: "flex",

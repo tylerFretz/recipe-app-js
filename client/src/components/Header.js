@@ -28,7 +28,7 @@ import chefHat from "../assets/chefHat.png";
 const useStyles = makeStyles((theme) => ({
 	navBarDisplayFlex: {
 		display: "flex",
-		justifyContent: "space-around",
+		justifyContent: "space-between",
 		alignItems: "center",
 		maxHeight: 50
 	},
@@ -57,6 +57,13 @@ const useStyles = makeStyles((theme) => ({
 	logo: {
 		width: "25%",
 		height: "25%",
+	},
+	brandTitle: {
+		fontFamily: "Courgette, cursive",
+		[theme.breakpoints.down("sm")]: {
+			fontSize: "1.5em"
+		},
+		fontSize: "2em"
 	},
 	linkButton: {
 		opacity: 0.8,
@@ -140,7 +147,7 @@ const Header = () => {
 								<Hidden smDown>
 									<img className={classes.logo} src={chefHat} alt="logo"  />
 								</Hidden>
-								<Typography variant="h3" style={{ fontFamily: "Courgette, cursive", fontSize: "2.2em" }}>RECIPE APP</Typography>
+								<Typography variant="h3" className={classes.brandTitle}>RECIPE APP</Typography>
 							</NavLink>
 							<Hidden smDown>
 								<List component="nav" aria-labelledby="main navigation" className={classes.navDisplayFlex}>

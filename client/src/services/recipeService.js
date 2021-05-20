@@ -24,9 +24,6 @@ const queryRecipes = async (queryOptions) => {
 	const queryString = `${baseUrl}?`.concat(Object.keys(queryOptions).map(k => esc(k) + "=" + esc(queryOptions[k])).join("&"));
 	const req = axios.get(queryString);
 	const res = await req;
-	console.log(queryOptions);
-	console.log(queryString);
-	console.log(res.data);
 	return res.data;
 };
 
@@ -55,7 +52,7 @@ const deleteRecipe = async (id) => {
 };
 
 const addComment = async (id, comment) => {
-	const req = axios.put(`${baseUrl}/${id}/comments`, { comment }, getConfig());
+	const req = axios.post(`${baseUrl}/${id}/comments`, { comment }, getConfig());
 	const res = await req;
 	return res.data;
 };

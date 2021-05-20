@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { compareAsc } from "date-fns";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 
 import JumboTronCarousel from "../../components/JumbotronCarousel";
-import RecipeCardRow from "./RecipeCardRow";
+import RecipeCardRow from "../../components/RecipeCardRow";
 import SectionTitle from "./SectionTitle";
 
 import { getDefaultInitialRecipes } from "../../store/actions/recipeActions";
@@ -17,6 +17,8 @@ const useStyles = makeStyles({
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "center",
+		alignItems: "center",
+		marginTop: "5%"
 	},
 });
 
@@ -30,17 +32,20 @@ const Home = () => {
 		dispatch(getDefaultInitialRecipes());
 	}, []);
 
+	const topRatedRecipes = useSelector(state => state.recipes).sort((a, b) => a.upvoteCount - b.upvoteCount).slice(0, 3);
+	const latestRecipes = useSelector(state => state.recipes).sort((a, b) => compareAsc(new Date(b.dateAdded), new Date(a.dateAdded))).slice(0, 3);
+
 	const renderMobile = () => (
 		<>
 			<JumboTronCarousel />
 			<Container className={classes.root}>
 				<div>
 					<SectionTitle title={"Top Rated"} />
-					<RecipeCardRow queryType={"Top Rated"} />
+					<RecipeCardRow recipes={topRatedRecipes} />
 				</div>
 				<div>
 					<SectionTitle title={"Latest"} />
-					<RecipeCardRow queryType={"Latest"} />
+					<RecipeCardRow recipes={latestRecipes} />
 				</div>
 			</Container>
 		</>
@@ -54,16 +59,14 @@ const Home = () => {
 		<>
 			<JumboTronCarousel />
 			<Container className={classes.root}>
-				<Grid container justify="center">
-					<Grid container item xs={12} spacing={3}>
-						<SectionTitle title={"Top Rated"} />
-						<RecipeCardRow queryType={"Top Rated"} />
-					</Grid>
-					<Grid container item xs={12} spacing={3}>
-						<SectionTitle title={"Latest"} />
-						<RecipeCardRow queryType={"Latest"} />
-					</Grid>
-				</Grid>
+				<div>
+					<SectionTitle title={"Top Rated"} />
+					<RecipeCardRow recipes={topRatedRecipes} />
+				</div>
+				<div>
+					<SectionTitle title={"Latest"} />
+					<RecipeCardRow recipes={latestRecipes} />
+				</div>
 			</Container>
 		</>
 	);

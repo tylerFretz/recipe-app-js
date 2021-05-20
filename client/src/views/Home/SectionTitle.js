@@ -16,8 +16,7 @@ const useStyles = makeStyles({
 		padding: "1% 0%",
 		borderTop: "1px dashed #999",
 		borderBottom: "1px dashed #999",
-		marginTop: "3%",
-		marginBottom: "1%"
+		margin: "3% 0%",
 	},
 	mobileContainer: {
 		display: "flex",
@@ -25,6 +24,7 @@ const useStyles = makeStyles({
 		borderTop: "1px dashed #999",
 		borderBottom: "1px dashed #999",
 		alignItems: "center",
+		margin: "5% 0%",
 	}
 });
 
@@ -37,10 +37,10 @@ const SectionTitle = ({ title }) => {
 	const handleClick = () => {
 		switch (title) {
 		case "Top Rated":
-			history.push("/recipes/?sortBy=upvoteCount&order=desc");
+			history.push("/recipes/search?sortBy=upvoteCount");
 			break;
 		case "Latest":
-			history.push("/recipes/?sortBy=dateAdded&order=desc");
+			history.push("/recipes/search?sortBy=dateAdded");
 			break;
 		default:
 			break;
