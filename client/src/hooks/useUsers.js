@@ -27,17 +27,22 @@ const deleteUser = async (id, config) => {
 };
 
 const update = async (updatedUser, config) => {
-	const { data } = await axios.put(`${BASE_URL}/${updatedUser.id}`, config);
+	const { data } = await axios.put(`${BASE_URL}/${updatedUser.id}`, updatedUser, config);
 	return data;
 };
 
+const addFavourite = async (id, recipeId, config) => {
+	const { data } = await axios.post(`${BASE_URL}/${id}/favourites`, recipeId, config);
+	return data;
+};
 
 const useUsers = () => {
 	const queryClient = useQueryClient();
 	const history = useHistory();
-	const { getAuthHeader, logout } = useAuthUser();
+	const { getAuthHeader, logout, getAuthUser } = useAuthUser();
 	const { addNotification } = useNotifications();
 	const authHeader = getAuthHeader();
+	const { id: loggedInUserId } = getAuthUser();
 
 	const getUserById = (id) => {
 		return useQuery(["users", id],
@@ -92,7 +97,20 @@ const useUsers = () => {
 		updateMutation.mutate({ updatedUser, config: authHeader });
 	};
 
-	return { getUserById, getAllUsers, addUser, removeUser, updateUser };
+	const addFavoutiteMutation = useMutation(addFavourite, {
+		onError: (error) => {
+			addNotification(error.response.data.error, "error");
+		},
+		onSuccess: (data) => {
+			queryClient.setQueryData(["users", data.id], data);
+		}
+	});
+
+	const saveRecipe = (recipeId) => {
+		addFavoutiteMutation.mutate({ id: loggedInUserId, recipeId, config: authHeader });
+	};
+
+	return { getUserById, getAllUsers, addUser, removeUser, updateUser, saveRecipe };
 };
 
 export default useUsers;
