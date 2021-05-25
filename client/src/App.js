@@ -1,48 +1,35 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 import { Switch, Route } from "react-router-dom";
 
-import { setUser } from "./store/actions/authActions";
-import Home from "./views/Home";
-import Register from "./views/Register";
-import Login from "./views/Login";
-import Profile from "./views/Profile";
-import SingleRecipe from "./views/SingleRecipe";
-import SubmitRecipe from "./views/SubmitRecipe";
-import Notifier from "./components/Notifier";
+import Home from "./pages/Home";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Profile from "./pages/Profile";
+import SingleRecipe from "./pages/SingleRecipe";
+import SubmitRecipe from "./pages/SubmitRecipe";
 import ScrollToTop from "./components/ScrollToTop";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import RecipeSearch from "./views/RecipeSearch";
+import RecipeSearch from "./pages/RecipeSearch";
 
 
-const App = () => {
-	const dispatch = useDispatch();
-
-	useEffect(() => {
-		dispatch(setUser());
-	}, []);
-
-
-	return (
-		<>
-			<div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-				<ScrollToTop />
-				<Notifier />
-				<Header />
-				<Switch>
-					<Route path="/recipes/search" component={RecipeSearch} />
-					<Route path="/recipes/:id" component={SingleRecipe} />
-					<Route path="/register" component={Register} />
-					<Route path="/login" component={Login} />
-					<Route path="/profile" component={Profile} />
-					<Route path="/submit" component={SubmitRecipe} />
-					<Route path="/" component={Home} />
-				</Switch>
-			</div>
-			<Footer />
-		</>
-	);
-};
+const App = () => (
+	<>
+		<div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+			<ScrollToTop />
+			<Header />
+			<Switch>
+				<Route path="/recipes/search" component={RecipeSearch} />
+				<Route path="/recipes/:id" component={SingleRecipe} />
+				<Route path="/register" component={Register} />
+				<Route path="/login" component={Login} />
+				<Route path="/profile" component={Profile} />
+				<Route path="/submit" component={SubmitRecipe} />
+				<Route path="/" component={Home} />
+			</Switch>
+		</div>
+		<Footer />
+	</>
+);
 
 export default App;
