@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { NavLink, useHistory } from "react-router-dom";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -21,7 +20,7 @@ import SideDrawer from "./SideDrawer";
 import HideOnScroll from "./HideOnScroll";
 import BackToTop from "./BackToTop";
 
-import { logout } from "../store/actions/authActions";
+import useAuthUser from "../hooks/useAuthUser";
 import chefHat from "../assets/chefHat.png";
 
 
@@ -113,14 +112,12 @@ const useStyles = makeStyles((theme) => ({
 const Header = () => {
 	const classes = useStyles();
 	const history = useHistory();
-	const dispatch = useDispatch();
-	const auth = useSelector(state => state.auth);
-	//const recipeNames = useSelector(state => state.recipes).map(recipe => recipe.name);
-	const { isLoggedIn } = auth;
+	const { logout, getAuthUser } = useAuthUser();
+	const loggedInUser = getAuthUser();
 
 	let navLinks = [];
 
-	if (!isLoggedIn) {
+	if (!loggedInUser) {
 		navLinks = [...navLinks,
 			{ title: "Login", path: "/login", icon: "exit_to_app" },
 			{ title: "Register", path: "/register", icon: "person" }
@@ -133,7 +130,7 @@ const Header = () => {
 	}
 
 	const handleLogout = () => {
-		dispatch(logout());
+		logout();
 		history.push("/");
 	};
 
@@ -159,7 +156,7 @@ const Header = () => {
 											</ListItem>
 										</NavLink>
 									))}
-									{isLoggedIn && (
+									{loggedInUser && (
 										<NavLink to="/" className={classes.linkText}>
 											<ListItem button onClick={handleLogout} className={classes.linkButton}>
 												<Icon fontSize="small" style={{ marginRight: "2px" }}>exit_to_app</Icon>
@@ -170,7 +167,7 @@ const Header = () => {
 								</List>
 							</Hidden>
 							<Hidden mdUp>
-								<SideDrawer navLinks={navLinks} isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+								<SideDrawer navLinks={navLinks} isLoggedIn={loggedInUser ? true : false} handleLogout={handleLogout} />
 							</Hidden>
 						</Container>
 					</Toolbar>

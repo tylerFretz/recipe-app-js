@@ -1,6 +1,4 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
@@ -10,8 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import RegisterForm from "./RegisterForm";
 
-import { createUser } from "../../store/actions/userActions";
-
+import useUsers from "../../hooks/useUsers";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -28,17 +25,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Register = () => {
 	const classes = useStyles();
-	const dispatch = useDispatch();
-	const history = useHistory();
+	const { addUser } = useUsers();
 
 	const onSubmit = (values) => {
-		dispatch(createUser(values.username, values.email, values.password))
-			.then(() => {
-				history.push("/login");
-			})
-			.catch(() => console.log("¯\\_(ツ)_/¯"));
+		console.log(values);
+		addUser(values.username, values.email, values.password);
 	};
-
 
 	return (
 		<Container component="main" maxWidth="xs">

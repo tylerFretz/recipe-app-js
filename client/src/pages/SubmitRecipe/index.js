@@ -1,10 +1,10 @@
 import React from "react";
 import * as yup from "yup";
-import { useSelector, useDispatch } from "react-redux";
-import { Redirect, useLocation, useHistory } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 
 import SubmitRecipeContainer from "./SubmitRecipeContainer";
-import { addRecipe } from "../../store/actions/recipeActions";
+import useAuthUser from "../../hooks/useAuthUser";
+import useRecipes from "../../hooks/useRecipes";
 
 const validationSchema = yup.object().shape({
 	name: yup.string().max(256, "Too long!").required("Recipe name is required."),
@@ -28,11 +28,10 @@ const validationSchema = yup.object().shape({
 
 
 const SubmitRecipe = () => {
-	const auth = useSelector(state => state.auth);
-	const { isLoggedIn } = auth;
-	const dispatch = useDispatch();
+	const { addRecipe } = useRecipes();
+	const { getAuthUser } = useAuthUser();
 	const { pathname } = useLocation();
-	const history = useHistory();
+	const isLoggedIn = getAuthUser();
 
 	if (!isLoggedIn) {
 		return (
@@ -61,14 +60,7 @@ const SubmitRecipe = () => {
 			cookTime: values.cookTime,
 			servings: values.servings
 		};
-
-		console.log(newRecipe);
-
-		dispatch(addRecipe(newRecipe))
-			.then(() => {
-				history.push("/");
-			})
-			.catch(() => console.error("¯\\_(ツ)_/¯"));
+		addRecipe(newRecipe);
 	};
 
 	return (

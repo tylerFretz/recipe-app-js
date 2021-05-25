@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Button from "@material-ui/core/Button";
 
 import RecipeMediaMobile from "./RecipeMediaMobile";
 import ContentInnerMobile from "./ContentInnerMobile";
@@ -27,7 +28,7 @@ const useStyles = makeStyles({
 	}
 });
 
-const MobileRecipe = ({ recipe }) => {
+const MobileRecipe = ({ recipe, handleVote }) => {
 	const classes = useStyles();
 
 	return (
@@ -50,6 +51,7 @@ const MobileRecipe = ({ recipe }) => {
 					dateAdded={recipe.dateAdded}
 				/>
 			</Container>
+			<Button onClick={handleVote}>Vote</Button>
 		</Container>
 	);
 };

@@ -1,6 +1,4 @@
-/* eslint-disable indent */
 import React from "react";
-import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Carousel from "react-material-ui-carousel";
@@ -8,7 +6,7 @@ import Paper from "@material-ui/core/Paper";
 import Hidden from "@material-ui/core/Hidden";
 
 import RecipeStats from "./RecipeStats";
-
+import useRecipes from "../hooks/useRecipes";
 
 const useStyles = makeStyles((theme) => ({
 	imageContainer: {
@@ -80,9 +78,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const JumboTronCarousel = () => {
-	const randomRecipes = useSelector(state => state.recipes.sort(() => Math.random() - Math.random()).slice(0, 3));
+	const { queryRecipes } = useRecipes();
+	const { data: randomRecipes, isLoading } = queryRecipes({ "random": "true" });
 
-	return (
+	return isLoading ? (
+		null
+	) : (
 		<Carousel
 			animation="slide"
 			indicators={false}
@@ -100,30 +101,30 @@ const CarouselItem = ({ recipe }) => {
 
 	return (
 		<>
-		<Paper className={classes.imageContainer}>
-			<img src={recipe.thumbImageUrl} className={classes.image} />
-			<div className={classes.imageOverlay}>
-				<div className={classes.captionContent}>
-					<NavLink to={`/recipes/${recipe.id}`} className={classes.linkText}>
-						<h1>{recipe.name}</h1>
-					</NavLink>
-					<Hidden smDown>
-						<div className={classes.recipeStatsContainer}>
-							<h3 style={{ fontSize: "1.3em" }}>By {recipe.user.username}</h3>
-							<RecipeStats upvoteCount={recipe.upvoteCount} prepTime={recipe.prepTime} cookTime={recipe.cookTime} servings={recipe.servings} />
-						</div>
-					</Hidden>
+			<Paper className={classes.imageContainer}>
+				<img src={recipe.thumbImageUrl} className={classes.image} />
+				<div className={classes.imageOverlay}>
+					<div className={classes.captionContent}>
+						<NavLink to={`/recipes/${recipe.id}`} className={classes.linkText}>
+							<h1>{recipe.name}</h1>
+						</NavLink>
+						<Hidden smDown>
+							<div className={classes.recipeStatsContainer}>
+								<h3 style={{ fontSize: "1.3em" }}>By {recipe.user.username}</h3>
+								<RecipeStats upvoteCount={recipe.upvoteCount} prepTime={recipe.prepTime} cookTime={recipe.cookTime} servings={recipe.servings} />
+							</div>
+						</Hidden>
+					</div>
 				</div>
-			</div>
-		</Paper>
-		<svg className={classes.svgOverlay}>
-			<defs>
-				<filter id="blur">
-					<feGaussianBlur in="SourceGraphic" stdDeviation="20" />
-				</filter>
-			</defs>
-			<image filter="url(#blur)" xlinkHref={recipe.thumbImageUrl} x="0" y="0" width="100%" />
-		</svg>
+			</Paper>
+			<svg className={classes.svgOverlay}>
+				<defs>
+					<filter id="blur">
+						<feGaussianBlur in="SourceGraphic" stdDeviation="20" />
+					</filter>
+				</defs>
+				<image filter="url(#blur)" xlinkHref={recipe.thumbImageUrl} x="0" y="0" width="100%" />
+			</svg>
 		</>
 	);
 };

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Link from "@material-ui/core/Link";
@@ -10,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import LoginForm from "./LoginForm";
 
-import { login } from "../../store/actions/authActions";
+import useAuthUser from "../../hooks/useAuthUser";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -29,8 +28,8 @@ const Login = () => {
 	const classes = useStyles();
 	const [redirectPath, setRedirectPath] = useState("/");
 	const { state } = useLocation();
-	const dispatch = useDispatch();
 	const history = useHistory();
+	const { login } = useAuthUser();
 
 	useEffect(() => {
 		if (state && state.from && state.from === "/login") {
@@ -43,12 +42,8 @@ const Login = () => {
 
 
 	const onSubmit = (values) => {
-		console.log(values);
-		dispatch(login(values.email, values.password))
-			.then(() => {
-				history.push(redirectPath);
-			})
-			.catch(() => console.error("¯\\_(ツ)_/¯"));
+		login(values.email, values.password);
+		history.push(redirectPath);
 	};
 
 	return (
@@ -70,7 +65,7 @@ const Login = () => {
 						</Link>
 					</Grid>
 					<Grid item>
-						<Link href="#" variant="body2">
+						<Link href="/register" variant="body2">
 							{"Don't have an account? Sign Up"}
 						</Link>
 					</Grid>

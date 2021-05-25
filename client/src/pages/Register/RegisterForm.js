@@ -37,7 +37,7 @@ const RegisterForm = ({ onSubmit }) => {
 				if (!values.username) {
 					errors.username = "Username is required.";
 				}
-				else if (values.username.length < 5) {
+				else if (values.username.length < 3) {
 					errors.username = "Username must be at least 5 characters.";
 				}
 				if (!values.email) {

@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-import { compareAsc } from "date-fns";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -10,7 +8,7 @@ import JumboTronCarousel from "../../components/JumbotronCarousel";
 import RecipeCardRow from "../../components/RecipeCardRow";
 import SectionTitle from "./SectionTitle";
 
-import { getDefaultInitialRecipes } from "../../store/actions/recipeActions";
+import useRecipes from "../../hooks/useRecipes";
 
 const useStyles = makeStyles({
 	root: {
@@ -23,17 +21,14 @@ const useStyles = makeStyles({
 });
 
 const Home = () => {
-	const dispatch = useDispatch();
 	const classes = useStyles();
 	const theme = useTheme();
 	const isMobile= useMediaQuery(theme.breakpoints.down("sm"));
+	const { queryRecipes } = useRecipes();
 
-	useEffect(() => {
-		dispatch(getDefaultInitialRecipes());
-	}, []);
+	const topRatedRecipes = queryRecipes({ "sortBy": "upvoteCount", "order": "desc", "limit": "3" });
+	const latestRecipes = queryRecipes({ "sortBy": "dateAdded", "order": "desc", "limit": "3" });
 
-	const topRatedRecipes = useSelector(state => state.recipes).sort((a, b) => a.upvoteCount - b.upvoteCount).slice(0, 3);
-	const latestRecipes = useSelector(state => state.recipes).sort((a, b) => compareAsc(new Date(b.dateAdded), new Date(a.dateAdded))).slice(0, 3);
 
 	const renderMobile = () => (
 		<>
@@ -41,31 +36,34 @@ const Home = () => {
 			<Container className={classes.root}>
 				<div>
 					<SectionTitle title={"Top Rated"} />
-					<RecipeCardRow recipes={topRatedRecipes} />
+					<RecipeCardRow recipes={topRatedRecipes.data} />
 				</div>
 				<div>
 					<SectionTitle title={"Latest"} />
-					<RecipeCardRow recipes={latestRecipes} />
+					<RecipeCardRow recipes={latestRecipes.data} />
 				</div>
 			</Container>
 		</>
 	);
 
-	if (isMobile) {
-		return renderMobile();
+
+	if (topRatedRecipes.isLoading || latestRecipes.isLoading) {
+		return <div>Loading...</div>;
 	}
 
-	return (
+	return isMobile ? (
+		renderMobile()
+	) : (
 		<>
 			<JumboTronCarousel />
 			<Container className={classes.root}>
 				<div>
 					<SectionTitle title={"Top Rated"} />
-					<RecipeCardRow recipes={topRatedRecipes} />
+					<RecipeCardRow recipes={topRatedRecipes.data} />
 				</div>
 				<div>
 					<SectionTitle title={"Latest"} />
-					<RecipeCardRow recipes={latestRecipes} />
+					<RecipeCardRow recipes={latestRecipes.data} />
 				</div>
 			</Container>
 		</>
@@ -73,4 +71,3 @@ const Home = () => {
 };
 
 export default Home;
-
