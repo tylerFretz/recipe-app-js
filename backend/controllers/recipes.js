@@ -17,6 +17,7 @@ const User = require("../models/user");
 *	- user [userId]
 *   - tag [any string]
 *   - name [any string]
+*   - random ["true"]
 *	@Returns - list of recipes in JSON that match query params.
 */
 recipesRouter.get("/",
@@ -28,6 +29,7 @@ recipesRouter.get("/",
 	param("user").trim().escape().isString().optional(),
 	param("tag").trim().escape().isString().optional(),
 	param("name").trim().escape().isString().optional(),
+	param("random").trim().escape().equals("true").optional(),
 	async (req, res) => {
 		const errors = validationResult(req);
 
@@ -36,6 +38,16 @@ recipesRouter.get("/",
 		}
 
 		const { query } = req;
+
+		if (query.random) {
+			const recipes = await Recipe.aggregate([{ $sample: { size: 5 } },
+				{ $lookup: { from: "users", localField: "user", foreignField: "_id", as: "user" } },
+				{ $unwind: { path: "$user" } },
+				{ $addFields: { id: "$_id" } },
+				{ $unset: [ "_id", "user.submittedRecipes", "user._id", "user.savedRecipes", "user.passwordHash", "user.email", "user.__v" ] }
+			]);
+			return res.json(recipes);
+		}
 
 		let conditions = {};
 
@@ -48,16 +60,16 @@ recipesRouter.get("/",
 		let dbQuery = Recipe.find(conditions);
 
 		if (query.sortBy && query.sortBy === "upvoteCount") {
-			if (query.order && query.order === "desc") {
-				dbQuery.sort("-upvoteCount");
-			} else {
+			if (query.order && query.order === "asc") {
 				dbQuery.sort("upvoteCount");
+			} else {
+				dbQuery.sort("-upvoteCount");
 			}
 		} else if (query.sortBy && query.sortBy === "dateAdded") {
-			if (query.order && query.order === "desc") {
-				dbQuery.sort("-dateAdded");
-			} else {
+			if (query.order && query.order === "asc") {
 				dbQuery.sort("dateAdded");
+			} else {
+				dbQuery.sort("-dateAdded");
 			}
 		}
 
@@ -168,7 +180,7 @@ recipesRouter.put("/:id", async (req, res) => {
 	// a user must be logged in to vote
 	const decodedToken = jwt.verify(token, process.env.SECRET);
 	if (!token || !decodedToken.id) {
-		return res.status(401).json({ error: "Token missing or invalid" });
+		return res.status(401).json({ error: "Log in to vote" });
 	}
 
 	const recipe = await Recipe.findById(req.params.id);
