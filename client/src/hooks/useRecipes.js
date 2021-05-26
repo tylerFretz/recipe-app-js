@@ -71,8 +71,8 @@ const useRecipes = () => {
 	};
 
 	const upvoteMutation = useMutation(updateRecipe, {
-		onError: (error) => {
-			addNotification(error.response.data.error, "error");
+		onError: () => {
+			addNotification("Must be logged in.", "error");
 		},
 		onSuccess: (data) => {
 			queryClient.setQueryData(["recipes", data.id], data);
@@ -84,8 +84,8 @@ const useRecipes = () => {
 	};
 
 	const deleteMutation = useMutation(deleteRecipe, {
-		onError: (error) => {
-			addNotification(error.response.data.error, "error");
+		onError: () => {
+			addNotification("Must be logged in.", "error");
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries("recipes");
@@ -99,11 +99,12 @@ const useRecipes = () => {
 	};
 
 	const commentMutation = useMutation(createComment, {
-		onError: (error) => {
-			addNotification(error.response.data.error, "error");
+		onError: () => {
+			addNotification("Must be logged in.", "error");
 		},
 		onSuccess: (data) => {
 			queryClient.setQueryData(["recipes", data.id], data);
+			addNotification("Voted!", "success");
 		}
 	});
 

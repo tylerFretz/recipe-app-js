@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
@@ -9,6 +10,7 @@ import Container from "@material-ui/core/Container";
 import RegisterForm from "./RegisterForm";
 
 import useUsers from "../../hooks/useUsers";
+import useAuthUser from "../../hooks/useAuthUser";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -25,14 +27,18 @@ const useStyles = makeStyles((theme) => ({
 
 const Register = () => {
 	const classes = useStyles();
+	const { getAuthUser } = useAuthUser();
 	const { addUser } = useUsers();
+	const isLoggedIn = getAuthUser();
 
 	const onSubmit = (values) => {
 		console.log(values);
 		addUser(values.username, values.email, values.password);
 	};
 
-	return (
+	return isLoggedIn ? (
+		<Redirect to="/" />
+	) : (
 		<Container component="main" maxWidth="xs">
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}>

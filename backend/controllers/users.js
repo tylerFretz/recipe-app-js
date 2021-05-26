@@ -12,7 +12,10 @@ usersRouter.get("/", async (req, res) => {
 });
 
 usersRouter.get("/:id", async (req, res) => {
-	const user = await User.findById(req.params.id);
+	const user = await User.findById(req.params.id)
+		.populate("savedRecipes", { name: 1, id: 1, dateAdded: 1, upvoteCount: 1, thumbImageUrl: 1 })
+		.populate("submittedRecipes", { name: 1, id: 1, dateAdded: 1, upvoteCount: 1, thumbImageUrl: 1 })
+		.exec();
 	if (user) {
 		res.json(user);
 	}

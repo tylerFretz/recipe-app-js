@@ -21,11 +21,6 @@ const createUser = async (newUser) => {
 	return data;
 };
 
-const deleteUser = async (id, config) => {
-	const { data } = await axios.delete(`${BASE_URL}/${id}`, config);
-	return data;
-};
-
 const update = async (updatedUser, config) => {
 	const { data } = await axios.put(`${BASE_URL}/${updatedUser.id}`, updatedUser, config);
 	return data;
@@ -39,10 +34,10 @@ const addFavourite = async (id, recipeId, config) => {
 const useUsers = () => {
 	const queryClient = useQueryClient();
 	const history = useHistory();
-	const { getAuthHeader, logout, getAuthUser } = useAuthUser();
+	const { getAuthHeader, getAuthUser } = useAuthUser();
 	const { addNotification } = useNotifications();
 	const authHeader = getAuthHeader();
-	const { id: loggedInUserId } = getAuthUser();
+	const authUser = getAuthUser();
 
 	const getUserById = (id) => {
 		return useQuery(["users", id],
@@ -69,21 +64,6 @@ const useUsers = () => {
 		createMutation.mutate({ username: username, email: email, password: password });
 	};
 
-	const deleteMutation = useMutation(deleteUser, {
-		onError: (error) => {
-			addNotification(error.response.data.error, "error");
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries("users");
-			logout();
-			history.push("/");
-		}
-	});
-
-	const removeUser = (id) => {
-		deleteMutation.mutate({ id, config: authHeader });
-	};
-
 	const updateMutation = useMutation(update, {
 		onError: (error) => {
 			addNotification(error.response.data.error, "error");
@@ -107,10 +87,11 @@ const useUsers = () => {
 	});
 
 	const saveRecipe = (recipeId) => {
-		addFavoutiteMutation.mutate({ id: loggedInUserId, recipeId, config: authHeader });
+		const userId = (authUser) ? authUser.id : "";
+		addFavoutiteMutation.mutate({ id: userId, recipeId, config: authHeader });
 	};
 
-	return { getUserById, getAllUsers, addUser, removeUser, updateUser, saveRecipe };
+	return { getUserById, getAllUsers, addUser, updateUser, saveRecipe };
 };
 
 export default useUsers;

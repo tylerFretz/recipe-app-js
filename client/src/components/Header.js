@@ -124,7 +124,7 @@ const Header = () => {
 		];
 	} else {
 		navLinks = [...navLinks,
-			{ title: "My Profile", path: "/profile", icon: "person" },
+			{ title: "My Profile", path: `/users/${loggedInUser.id}`, icon: "person" },
 			{ title: "Submit Recipe", path: "/submit", icon: "add_circle" },
 		];
 	}
@@ -144,7 +144,7 @@ const Header = () => {
 								<Hidden smDown>
 									<img className={classes.logo} src={chefHat} alt="logo"  />
 								</Hidden>
-								<Typography variant="h3" className={classes.brandTitle}>RECIPE APP</Typography>
+								<Typography variant="h1" className={classes.brandTitle}>RECIPE APP</Typography>
 							</NavLink>
 							<Hidden smDown>
 								<List component="nav" aria-labelledby="main navigation" className={classes.navDisplayFlex}>

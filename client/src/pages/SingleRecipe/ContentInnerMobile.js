@@ -29,7 +29,7 @@ const ContentInnerMobile = ({ name, summary, ingredients, instructions }) => {
 
 	return (
 		<Container className={classes.contentContainer}>
-			<Typography variant="h1" gutterBottom={true} style={{ fontFamily: "Londrina" }}>{name}</Typography>
+			<Typography variant="h2" gutterBottom={true} style={{ fontFamily: "Londrina" }}>{name}</Typography>
 			<Typography variant="body1">{summary}</Typography>
 			<hr/>
 			<Container className={classes.listContainer}>

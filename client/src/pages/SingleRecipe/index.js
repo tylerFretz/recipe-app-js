@@ -2,9 +2,10 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+
+import LoadingIndicator from "../../components/LoadingIndicator";
 import FullScreenRecipe from "./FullScreenRecipe";
 import MobileRecipe from "./MobileRecipe";
-
 import useRecipes from "../../hooks/useRecipes";
 
 const SingleRecipe = () => {
@@ -15,7 +16,7 @@ const SingleRecipe = () => {
 	const { data: recipe, isLoading, error } = getRecipeById(id);
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <LoadingIndicator />;
 	}
 
 	if (error) {

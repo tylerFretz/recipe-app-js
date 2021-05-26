@@ -1,9 +1,5 @@
 import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
 
-const pxToRem = (value) => {
-	return `${value / 16}rem`;
-};
-
 let theme = createMuiTheme({
 	palette: {
 		primary: {
@@ -70,23 +66,15 @@ theme.overrides = {
 		}
 	},
 	MuiTypography: {
-		h1: {
-			[theme.breakpoints.down("sm")]: {
-				fontSize: pxToRem(46)
-			}
-		},
-		h5: {
-			color: "#676767",
-		},
-		h6: {
-			[theme.breakpoints.down("sm")]: {
-				fontSize: pxToRem(14)
-			},
+		root: {
 			color: "#676767"
+		},
+		h1: {
+			color: "#FFF"
 		},
 		body2: {
-			color: "#676767"
-		},
+			color: "#FFF"
+		}
 	}
 };
 

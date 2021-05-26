@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import React from "react";
+import { Redirect, useHistory } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
@@ -26,27 +26,20 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
 	const classes = useStyles();
-	const [redirectPath, setRedirectPath] = useState("/");
-	const { state } = useLocation();
 	const history = useHistory();
-	const { login } = useAuthUser();
+	const { login, getAuthUser } = useAuthUser();
+	const isLoggedIn = getAuthUser();
 
-	useEffect(() => {
-		if (state && state.from && state.from === "/login") {
-			setRedirectPath("/");
-		}
-		else if (state && state.from) {
-			setRedirectPath(state.from);
-		}
-	}, [state]);
 
 
 	const onSubmit = (values) => {
 		login(values.email, values.password);
-		history.push(redirectPath);
+		history.push("/");
 	};
 
-	return (
+	return isLoggedIn ? (
+		<Redirect to="/" />
+	) : (
 		<Container component="main" maxWidth="xs">
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}>

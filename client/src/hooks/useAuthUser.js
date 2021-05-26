@@ -25,6 +25,7 @@ const useAuthUser = () => {
 		onSuccess: (data) => {
 			const { token, user } = data;
 			setAuthData(JSON.stringify({ ...user, token: token }));
+			window.localStorage.setItem("recipe-app-user", JSON.stringify({ ...user, token: token }));
 		}
 	});
 
@@ -34,6 +35,7 @@ const useAuthUser = () => {
 
 	const logout = () => {
 		setAuthData(null);
+		window.localStorage.removeItem("recipe-app-user");
 	};
 
 	const getAuthHeader = () => {

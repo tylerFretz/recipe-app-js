@@ -3,10 +3,9 @@ import { format } from "date-fns";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
 	statsContainer: {
 		backgroundColor: "#FFF",
-		marginTop: "10%",
 		padding: "5%",
 		borderRadius: "3px",
 		position: "relative",
@@ -16,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 		padding: 0,
 		margin: 0,
 		listStyle: "none",
-		color: theme.palette.darkGrey.main,
+		color: "#676767",
 	},
 	listItem: {
 		padding: "3% 0%",
@@ -26,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 	recipeOwner: {
 		listStyle: "none"
 	}
-}));
+});
 
 const RecipeFullStats = ({ username, prepTime, cookTime, servings, area, category, upvoteCount, dateAdded }) => {
 	const classes = useStyles();

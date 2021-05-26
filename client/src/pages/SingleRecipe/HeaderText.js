@@ -11,7 +11,7 @@ import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ModeCommentIcon from "@material-ui/icons/ModeComment";
 import Chip from "@material-ui/core/Chip";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
 	root: {
 		width: "47%",
 	},
@@ -28,17 +28,15 @@ const useStyles = makeStyles(theme => ({
 		justifyContent: "flex-start",
 	},
 	postDate: {
-		color: theme.palette.grey,
 		marginRight: "2%",
 	},
 	breadCrumb: {
-		color: theme.palette.info,
 		marginRight: "5%",
 		fontWeight: 500,
 		textDecoration: "none",
 	},
 	title: {
-		variant: "h1",
+		variant: "h2",
 		marginTop: "2%",
 		marginBottom: "3%",
 		fontWeight: 500,
@@ -86,7 +84,7 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: "red",
 		marginLeft: "10%"
 	}
-}));
+});
 
 const HeaderText = ({ category, name, upvoteCount, comments, summary, dateAdded, user, tags }) => {
 	const classes = useStyles();

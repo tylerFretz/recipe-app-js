@@ -16,15 +16,15 @@ const useStyles = makeStyles({
 	sectionContainer: {
 		position: "relative",
 		minHeight: "1px",
-		background: "F5F5F5"
+		margin: "10% 0%",
 	},
 	mainContentContainer: {
 		position: "relative",
 		background: "#FFF",
-		marginTop: "7%",
 		overflow: "hidden",
 		borderRadius: "3px",
-		padding: 0
+		padding: 0,
+		boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.1)"
 	}
 });
 

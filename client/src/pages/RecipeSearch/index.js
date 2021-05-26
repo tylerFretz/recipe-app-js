@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Pagination from "@material-ui/lab/Pagination";
 
+import LoadingIndicator from "../../components/LoadingIndicator";
 import RecipeCardGrid from "../../components/RecipeCardGrid";
 import useRecipes from "../../hooks/useRecipes";
 
@@ -29,7 +30,7 @@ const RecipeSearch = () => {
 	}
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <LoadingIndicator />;
 	}
 
 	const totalPages = Math.ceil(data.length / 12);

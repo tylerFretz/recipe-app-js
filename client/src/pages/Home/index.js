@@ -4,6 +4,7 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Container from "@material-ui/core/Container";
 
+import LoadingIndicator from "../../components/LoadingIndicator";
 import JumboTronCarousel from "../../components/JumbotronCarousel";
 import RecipeCardRow from "../../components/RecipeCardRow";
 import SectionTitle from "./SectionTitle";
@@ -48,7 +49,7 @@ const Home = () => {
 
 
 	if (topRatedRecipes.isLoading || latestRecipes.isLoading) {
-		return <div>Loading...</div>;
+		return <LoadingIndicator />;
 	}
 
 	return isMobile ? (
