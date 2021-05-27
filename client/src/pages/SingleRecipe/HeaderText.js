@@ -132,7 +132,7 @@ const HeaderText = ({ category, name, upvoteCount, comments, summary, dateAdded,
 				<Container className={classes.tagContainer}>
 					<Typography>Tags:</Typography>
 					{tags.map(tag => (
-						<NavLink key={tag} to={`/tags/${tag}`}>
+						<NavLink key={tag} to={`/recipes/search?tag=${tag}`}>
 							<Chip label={tag} className={classes.tag} clickable={true} size="small" />
 						</NavLink>
 					))}

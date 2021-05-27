@@ -17,7 +17,6 @@ import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp";
 // import SearchIcon from "@material-ui/icons/Search";
 
 import SideDrawer from "./SideDrawer";
-import HideOnScroll from "./HideOnScroll";
 import BackToTop from "./BackToTop";
 
 import useAuthUser from "../hooks/useAuthUser";
@@ -136,44 +135,42 @@ const Header = () => {
 
 	return (
 		<>
-			<HideOnScroll>
-				<AppBar position="fixed" style={{ minHeight: "5vh" }}>
-					<Toolbar>
-						<Container className={classes.navBarDisplayFlex}>
-							<NavLink to="/" className={classes.logoContainer}>
-								<Hidden smDown>
-									<img className={classes.logo} src={chefHat} alt="logo"  />
-								</Hidden>
-								<Typography variant="h1" className={classes.brandTitle}>RECIPE APP</Typography>
-							</NavLink>
+			<AppBar position="relative" style={{ height: "8vh" }}>
+				<Toolbar>
+					<Container className={classes.navBarDisplayFlex}>
+						<NavLink to="/" className={classes.logoContainer}>
 							<Hidden smDown>
-								<List component="nav" aria-labelledby="top navigation" className={classes.navDisplayFlex}>
-									{navLinks.map(({ title, path, icon }) => (
-										<NavLink to={path} key={title} className={classes.linkText}>
-											<ListItem button className={classes.linkButton}>
-												<Icon fontSize="small" style={{ marginRight: "2px" }}>{icon}</Icon>
-												<ListItemText primary={title} primaryTypographyProps={{ variant: "body2" }}/>
-											</ListItem>
-										</NavLink>
-									))}
-									{loggedInUser && (
-										<NavLink to="/" className={classes.linkText}>
-											<ListItem button onClick={handleLogout} className={classes.linkButton}>
-												<Icon fontSize="small" style={{ marginRight: "2px" }}>exit_to_app</Icon>
-												<ListItemText primary="Logout" primaryTypographyProps={{ variant: "body2" }}/>
-											</ListItem>
-										</NavLink>
-									)}
-								</List>
+								<img className={classes.logo} src={chefHat} alt="logo"  />
 							</Hidden>
-							<Hidden mdUp>
-								<SideDrawer navLinks={navLinks} isLoggedIn={loggedInUser ? true : false} handleLogout={handleLogout} />
-							</Hidden>
-						</Container>
-					</Toolbar>
-				</AppBar>
-			</HideOnScroll>
-			<Toolbar id="back-to-top-anchor" />
+							<Typography variant="h1" className={classes.brandTitle}>RECIPE APP</Typography>
+						</NavLink>
+						<Hidden smDown>
+							<List component="nav" aria-labelledby="top navigation" className={classes.navDisplayFlex}>
+								{navLinks.map(({ title, path, icon }) => (
+									<NavLink to={path} key={title} className={classes.linkText}>
+										<ListItem button className={classes.linkButton}>
+											<Icon fontSize="small" style={{ marginRight: "2px" }}>{icon}</Icon>
+											<ListItemText primary={title} primaryTypographyProps={{ variant: "body2" }}/>
+										</ListItem>
+									</NavLink>
+								))}
+								{loggedInUser && (
+									<NavLink to="/" className={classes.linkText}>
+										<ListItem button onClick={handleLogout} className={classes.linkButton}>
+											<Icon fontSize="small" style={{ marginRight: "2px" }}>exit_to_app</Icon>
+											<ListItemText primary="Logout" primaryTypographyProps={{ variant: "body2" }}/>
+										</ListItem>
+									</NavLink>
+								)}
+							</List>
+						</Hidden>
+						<Hidden mdUp>
+							<SideDrawer navLinks={navLinks} isLoggedIn={loggedInUser ? true : false} handleLogout={handleLogout} />
+						</Hidden>
+					</Container>
+				</Toolbar>
+			</AppBar>
+			<Toolbar id="back-to-top-anchor" style={{ minHeight: 0 }} />
 			<BackToTop>
 				<Fab color="secondary" size="small" aria-label="scroll back to top">
 					<KeyboardArrowUp />

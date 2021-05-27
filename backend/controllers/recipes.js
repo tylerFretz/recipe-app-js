@@ -51,7 +51,7 @@ recipesRouter.get("/",
 
 		let conditions = {};
 
-		if (query.name) conditions.name = query.name;
+		if (query.name) conditions.name = { $regex: ".*" + query.name + ".*", $options: "i" };
 		if (query.tag) conditions.tags = query.tag;
 		if (query.user) conditions.user = new ObjectId(query.user);
 		if (query.area) conditions.area = query.area;

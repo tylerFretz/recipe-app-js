@@ -33,18 +33,21 @@ const useStyles = makeStyles((theme) => ({
 	},
 	imageOverlay: {
 		position: "absolute",
-		bottom: 0,
-		left: 0,
-		height: "33%",
+		[theme.breakpoints.down("sm")]: {
+			top: "55%"
+		},
+		[theme.breakpoints.up("md")]: {
+			top: "66%"
+		},
 		width: "100%",
-		minHeight: "100px",
+		minHeight: "66%",
 		zIndex: 1,
 	},
 	captionContent: {
-		position: "absolute",
-		padding: "2% 5%",
-		bottom: 0,
-		left: 0,
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "flex-start",
+		padding: "0% 5%",
 		width: "100%",
 		zIndex: 2,
 		color: "#ffff",
@@ -73,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
 		},
 		width: "100%",
 		minHeight: "66%",
-		rotate: "180deg"
+		rotate: "180deg",
 	}
 }));
 
@@ -87,7 +90,7 @@ const JumboTronCarousel = () => {
 		<Carousel
 			animation="slide"
 			indicators={false}
-			interval={10000}
+			interval={1000000}
 		>
 			{
 				randomRecipes.map((recipe, i) => <CarouselItem key={i} recipe={recipe} />)
@@ -106,11 +109,12 @@ const CarouselItem = ({ recipe }) => {
 				<div className={classes.imageOverlay}>
 					<div className={classes.captionContent}>
 						<NavLink to={`/recipes/${recipe.id}`} className={classes.linkText}>
-							<h1>{recipe.name}</h1>
+							<h1 style={{ marginBottom: 0 }}>{recipe.name}</h1>
 						</NavLink>
 						<Hidden smDown>
+							<h4>{recipe.summary}</h4>
 							<div className={classes.recipeStatsContainer}>
-								<h3 style={{ fontSize: "1.3em" }}>By {recipe.user.username}</h3>
+								<h3 style={{ fontSize: "1.3em", margin: 0 }}>By {recipe.user.username}</h3>
 								<RecipeStats stats={{ upvoteCount: recipe.upvoteCount, prepTime: recipe.prepTime, cookTime: recipe.cookTime, servings: recipe.servings }} variant="body2" />
 							</div>
 						</Hidden>
