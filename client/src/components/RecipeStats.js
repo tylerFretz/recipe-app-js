@@ -5,24 +5,20 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import Icon from "@material-ui/core/Icon";
 
-const RecipeStats = ({ upvoteCount, prepTime, cookTime, servings }) => {
+const RecipeStats = ({ stats, variant }) => {
 	let totalTime = "";
-	(prepTime && cookTime)
-		? totalTime = Number(prepTime) + Number(cookTime)
+	(stats.prepTime && stats.cookTime)
+		? totalTime = Number(stats.prepTime) + Number(stats.cookTime)
 		: totalTime = "?";
 
-	if (!servings) {
-		servings = "?";
+	if (!stats.servings) {
+		stats.servings = "?";
 	}
 
-	if (!upvoteCount) {
-		upvoteCount = 0;
-	}
-
-	const stats = [
-		{ value: upvoteCount, tooltipText: "Upvotes", icon: "thumb_up" },
+	const recipeStats = [
+		{ value: stats.upvoteCount, tooltipText: "Upvotes", icon: "thumb_up" },
 		{ value: totalTime, tooltipText: "Prep time + cook time", icon: "schedule" },
-		{ value: servings, tooltipText: "Servings", icon: "people" }
+		{ value: stats.servings, tooltipText: "Servings", icon: "people" }
 	];
 
 	return (
@@ -33,11 +29,11 @@ const RecipeStats = ({ upvoteCount, prepTime, cookTime, servings }) => {
 				padding: "1% 5%",
 			}}
 		>
-			{stats.map((item) => (
+			{recipeStats.map((item) => (
 				<Tooltip key={uuid()} title={item.tooltipText}>
 					<Container style={{ display: "flex", justifyContent: "space-around" }}>
 						<Icon>{item.icon}</Icon>
-						<Typography>{item.value}</Typography>
+						<Typography variant={variant}>{item.value}</Typography>
 					</Container>
 				</Tooltip>
 			))}

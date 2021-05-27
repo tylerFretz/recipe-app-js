@@ -15,12 +15,7 @@ const RecipeCardRow = ({ recipes }) => {
 				<Grid container item xs={isMobile ? 12 : 4} key={recipe.id} style={{ justifyContent: "center" }}>
 					<RecipeCard
 						key={recipe.id}
-						username={recipe.user.username}
-						summary={recipe.summary}
-						upvoteCount={recipe.upvoteCount}
-						thumbImageUrl={recipe.thumbImageUrl}
-						id={recipe.id}
-						name={recipe.name}
+						recipe={recipe}
 					/>
 				</Grid>
 			))}

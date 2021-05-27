@@ -15,9 +15,9 @@ import RecipeSearch from "./pages/RecipeSearch";
 
 const App = () => (
 	<>
-		<div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-			<ScrollToTop />
-			<Header />
+		<ScrollToTop />
+		<Header />
+		<div style={{ display: "flex", flexDirection: "column", background: "#F5F5F5", minHeight: "90vh" }}>
 			<Switch>
 				<Route path="/recipes/search" component={RecipeSearch} />
 				<Route path="/recipes/:id" component={SingleRecipe} />
@@ -27,8 +27,8 @@ const App = () => (
 				<Route path="/submit" component={SubmitRecipe} />
 				<Route path="/" component={Home} />
 			</Switch>
+			<Footer />
 		</div>
-		<Footer />
 	</>
 );
 

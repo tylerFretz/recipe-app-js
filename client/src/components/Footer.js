@@ -11,7 +11,8 @@ const useStyles = makeStyles({
 		width: "100%",
 		backgroundColor: "#333333",
 		color: "#FFF",
-		marginTop: "50px"
+		marginTop: "50px",
+		minHeight: "5vh"
 	},
 	section: {
 		display: "flex",

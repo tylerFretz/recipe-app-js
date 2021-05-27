@@ -40,7 +40,7 @@ const Login = () => {
 	return isLoggedIn ? (
 		<Redirect to="/" />
 	) : (
-		<Container component="main" maxWidth="xs">
+		<Container maxWidth="xs" style={{ minHeight: "80vh" }}>
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}>
 					<LockOutlinedIcon />

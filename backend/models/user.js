@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
 			ref: "Recipe"
 		}
 	],
+	joinDate: { type: Date, default: Date.now },
 });
 
 // Apply the uniqueValidator plugin to userSchema.

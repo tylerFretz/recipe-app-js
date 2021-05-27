@@ -4,6 +4,7 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Container from "@material-ui/core/Container";
 
+//import NavigationBar from "../../components/NavigationBar";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import JumboTronCarousel from "../../components/JumbotronCarousel";
 import RecipeCardRow from "../../components/RecipeCardRow";

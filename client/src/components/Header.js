@@ -137,7 +137,7 @@ const Header = () => {
 	return (
 		<>
 			<HideOnScroll>
-				<AppBar position="fixed">
+				<AppBar position="fixed" style={{ minHeight: "5vh" }}>
 					<Toolbar>
 						<Container className={classes.navBarDisplayFlex}>
 							<NavLink to="/" className={classes.logoContainer}>
@@ -147,12 +147,12 @@ const Header = () => {
 								<Typography variant="h1" className={classes.brandTitle}>RECIPE APP</Typography>
 							</NavLink>
 							<Hidden smDown>
-								<List component="nav" aria-labelledby="main navigation" className={classes.navDisplayFlex}>
+								<List component="nav" aria-labelledby="top navigation" className={classes.navDisplayFlex}>
 									{navLinks.map(({ title, path, icon }) => (
 										<NavLink to={path} key={title} className={classes.linkText}>
 											<ListItem button className={classes.linkButton}>
 												<Icon fontSize="small" style={{ marginRight: "2px" }}>{icon}</Icon>
-												<ListItemText primary={title} />
+												<ListItemText primary={title} primaryTypographyProps={{ variant: "body2" }}/>
 											</ListItem>
 										</NavLink>
 									))}
@@ -160,7 +160,7 @@ const Header = () => {
 										<NavLink to="/" className={classes.linkText}>
 											<ListItem button onClick={handleLogout} className={classes.linkButton}>
 												<Icon fontSize="small" style={{ marginRight: "2px" }}>exit_to_app</Icon>
-												<ListItemText primary="Logout" />
+												<ListItemText primary="Logout" primaryTypographyProps={{ variant: "body2" }}/>
 											</ListItem>
 										</NavLink>
 									)}

@@ -111,7 +111,7 @@ const CarouselItem = ({ recipe }) => {
 						<Hidden smDown>
 							<div className={classes.recipeStatsContainer}>
 								<h3 style={{ fontSize: "1.3em" }}>By {recipe.user.username}</h3>
-								<RecipeStats upvoteCount={recipe.upvoteCount} prepTime={recipe.prepTime} cookTime={recipe.cookTime} servings={recipe.servings} />
+								<RecipeStats stats={{ upvoteCount: recipe.upvoteCount, prepTime: recipe.prepTime, cookTime: recipe.cookTime, servings: recipe.servings }} variant="body2" />
 							</div>
 						</Hidden>
 					</div>

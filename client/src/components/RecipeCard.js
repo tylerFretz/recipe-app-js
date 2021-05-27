@@ -28,33 +28,33 @@ const useStyles = makeStyles({
 	}
 });
 
-const RecipeCard = ({ username, summary, upvoteCount, thumbImageUrl, id, name, prepTime, cookTime, servings }) => {
+const RecipeCard = ({ recipe }) => {
 	const history = useHistory();
 	const classes = useStyles();
 
-	if (!thumbImageUrl) thumbImageUrl = noImageAvailable;
+	if (!recipe.thumbImageUrl) recipe.thumbImageUrl = noImageAvailable;
 
-	const handleClick = () => history.push(`/recipes/${id}`);
+	const handleClick = () => history.push(`/recipes/${recipe.id}`);
 
 	return (
 		<Card className={classes.recipeCard}>
 			<div style={{ overflow: "hidden", height: "50%" }}>
 				<CardMedia
 					component="img"
-					alt={name}
-					image={thumbImageUrl}
-					title={name}
+					alt={recipe.name}
+					image={recipe.thumbImageUrl}
+					title={recipe.name}
 					onClick={() => handleClick()}
 				/>
 			</div>
 			<CardContent className={classes.cardContent}>
-				<Typography variant="h5" style={{ fontWeight: "bold" }}>{name}</Typography>
-				{summary && (
-					<Typography variant="body2">{summary}</Typography>
+				<Typography variant="h5" style={{ fontWeight: "bold" }}>{recipe.name}</Typography>
+				{recipe.summary && (
+					<Typography variant="body1">{recipe.summary}</Typography>
 				)}
-				<Typography variant="subtitle2">By <span style={{ fontSize: "1.2em" }}>{username}</span></Typography>
+				<Typography variant="subtitle2">By <span style={{ fontSize: "1.2em" }}>{recipe.user.username}</span></Typography>
 			</CardContent>
-			<RecipeStats upvoteCount={upvoteCount} prepTime={prepTime} cookTime={cookTime} servings={servings} />
+			<RecipeStats stats={{ upvoteCount: recipe.upvoteCount, prepTime: recipe.prepTime, cookTime: recipe.cookTime, servings: recipe.servings }} variant="body1" />
 		</Card>
 	);
 };
