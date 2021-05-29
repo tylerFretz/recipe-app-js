@@ -22,9 +22,9 @@ const ContentInnerMobile = ({ name, summary, ingredients, instructions }) => {
 	const ingredientValues = ingredients.map(i => i.measure + " " + i.name);
 
 	// some of the recipes from theMealDb have numbered steps and some don't. Let's just get rid of them
-	instructions = instructions.replace(/\d\./g, "");
+	instructions = instructions.replace(/\d\./g, "").replace(/(STEP\s+\d+)/gmi, "");
 
-	// instructions from theMealDb come as a long string with occaisonal linebreaks. Let's split that into steps
+	// instructions from theMealDb come as a long string with occaisional linebreaks. Let's split that into steps
 	const instructionsArray = instructions.split(/\r?\n/).filter(instruction => instruction !== "").filter(instruction => instruction.length > 1);
 
 	return (

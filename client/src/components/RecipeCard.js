@@ -1,7 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import PropTypes from "prop-types";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -57,15 +56,6 @@ const RecipeCard = ({ recipe }) => {
 			<RecipeStats stats={{ upvoteCount: recipe.upvoteCount, prepTime: recipe.prepTime, cookTime: recipe.cookTime, servings: recipe.servings }} variant="body1" />
 		</Card>
 	);
-};
-
-RecipeCard.propTypes = {
-	username: PropTypes.string,
-	summary: PropTypes.string,
-	upvoteCount: PropTypes.number,
-	thumbImageUrl: PropTypes.string,
-	name: PropTypes.string,
-	id: PropTypes.string.isRequired
 };
 
 export default RecipeCard;

@@ -71,7 +71,7 @@ const Content = ({ instructions, ingredients, youtubeUrl }) => {
 	const classes = useStyles();
 
 	// some of the recipes from theMealDb have numbered steps and some don't. Let's just get rid of them
-	instructions = instructions.replace(/\d\./g, "");
+	instructions = instructions.replace(/\d\./gm, "").replace(/(STEP\s+\d+)/gmi, "");
 
 	// instructions from theMealDb come as a long string with occaisonal linebreaks. Let's split that into steps
 	const intructionsArray = instructions.split(/\r?\n/).filter(instruction => instruction !== "");

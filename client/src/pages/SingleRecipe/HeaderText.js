@@ -82,7 +82,6 @@ const useStyles = makeStyles({
 	tag: {
 		color: "white",
 		backgroundColor: "red",
-		marginLeft: "10%"
 	}
 });
 
@@ -100,7 +99,7 @@ const HeaderText = ({ category, name, upvoteCount, comments, summary, dateAdded,
 					<NavLink to="/" style={{ textDecoration: "none" }}>
 						<Typography>Home</Typography>
 					</NavLink>
-					<NavLink to={`/${category}`} style={{ textDecoration: "none" }}>
+					<NavLink to={`/recipes/search?category=${category}`} style={{ textDecoration: "none" }}>
 						<Typography>{category}</Typography>
 					</NavLink>
 				</Breadcrumbs>
@@ -130,9 +129,9 @@ const HeaderText = ({ category, name, upvoteCount, comments, summary, dateAdded,
 			<Divider />
 			{tags.length > 0 && (
 				<Container className={classes.tagContainer}>
-					<Typography>Tags:</Typography>
+					<Typography style={{ marginRight: "2%" }}>Tags:</Typography>
 					{tags.map(tag => (
-						<NavLink key={tag} to={`/recipes/search?tag=${tag}`}>
+						<NavLink key={tag} to={`/recipes/search?tag=${tag}`} style={{ margin: "0% 1%" }}>
 							<Chip label={tag} className={classes.tag} clickable={true} size="small" />
 						</NavLink>
 					))}

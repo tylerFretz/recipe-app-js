@@ -12,10 +12,7 @@ const useStyles = makeStyles((theme) => ({
 	imageContainer: {
 		display: "block",
 		position: "relative",
-		top: 0,
-		left: 0,
 		width: "100%",
-		height: 0,
 		paddingTop: "48%",
 		marginBottom: 0,
 	},
@@ -29,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
 		height: "100%",
 		margin: "0 auto",
 		padding: 0,
-		cursor: "move"
 	},
 	imageOverlay: {
 		position: "absolute",
@@ -52,14 +48,14 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: 2,
 		color: "#ffff",
 		textShadow: "1px 1px 2px rgba(0,0,0,1)",
+		marginTop: "2%"
 	},
-	linkText: {
+	title: {
 		color: "#ffff",
 		textDecoration: "none",
 		display: "inline-block",
-		[theme.breakpoints.down("sm")]: {
-			fontSize: "0.8em"
-		},
+		fontSize: "1.5rem",
+		margin: 0
 	},
 	recipeStatsContainer: {
 		display: "flex",
@@ -90,7 +86,7 @@ const JumboTronCarousel = () => {
 		<Carousel
 			animation="slide"
 			indicators={false}
-			interval={1000000}
+			interval={10000}
 		>
 			{
 				randomRecipes.map((recipe, i) => <CarouselItem key={i} recipe={recipe} />)
@@ -104,23 +100,23 @@ const CarouselItem = ({ recipe }) => {
 
 	return (
 		<>
-			<Paper className={classes.imageContainer}>
-				<img src={recipe.thumbImageUrl} className={classes.image} />
-				<div className={classes.imageOverlay}>
-					<div className={classes.captionContent}>
-						<NavLink to={`/recipes/${recipe.id}`} className={classes.linkText}>
-							<h1 style={{ marginBottom: 0 }}>{recipe.name}</h1>
-						</NavLink>
-						<Hidden smDown>
-							<h4>{recipe.summary}</h4>
-							<div className={classes.recipeStatsContainer}>
-								<h3 style={{ fontSize: "1.3em", margin: 0 }}>By {recipe.user.username}</h3>
-								<RecipeStats stats={{ upvoteCount: recipe.upvoteCount, prepTime: recipe.prepTime, cookTime: recipe.cookTime, servings: recipe.servings }} variant="body2" />
-							</div>
-						</Hidden>
+			<NavLink to={`/recipes/${recipe.id}`}>
+				<Paper className={classes.imageContainer}>
+					<img src={recipe.thumbImageUrl} className={classes.image} />
+					<div className={classes.imageOverlay}>
+						<div className={classes.captionContent}>
+							<h1 className={classes.title}>{recipe.name}</h1>
+							<Hidden smDown>
+								<h4>{recipe.summary}</h4>
+								<div className={classes.recipeStatsContainer}>
+									<h3 style={{ fontSize: "1.3em", margin: 0 }}>By {recipe.user.username}</h3>
+									<RecipeStats stats={{ upvoteCount: recipe.upvoteCount, prepTime: recipe.prepTime, cookTime: recipe.cookTime, servings: recipe.servings }} variant="body2" />
+								</div>
+							</Hidden>
+						</div>
 					</div>
-				</div>
-			</Paper>
+				</Paper>
+			</NavLink>
 			<svg className={classes.svgOverlay}>
 				<defs>
 					<filter id="blur">

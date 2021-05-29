@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, useHistory } from "react-router-dom";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
@@ -11,12 +11,8 @@ import Typography from "@material-ui/core/Typography";
 import Hidden from "@material-ui/core/Hidden";
 import Fab from "@material-ui/core/Fab";
 import Icon from "@material-ui/core/Icon";
-// import TextField from "@material-ui/core/TextField";
-// import Autocomplete from "@material-ui/lab/Autocomplete";
 import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp";
-// import SearchIcon from "@material-ui/icons/Search";
 
-import SideDrawer from "./SideDrawer";
 import BackToTop from "./BackToTop";
 
 import useAuthUser from "../hooks/useAuthUser";
@@ -28,16 +24,14 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		justifyContent: "space-between",
 		alignItems: "center",
-		maxHeight: 50
-	},
-	navDisplayFlex: {
-		display: "flex",
-		justifyContent: "space-between",
 	},
 	linkText: {
 		textDecoration: "none",
 		textTransform: "uppercase",
-		color: "#FFF"
+		color: "#FFF",
+		[theme.breakpoints.down("sm")]: {
+			fontSize: "0.8rem"
+		},
 	},
 	logoContainer: {
 		display: "inline-flex",
@@ -70,41 +64,6 @@ const useStyles = makeStyles((theme) => ({
 			opacity: 1
 		},
 	},
-	search: {
-		position: "relative",
-		borderRadius: "3px",
-		backgroundColor: fade(theme.palette.common.white, 0.15),
-		"&:hover": {
-			backgroundColor: fade(theme.palette.common.white, 0.25),
-		},
-		marginRight: theme.spacing(2),
-		marginLeft: 0,
-		width: "100%",
-		[theme.breakpoints.up("sm")]: {
-			marginLeft: theme.spacing(3),
-			width: "auto",
-		},
-	},
-	searchIcon: {
-		padding: theme.spacing(0,2),
-		height: "100%",
-		position: "absolute",
-		pointerEvents: "none",
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center"
-	},
-	inputRoot: {
-		color: "white",
-		padding: theme.spacing(1, 1, 1, 0),
-		// vertical padding + font size from searchIcon
-		paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-		transition: theme.transitions.create("width"),
-		width: "100%",
-		[theme.breakpoints.up("md")]: {
-			width: "20ch",
-		},
-	},
 }));
 
 
@@ -114,20 +73,6 @@ const Header = () => {
 	const { logout, getAuthUser } = useAuthUser();
 	const loggedInUser = getAuthUser();
 
-	let navLinks = [];
-
-	if (!loggedInUser) {
-		navLinks = [...navLinks,
-			{ title: "Login", path: "/login", icon: "exit_to_app" },
-			{ title: "Register", path: "/register", icon: "person" }
-		];
-	} else {
-		navLinks = [...navLinks,
-			{ title: "My Profile", path: `/users/${loggedInUser.id}`, icon: "person" },
-			{ title: "Submit Recipe", path: "/submit", icon: "add_circle" },
-		];
-	}
-
 	const handleLogout = () => {
 		logout();
 		history.push("/");
@@ -135,7 +80,7 @@ const Header = () => {
 
 	return (
 		<>
-			<AppBar position="relative" style={{ height: "8vh" }}>
+			<AppBar position="relative">
 				<Toolbar>
 					<Container className={classes.navBarDisplayFlex}>
 						<NavLink to="/" className={classes.logoContainer}>
@@ -144,29 +89,40 @@ const Header = () => {
 							</Hidden>
 							<Typography variant="h1" className={classes.brandTitle}>RECIPE APP</Typography>
 						</NavLink>
-						<Hidden smDown>
-							<List component="nav" aria-labelledby="top navigation" className={classes.navDisplayFlex}>
-								{navLinks.map(({ title, path, icon }) => (
-									<NavLink to={path} key={title} className={classes.linkText}>
-										<ListItem button className={classes.linkButton}>
-											<Icon fontSize="small" style={{ marginRight: "2px" }}>{icon}</Icon>
-											<ListItemText primary={title} primaryTypographyProps={{ variant: "body2" }}/>
+						<List component="nav" aria-labelledby="top navigation" className={classes.navBarDisplayFlex}>
+							{Boolean(loggedInUser) && (
+								<>
+									<NavLink to={`/users/${loggedInUser.id}`} className={classes.linkText}>
+										<ListItem button  className={classes.linkButton}>
+											<Icon fontSize="small" style={{ marginRight: "2px" }}>person</Icon>
+											<ListItemText disableTypography>My Profile</ListItemText>
 										</ListItem>
 									</NavLink>
-								))}
-								{loggedInUser && (
 									<NavLink to="/" className={classes.linkText}>
 										<ListItem button onClick={handleLogout} className={classes.linkButton}>
 											<Icon fontSize="small" style={{ marginRight: "2px" }}>exit_to_app</Icon>
-											<ListItemText primary="Logout" primaryTypographyProps={{ variant: "body2" }}/>
+											<ListItemText disableTypography>Logout</ListItemText>
 										</ListItem>
 									</NavLink>
-								)}
-							</List>
-						</Hidden>
-						<Hidden mdUp>
-							<SideDrawer navLinks={navLinks} isLoggedIn={loggedInUser ? true : false} handleLogout={handleLogout} />
-						</Hidden>
+								</>
+							)}
+							{Boolean(!loggedInUser) && (
+								<>
+									<NavLink to="/register" className={classes.linkText}>
+										<ListItem button className={classes.linkButton}>
+											<Icon fontSize="small" style={{ marginRight: "2px" }}>person</Icon>
+											<ListItemText disableTypography>Register</ListItemText>
+										</ListItem>
+									</NavLink>
+									<NavLink to="/login" className={classes.linkText}>
+										<ListItem button className={classes.linkButton}>
+											<Icon fontSize="small" style={{ marginRight: "2px" }}>exit_to_app</Icon>
+											<ListItemText disableTypography>Log In</ListItemText>
+										</ListItem>
+									</NavLink>
+								</>
+							)}
+						</List>
 					</Container>
 				</Toolbar>
 			</AppBar>

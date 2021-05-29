@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Pagination from "@material-ui/lab/Pagination";
 
-import NavigationBar from "../../components/NavigationBar";
+import Banner from "../../components/Banner";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import RecipeCardGrid from "../../components/RecipeCardGrid";
 import useRecipes from "../../hooks/useRecipes";
@@ -14,8 +14,10 @@ const useStyles = makeStyles({
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
-		marginTop: "2%",
-		marginBottom: "4%"
+		margin: "2% auto",
+	},
+	paginationContainer: {
+		margin: "5% auto"
 	}
 });
 
@@ -46,15 +48,14 @@ const RecipeSearch = () => {
 
 	return (totalPages === 0) ? (
 		<>
-			<NavigationBar />
 			<div style={{ position: "absolute", top: "50%", left: "50%" }}>No recipes found...</div>
 		</>
 	) : (
 		<>
-			<NavigationBar />
+			<Banner title="Browse Recipes" breadcrumbList={[{ title: "Browse Recipes", path: "recipes/search" }]}/>
 			<Container className={classes.mainContainer}>
 				<RecipeCardGrid recipes={data.slice((page * 12) - 12, page * 12)} />
-				<div>
+				<div className={classes.paginationContainer}>
 					<Pagination count={totalPages} page={page} onChange={handleChange} />
 				</div>
 			</Container>
