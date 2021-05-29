@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import { makeStyles, fade } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-//import Hidden from "@material-ui/core/Hidden";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputBase from "@material-ui/core/InputBase";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import SearchIcon from "@material-ui/icons/Search";
-// import TextField from "@material-ui/core/TextField";
-// import Autocomplete from "@material-ui/lab/Autocomplete";
 
+import useAuthUser from "../hooks/useAuthUser";
+import NavigationBarMobile from "./NavigationBarMobile";
 
 const useStyles = makeStyles((theme) => ({
 	navBarDisplayFlex: {
@@ -26,12 +27,19 @@ const useStyles = makeStyles((theme) => ({
 		background: "#FFF",
 		margin: 0,
 		width: "100vw",
-		zIndex: 1
+		zIndex: 6
+	},
+	flexList: {
+		display: "flex",
+		justifyContent: "space-between",
+		flexGrow: 1,
+		padding: "0% 10%",
+		maxWidth: "60%"
 	},
 	listItem: {
 		textDecoration: "none",
-	},
-	linkButton: {
+		fontSize: "1.05rem",
+		color: theme.palette.darkGrey.main,
 		"&:hover": {
 			color: theme.palette.secondary.main
 		}
@@ -74,25 +82,29 @@ const useStyles = makeStyles((theme) => ({
 			width: "12ch",
 			"&:focus": {
 				width: "20ch",
-				border: "2px solid  #87adf3",
+				border: `2px solid ${theme.palette.secondary.main}`,
 			},
 		},
 	},
 }));
 
-// home, recipes [category list, latest recipes, most liked recipes ], members, contact us, search
+// home, recipes [category list, latest recipes, most liked recipes ], members, submit recipe, contact,
 const NavigationBar = () => {
+	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 	const classes = useStyles();
 	const history = useHistory();
+	const { getAuthUser } = useAuthUser();
+	const loggedInUser = getAuthUser();
 	const [searchValue, setSearchValue] = useState("");
-	const [anchorEl, setAnchorEl] = useState(null);
+	const [menuOpen, setMenuOpen] = useState(false);
 
-	const handleMenuOpen = (event) => {
-		setAnchorEl(event.currentTarget);
+	const handleMenuOpen = () => {
+		setMenuOpen(true);
 	};
 
 	const handleMenuClose = () => {
-		setAnchorEl(null);
+		setMenuOpen(false);
 	};
 
 	const handleSearch = (event) => {
@@ -101,29 +113,32 @@ const NavigationBar = () => {
 		}
 	};
 
-	return (
+	return isMobile ? (
+		<NavigationBarMobile />
+	) : (
 		<div className={classes.navBarDisplayFlex}>
-			<List aria-labelledby="main navigation" style={{ display: "flex", justifyContent: "space-between" }}>
-				<ListItem className={classes.linkButton}>
+			<List aria-labelledby="main navigation" className={classes.flexList}>
+				<ListItem>
 					<NavLink to="/" className={classes.listItem}>
-						<ListItemText>Home</ListItemText>
+						<ListItemText className={classes.listItem} disableTypography>Home</ListItemText>
 					</NavLink>
 				</ListItem>
-				<ListItem className={classes.linkButton}>
+				<ListItem>
 					<NavLink to="/members" className={classes.listItem}>
-						<ListItemText>Members</ListItemText>
+						<ListItemText className={classes.listItem} disableTypography>Members</ListItemText>
 					</NavLink>
 				</ListItem>
-				<ListItem className={classes.linkButton} onMouseOver={handleMenuOpen}>
-					<ListItemText>Recipes</ListItemText>
+				<ListItem id="popoverMenuButton" onMouseOver={handleMenuOpen}>
+					<ListItemText className={classes.listItem} disableTypography>Recipes</ListItemText>
 					<KeyboardArrowDownIcon fontSize="small" style={{ marginLeft: "2px", color: "#676767" }} />
 				</ListItem>
 				<Menu
-					anchorEl={anchorEl}
+					anchorEl={document.getElementById("popoverMenuButton")}
 					keepMounted
-					open={Boolean(anchorEl)}
+					open={menuOpen}
 					onClose={handleMenuClose}
 					MenuListProps={{ onMouseLeave: handleMenuClose }}
+					variant="menu"
 				>
 					<NavLink to="/categories" className={classes.listItem}>
 						<MenuItem onClick={handleMenuClose}>Category List</MenuItem>
@@ -135,9 +150,16 @@ const NavigationBar = () => {
 						<MenuItem onClick={handleMenuClose}>Most Liked Recipes</MenuItem>
 					</NavLink>
 				</Menu>
+				{Boolean(loggedInUser) && (
+					<ListItem className={classes.linkButton}>
+						<NavLink to="/submit" className={classes.listItem}>
+							<ListItemText className={classes.listItem} disableTypography>Submit Recipe</ListItemText>
+						</NavLink>
+					</ListItem>
+				)}
 				<ListItem className={classes.linkButton}>
 					<NavLink to="/contact" className={classes.listItem}>
-						<ListItemText>Contact Us</ListItemText>
+						<ListItemText className={classes.listItem} disableTypography>Contact</ListItemText>
 					</NavLink>
 				</ListItem>
 			</List>

@@ -4,7 +4,6 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Container from "@material-ui/core/Container";
 
-import NavigationBar from "../../components/NavigationBar";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import JumboTronCarousel from "../../components/JumbotronCarousel";
 import RecipeCardRow from "../../components/RecipeCardRow";
@@ -36,7 +35,6 @@ const Home = () => {
 	const renderMobile = () => (
 		<>
 			<JumboTronCarousel />
-			<NavigationBar />
 			<Container className={classes.root}>
 				<div>
 					<SectionTitle title={"Top Rated"} />
@@ -60,7 +58,6 @@ const Home = () => {
 	) : (
 		<>
 			<JumboTronCarousel />
-			<NavigationBar />
 			<Container className={classes.root}>
 				<div>
 					<SectionTitle title={"Top Rated"} />

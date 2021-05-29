@@ -9,6 +9,7 @@ import SingleRecipe from "./pages/SingleRecipe";
 import SubmitRecipe from "./pages/SubmitRecipe";
 import ScrollToTop from "./components/ScrollToTop";
 import Header from "./components/Header";
+import NavigationBar from "./components/NavigationBar";
 import Footer from "./components/Footer";
 import RecipeSearch from "./pages/RecipeSearch";
 
@@ -17,6 +18,7 @@ const App = () => (
 	<>
 		<ScrollToTop />
 		<Header />
+		<NavigationBar />
 		<div style={{ display: "flex", flexDirection: "column", alignContent: "center", background: "#F5F5F5", minHeight: "90vh" }}>
 			<Switch>
 				<Route path="/recipes/search" component={RecipeSearch} />
