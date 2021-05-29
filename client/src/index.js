@@ -9,7 +9,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./theme";
 import CssBaseLine from "@material-ui/core/CssBaseline";
-import AuthProvider from "./AuthContext";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -23,13 +22,11 @@ ReactDOM.render(
 	<QueryClientProvider client={queryClient}>
 		<ThemeProvider theme={theme}>
 			<SnackbarProvider maxSnack={3}>
-				<AuthProvider>
-					<Router>
-						<CssBaseLine />
-						<App />
-						<ReactQueryDevtools initialIsOpen={false} />
-					</Router>
-				</AuthProvider>
+				<Router>
+					<CssBaseLine />
+					<App />
+					<ReactQueryDevtools initialIsOpen={false} />
+				</Router>
 			</SnackbarProvider>
 		</ThemeProvider>
 	</QueryClientProvider>,

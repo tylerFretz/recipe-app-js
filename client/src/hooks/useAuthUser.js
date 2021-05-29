@@ -1,7 +1,6 @@
-import { useContext } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useMutation } from "react-query";
-import { authContext } from "../AuthContext";
 import useNotifications from "./useNotifications";
 
 const BASE_URL = "/api/login";
@@ -16,7 +15,19 @@ const loginUser = async ({ email, password }) => {
 
 const useAuthUser = () => {
 	const { addNotification } = useNotifications();
-	const { setAuthData, auth } = useContext(authContext);
+	const [auth, setAuth] = useState(null);
+
+	const setAuthData = (loggedInUser) => {
+		setAuth(JSON.parse(loggedInUser));
+	};
+
+	useEffect(() => {
+		const loggedInUser = window.localStorage.getItem("recipe-app-user");
+		if (loggedInUser) {
+			setAuthData(loggedInUser);
+		}
+	}, []);
+
 
 	const mutation = useMutation(loginUser, {
 		onError: (error) => {
