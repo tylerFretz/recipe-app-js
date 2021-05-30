@@ -7,7 +7,9 @@ import Pagination from "@material-ui/lab/Pagination";
 import Banner from "../../components/Banner";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import RecipeCardGrid from "../../components/RecipeCardGrid";
+import SearchForm from "./SearchForm";
 import useRecipes from "../../hooks/useRecipes";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
 	mainContainer: {
@@ -46,19 +48,23 @@ const RecipeSearch = () => {
 		setPage(value);
 	};
 
-	return (totalPages === 0) ? (
-		<>
-			<div style={{ position: "absolute", top: "50%", left: "50%" }}>No recipes found...</div>
-		</>
-	) : (
+	return (
 		<>
 			<Banner title="Browse Recipes" breadcrumbList={[{ title: "Browse Recipes", path: "recipes/search" }]}/>
-			<Container className={classes.mainContainer}>
-				<RecipeCardGrid recipes={data.slice((page * 12) - 12, page * 12)} />
-				<div className={classes.paginationContainer}>
-					<Pagination count={totalPages} page={page} onChange={handleChange} />
+			<SearchForm />
+			{totalPages === 0 && (
+				<div style={{ position: "relative", margin: "10% 30%" }}>
+					<Typography variant="body1" style={{ fontStyle: "italic" }}>No recipes found...</Typography>
 				</div>
-			</Container>
+			)}
+			{totalPages > 0 && (
+				<Container className={classes.mainContainer}>
+					<RecipeCardGrid recipes={data.slice((page * 12) - 12, page * 12)} />
+					<div className={classes.paginationContainer}>
+						<Pagination count={totalPages} page={page} onChange={handleChange} />
+					</div>
+				</Container>
+			)}
 		</>
 	);
 };

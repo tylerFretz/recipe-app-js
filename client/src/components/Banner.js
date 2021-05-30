@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
 		opacity: 0.3
 	},
 	titleContainer: {
-		paddingTop: "5%",
-		paddingBottom: "2%"
+		paddingTop: "7%",
+		paddingBottom: "5%"
 	},
 	title: {
 		fontWeight: 800,
