@@ -79,6 +79,13 @@ recipesRouter.get("/",
 		res.json(recipes);
 	});
 
+recipesRouter.get("/data", async (req, res) => {
+	const categories = await Recipe.distinct("category");
+	const tags = await Recipe.distinct("tags");
+	const areas = await Recipe.distinct("area");
+	res.json({ categories, tags, areas });
+});
+
 // get specific recipe based on it's id
 recipesRouter.get("/:id", async (req, res) => {
 	const recipe = await Recipe.findById(req.params.id).populate("user", { username: 1, id: 1 });

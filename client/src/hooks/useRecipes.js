@@ -38,6 +38,12 @@ const createComment = async (id, comment, config) => {
 	return data;
 };
 
+//returns unique categories, tags, and areas of all recipes in db
+const getRecipesData = async () => {
+	const { data } = await axios.get(`${BASE_URL}/data`);
+	return data;
+};
+
 const useRecipes = () => {
 	const queryClient = useQueryClient();
 	const { addNotification } = useNotifications();
@@ -53,6 +59,11 @@ const useRecipes = () => {
 	const queryRecipes = (queryOptions) => {
 		return useQuery(["recipes", { ...queryOptions }],
 			() => getRecipes(queryOptions));
+	};
+
+	const queryRecipeData = () => {
+		return useQuery(["recipeData"],
+			() => getRecipesData());
 	};
 
 	const createMutation = useMutation(createRecipe, {
@@ -112,7 +123,7 @@ const useRecipes = () => {
 		commentMutation.mutate({ id, comment, config: authHeader });
 	};
 
-	return { getRecipeById, queryRecipes, addRecipe, upvoteRecipe, removeRecipe, addComment };
+	return { getRecipeById, queryRecipes, addRecipe, upvoteRecipe, removeRecipe, addComment, queryRecipeData };
 };
 
 export default useRecipes;
