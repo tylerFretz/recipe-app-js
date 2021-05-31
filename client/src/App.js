@@ -23,10 +23,10 @@ const App = () => (
 			<Switch>
 				<Route path="/recipes/search" component={RecipeSearch} />
 				<Route path="/recipes/:id" component={SingleRecipe} />
-				<Route path="/register" component={Register} />
-				<Route path="/login" component={Login} />
 				<Route path="/users/:id" component={Profile} />
-				<Route path="/submit" component={SubmitRecipe} />
+				<Route exact path="/register" component={Register} />
+				<Route exact path="/login" component={Login} />
+				<Route exact path="/submit" component={SubmitRecipe} />
 				<Route path="/" component={Home} />
 			</Switch>
 		</div>

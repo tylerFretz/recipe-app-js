@@ -24,28 +24,22 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
+const chunk = (arr, size) =>
+	Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+		arr.slice(i * size, i * size + size)
+	);
+
 const RecipeCardGrid = ({ recipes }) => {
 	const classes = useStyles();
-
-	const firstRecipes = recipes.slice(0, 3);
-	const secondRecipes = recipes.slice(3, 6);
-	const thirdRecipes = recipes.slice(6, 9);
-	const fourthRecipes = recipes.slice(9, 12);
+	const recipeGroups = chunk(recipes, 3);
 
 	return (
 		<Grid container className={classes.mainContainer}>
-			<Grid container item xs={12} spacing={3} className={classes.rowContainer}>
-				<RecipeCardRow recipes={firstRecipes} />
-			</Grid>
-			<Grid container item xs={12} spacing={3} className={classes.rowContainer}>
-				<RecipeCardRow recipes={secondRecipes} />
-			</Grid>
-			<Grid container item xs={12} spacing={3} className={classes.rowContainer}>
-				<RecipeCardRow recipes={thirdRecipes} />
-			</Grid>
-			<Grid container item xs={12} spacing={3} className={classes.rowContainer}>
-				<RecipeCardRow recipes={fourthRecipes} />
-			</Grid>
+			{recipeGroups.map((group, i) => (
+				<Grid container item xs={12} spacing={3} key={i} className={classes.rowContainer}>
+					<RecipeCardRow recipes={group} />
+				</Grid>
+			))}
 		</Grid>
 	);
 };

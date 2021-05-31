@@ -69,12 +69,10 @@ const Banner = ({ title, breadcrumbList }) => {
 					<a href="/" className={classes.breadcrumbText}>Home</a>
 				</li>
 				{breadcrumbList.map((item, i) => (
-					<>
-						<li className={classes.breadcrumbText}>/</li>
-						<li className={classes.breadcrumbText} key={i}>
-							<a href={`/${item.path}`} className={classes.breadcrumbText}>{item.title}</a>
-						</li>
-					</>
+					<li className={classes.breadcrumbText} key={i}>
+						<p className={classes.breadcrumbText}>/</p>
+						<a href={`/${item.path}`} className={classes.breadcrumbText}>{item.title}</a>
+					</li>
 				))}
 			</ul>
 			<div className={classes.overlay} />

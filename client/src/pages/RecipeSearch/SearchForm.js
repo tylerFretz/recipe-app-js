@@ -80,7 +80,7 @@ const SearchForm = () => {
 									labelId="category-search-select-label"
 								>
 									{recipesData.categories.map((category) => (
-										<MenuItem key={category} value={category}>{category}</MenuItem>
+										<MenuItem key={category} value={`${category}&`}>{category}</MenuItem>
 									))}
 								</Field>
 							</FormControl>
@@ -95,7 +95,7 @@ const SearchForm = () => {
 									labelId="tag-search-select-label"
 								>
 									{recipesData.tags.map((tag) => (
-										<MenuItem key={tag} value={tag}>{tag}</MenuItem>
+										<MenuItem key={tag} value={`${tag}&`}>{tag}</MenuItem>
 									))}
 								</Field>
 							</FormControl>
@@ -109,8 +109,8 @@ const SearchForm = () => {
 									variant="filled"
 									labelId="area-search-select-label"
 								>
-									{recipesData.categories.map((area) => (
-										<MenuItem key={area} value={area}>{area}</MenuItem>
+									{recipesData.areas.map((area) => (
+										<MenuItem key={area} value={`${area}&`}>{area}</MenuItem>
 									))}
 								</Field>
 							</FormControl>
@@ -133,9 +133,9 @@ const SearchForm = () => {
 									variant="filled"
 									labelId="sortBy-search-select-label"
 								>
-									<MenuItem value="dateAdded&order=asc">Newest first</MenuItem>
-									<MenuItem value="dateAdded&order=desc">Oldest first</MenuItem>
-									<MenuItem value="upvoteCount&order=asc">Most popular</MenuItem>
+									<MenuItem value="dateAdded&order=desc">Newest first</MenuItem>
+									<MenuItem value="dateAdded&order=asc">Oldest first</MenuItem>
+									<MenuItem value="upvoteCount&order=desc">Most popular</MenuItem>
 									<MenuItem value="upvoteCount&order=asc">Least popular</MenuItem>
 								</Field>
 							</FormControl>

@@ -23,6 +23,20 @@ const useStyles = makeStyles({
 	}
 });
 
+const getBreadcrumbList = (queryObject) => {
+	let breadcrumbList = [{ title: "Browse Recipes", path: "recipes/search" }];
+	for (const [key, value] of Object.entries(queryObject)) {
+		if (key === "category") {
+			breadcrumbList = breadcrumbList.concat({ title: "Categories", path: "categories" }, { title: value.trim(), path: `recipes/search?category=${value.trim()}` });
+		} else if (key === "tag") {
+			breadcrumbList = breadcrumbList.concat({ title: "Tags", path: "tags" }, { title: value.trim(), path: `recipes/search?tag=${value.trim()}` });
+		} else if (key === "area") {
+			breadcrumbList = breadcrumbList.concat({ title: "Areas", path: "areas" }, { title: value.trim(), path: `recipes/search?area=${value.trim()}` });
+		}
+	}
+	return breadcrumbList;
+};
+
 const RecipeSearch = () => {
 	const classes = useStyles();
 	const queryObject = Object.fromEntries(new URLSearchParams(useLocation().search).entries());
@@ -50,7 +64,7 @@ const RecipeSearch = () => {
 
 	return (
 		<>
-			<Banner title="Browse Recipes" breadcrumbList={[{ title: "Browse Recipes", path: "recipes/search" }]}/>
+			<Banner title="Browse Recipes" breadcrumbList={getBreadcrumbList(queryObject)}/>
 			<SearchForm />
 			{totalPages === 0 && (
 				<div style={{ position: "relative", margin: "10% 30%" }}>
