@@ -15,7 +15,7 @@ import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp";
 
 import BackToTop from "./BackToTop";
 
-import useAuthUser from "../hooks/useAuthUser";
+import { useAuthUser } from "../hooks/useAuthUser";
 import chefHat from "../assets/chefHat.png";
 
 
@@ -70,8 +70,7 @@ const useStyles = makeStyles((theme) => ({
 const Header = () => {
 	const classes = useStyles();
 	const history = useHistory();
-	const { logout, getAuthUser } = useAuthUser();
-	const loggedInUser = getAuthUser();
+	const { logout, authUser } = useAuthUser();
 
 	const handleLogout = () => {
 		logout();
@@ -90,9 +89,9 @@ const Header = () => {
 							<Typography variant="h1" className={classes.brandTitle}>RECIPE APP</Typography>
 						</NavLink>
 						<List component="nav" aria-labelledby="top navigation" className={classes.navBarDisplayFlex}>
-							{Boolean(loggedInUser) && (
+							{authUser && (
 								<>
-									<NavLink to={`/users/${loggedInUser.id}`} className={classes.linkText}>
+									<NavLink to={`/users/${authUser.id}`} className={classes.linkText}>
 										<ListItem button  className={classes.linkButton}>
 											<Icon fontSize="small" style={{ marginRight: "2px" }}>person</Icon>
 											<ListItemText disableTypography>My Profile</ListItemText>
@@ -106,7 +105,7 @@ const Header = () => {
 									</NavLink>
 								</>
 							)}
-							{Boolean(!loggedInUser) && (
+							{!authUser && (
 								<>
 									<NavLink to="/register" className={classes.linkText}>
 										<ListItem button className={classes.linkButton}>

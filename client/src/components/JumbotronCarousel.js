@@ -87,6 +87,8 @@ const JumboTronCarousel = () => {
 			animation="slide"
 			indicators={false}
 			interval={10000}
+			navButtonsAlwaysVisible={true}
+			navButtonsProps={{ style: { opacity: 0.65 } }}
 		>
 			{
 				randomRecipes.map((recipe, i) => <CarouselItem key={i} recipe={recipe} />)

@@ -12,7 +12,8 @@ import Header from "./components/Header";
 import NavigationBar from "./components/NavigationBar";
 import Footer from "./components/Footer";
 import RecipeSearch from "./pages/RecipeSearch";
-
+import UsersList from "./pages/UsersList";
+import Categories from "./pages/Categories";
 
 const App = () => (
 	<>
@@ -23,7 +24,9 @@ const App = () => (
 			<Switch>
 				<Route path="/recipes/search" component={RecipeSearch} />
 				<Route path="/recipes/:id" component={SingleRecipe} />
+				<Route exact path="/categories" component={Categories} />
 				<Route path="/users/:id" component={Profile} />
+				<Route exact path="/users" component={UsersList} />
 				<Route exact path="/register" component={Register} />
 				<Route exact path="/login" component={Login} />
 				<Route exact path="/submit" component={SubmitRecipe} />

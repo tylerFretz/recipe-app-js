@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
 		}
 	],
 	joinDate: { type: Date, default: Date.now },
+	avatarImageUrl: { type: String,  match: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/ }
 });
 
 // Apply the uniqueValidator plugin to userSchema.

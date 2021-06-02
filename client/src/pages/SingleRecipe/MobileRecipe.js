@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import RecipeMediaMobile from "./RecipeMediaMobile";
 import ContentInnerMobile from "./ContentInnerMobile";
 import RecipeFullStats from "./RecipeFullStats";
+import RelatedSideBar from "./RelatedSideBar";
 
 const useStyles = makeStyles({
 	mobileContainer: {
@@ -40,16 +41,10 @@ const MobileRecipe = ({ recipe, handleVote }) => {
 				</Container>
 			</Container>
 			<Container className={classes.sectionContainer}>
-				<RecipeFullStats
-					username={recipe.user.username}
-					prepTime={recipe.prepTime}
-					cookTime={recipe.cookTime}
-					servings={recipe.servings}
-					area={recipe.area}
-					category={recipe.category}
-					upvoteCount={recipe.upvoteCount}
-					dateAdded={recipe.dateAdded}
-				/>
+				<RecipeFullStats recipe={recipe} />
+			</Container>
+			<Container className={classes.sectionContainer}>
+				<RelatedSideBar category={recipe.category} />
 			</Container>
 			<Button onClick={handleVote}>Vote</Button>
 		</Container>

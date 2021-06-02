@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import LoginForm from "./LoginForm";
 
-import useAuthUser from "../../hooks/useAuthUser";
+import { useAuthUser } from "../../hooks/useAuthUser";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -27,17 +27,14 @@ const useStyles = makeStyles((theme) => ({
 const Login = () => {
 	const classes = useStyles();
 	const history = useHistory();
-	const { login, getAuthUser } = useAuthUser();
-	const isLoggedIn = getAuthUser();
-
-
+	const { login, authUser } = useAuthUser();
 
 	const onSubmit = (values) => {
 		login(values.email, values.password);
 		history.push("/");
 	};
 
-	return isLoggedIn ? (
+	return authUser ? (
 		<Redirect to="/" />
 	) : (
 		<Container maxWidth="xs" style={{ minHeight: "80vh" }}>

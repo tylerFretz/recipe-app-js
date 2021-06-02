@@ -12,14 +12,13 @@ import InputBase from "@material-ui/core/InputBase";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import SearchIcon from "@material-ui/icons/Search";
 
-import useAuthUser from "../hooks/useAuthUser";
+import { useAuthUser } from "../hooks/useAuthUser";
 import NavigationBarMobile from "./NavigationBarMobile";
 
 const useStyles = makeStyles((theme) => ({
 	navBarDisplayFlex: {
 		position: "sticky",
 		top: 0,
-		alignSelf: "center",
 		display: "flex",
 		justifyContent: "space-around",
 		alignItems: "center",
@@ -94,8 +93,7 @@ const NavigationBar = () => {
 	const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 	const classes = useStyles();
 	const history = useHistory();
-	const { getAuthUser } = useAuthUser();
-	const loggedInUser = getAuthUser();
+	const { authUser } = useAuthUser();
 	const [searchValue, setSearchValue] = useState("");
 	const [menuOpen, setMenuOpen] = useState(false);
 
@@ -124,7 +122,7 @@ const NavigationBar = () => {
 					</NavLink>
 				</ListItem>
 				<ListItem>
-					<NavLink to="/members" className={classes.listItem}>
+					<NavLink to="/users" className={classes.listItem}>
 						<ListItemText className={classes.listItem} disableTypography>Members</ListItemText>
 					</NavLink>
 				</ListItem>
@@ -150,14 +148,14 @@ const NavigationBar = () => {
 						<MenuItem onClick={handleMenuClose}>Most Liked Recipes</MenuItem>
 					</NavLink>
 				</Menu>
-				{Boolean(loggedInUser) && (
-					<ListItem className={classes.linkButton}>
+				{authUser && (
+					<ListItem>
 						<NavLink to="/submit" className={classes.listItem}>
 							<ListItemText className={classes.listItem} disableTypography>Submit Recipe</ListItemText>
 						</NavLink>
 					</ListItem>
 				)}
-				<ListItem className={classes.linkButton}>
+				<ListItem>
 					<NavLink to="/contact" className={classes.listItem}>
 						<ListItemText className={classes.listItem} disableTypography>Contact</ListItemText>
 					</NavLink>

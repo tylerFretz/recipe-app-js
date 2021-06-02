@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -11,7 +11,7 @@ import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ModeCommentIcon from "@material-ui/icons/ModeComment";
 import Chip from "@material-ui/core/Chip";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
 	root: {
 		width: "47%",
 	},
@@ -51,20 +51,21 @@ const useStyles = makeStyles({
 	},
 	summaryLabel: {
 		display: "flex",
-		alignItems: "center",
 		flexDirection: "column",
 		justifyContent: "center",
 		width: "90px",
 		height: "90px",
-		marginRight: "3%",
-		marginLeft: 0,
-		backgroundColor: "black",
-		color: "white",
+		marginRight: "5%",
+		backgroundColor: "#000",
+		color: "#FFF",
 		textTransform: "uppercase",
 		fontWeight: 600,
 		textAlign: "center",
 		borderRadius: "50%",
-		float: "none"
+		textDecoration: "none",
+		"&:hover": {
+			backgroundColor: theme.palette.secondary.main
+		}
 	},
 	summary: {
 		width: "80%",
@@ -74,66 +75,64 @@ const useStyles = makeStyles({
 	},
 	tagContainer: {
 		display: "inline-flex",
-		padding: 0,
 		letterSpacing: 0,
 		fontWeight: 500,
-		marginTop: "2%",
+		marginTop: "5%",
+		padding: "4%",
+		backgroundColor: "#FFF",
+		borderRadius: "3px",
+		boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.1)"
 	},
 	tag: {
 		color: "white",
-		backgroundColor: "red",
+		backgroundColor: theme.palette.secondary.main
 	}
-});
+}));
 
-const HeaderText = ({ category, name, upvoteCount, comments, summary, dateAdded, user, tags }) => {
+const HeaderText = ({ recipe }) => {
 	const classes = useStyles();
-	const formattedDate = format( new Date(dateAdded), "MMMM dd, yyyy");
+	const formattedDate = format( new Date(recipe.dateAdded), "MMMM dd, yyyy");
 
-	if (!comments) comments = [];
+	if (!recipe.comments) recipe.comments = [];
 
 	return (
 		<Container className={classes.root}>
 			<Container className={classes.meta}>
 				<Typography className={classes.postDate}>{formattedDate}{" //"}</Typography>
 				<Breadcrumbs separator="/" aria-label="breadcrumb">
-					<NavLink to="/" style={{ textDecoration: "none" }}>
+					<Link to="/" style={{ textDecoration: "none" }}>
 						<Typography>Home</Typography>
-					</NavLink>
-					<NavLink to={`/recipes/search?category=${category}`} style={{ textDecoration: "none" }}>
-						<Typography>{category}</Typography>
-					</NavLink>
+					</Link>
+					<Link to={`/recipes/search?category=${recipe.category}`} style={{ textDecoration: "none" }}>
+						<Typography>{recipe.category}</Typography>
+					</Link>
 				</Breadcrumbs>
 			</Container>
-			<Typography className={classes.title}>{name}</Typography>
+			<Typography className={classes.title}>{recipe.name}</Typography>
 			<Container className={classes.metaCount}>
-				<Container style={{ display: "flex", padding: 0 }}>
+				<Container style={{ display: "flex", justifyContent: "space-around" }}>
 					<ThumbUpAltIcon />
-					<Typography>{upvoteCount}</Typography>
+					<Typography>{recipe.upvoteCount}</Typography>
 				</Container>
-				<Container style={{ display: "flex", padding: 0 }}>
+				<Container style={{ display: "flex", justifyContent: "space-around" }}>
 					<ModeCommentIcon />
-					<Typography>{comments.length}</Typography>
+					<Typography>{recipe.comments.length}</Typography>
 				</Container>
 			</Container>
 			<Container className={classes.summaryContainer}>
-				<Container className={classes.summaryLabel}>
-					{user && (
-						<span>From {user.username}</span>
-					)}
-					{!user && (
-						<span>From Recipe App</span>
-					)}
-				</Container>
-				<Typography className={classes.summary}>{summary}</Typography>
+				<Link to={`/users/${recipe.user.id}`} className={classes.summaryLabel} title="view user's page">
+					<span>From {recipe.user.username}</span>
+				</Link>
+				<Typography className={classes.summary}>{recipe.summary}</Typography>
 			</Container>
 			<Divider />
-			{tags.length > 0 && (
+			{recipe.tags.length > 0 && (
 				<Container className={classes.tagContainer}>
-					<Typography style={{ marginRight: "2%" }}>Tags:</Typography>
-					{tags.map(tag => (
-						<NavLink key={tag} to={`/recipes/search?tag=${tag}`} style={{ margin: "0% 1%" }}>
+					<Typography variant="h6" style={{ marginRight: "2%" }}>Tags:</Typography>
+					{recipe.tags.map(tag => (
+						<Link key={tag} to={`/recipes/search?tag=${tag}`} style={{ display: "flex", margin: "0% 1%", alignItems: "center", textDecoration: "none" }}>
 							<Chip label={tag} className={classes.tag} clickable={true} size="small" />
-						</NavLink>
+						</Link>
 					))}
 				</Container>
 			)}

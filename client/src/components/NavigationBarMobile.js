@@ -9,7 +9,7 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
 
-import useAuthUser from "../hooks/useAuthUser";
+import { useAuthUser } from "../hooks/useAuthUser";
 
 const useStyles = makeStyles((theme) => ({
 	listItem: {
@@ -31,8 +31,7 @@ const useStyles = makeStyles((theme) => ({
 const NavigationBarMobile = () => {
 	const classes = useStyles();
 	const [menuOpen, setMenuOpen] = useState(false);
-	const { getAuthUser } = useAuthUser();
-	const loggedInUser = getAuthUser();
+	const { authUser } = useAuthUser();
 	const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 	const toggleDrawer = () => event => {
@@ -57,7 +56,7 @@ const NavigationBarMobile = () => {
 				</ListItem>
 				<Divider />
 				<ListItem>
-					<NavLink to="/members" className={classes.listItem}>
+					<NavLink to="/users" className={classes.listItem}>
 						<Icon style={{ marginRight: "5px" }}>people</Icon>
 						<ListItemText>Members</ListItemText>
 					</NavLink>
@@ -70,7 +69,7 @@ const NavigationBarMobile = () => {
 					</NavLink>
 				</ListItem>
 				<Divider />
-				{Boolean(loggedInUser) && (
+				{authUser && (
 					<>
 						<ListItem>
 							<NavLink to="/submit" className={classes.listItem}>

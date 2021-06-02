@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
+import { AuthProvider } from "./hooks/useAuthUser";
 import theme from "./theme";
 import CssBaseLine from "@material-ui/core/CssBaseline";
 
@@ -22,11 +23,13 @@ ReactDOM.render(
 	<QueryClientProvider client={queryClient}>
 		<ThemeProvider theme={theme}>
 			<SnackbarProvider maxSnack={3}>
-				<Router>
-					<CssBaseLine />
-					<App />
-					<ReactQueryDevtools initialIsOpen={false} />
-				</Router>
+				<AuthProvider>
+					<Router>
+						<CssBaseLine />
+						<App />
+						<ReactQueryDevtools initialIsOpen={false} />
+					</Router>
+				</AuthProvider>
 			</SnackbarProvider>
 		</ThemeProvider>
 	</QueryClientProvider>,

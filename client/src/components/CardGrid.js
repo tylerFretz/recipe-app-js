@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
-import RecipeCardRow from "./RecipeCardRow";
+import CardRow from "./CardRow";
 
 const useStyles = makeStyles((theme) => ({
 	mainContainer: {
@@ -29,19 +29,19 @@ const chunk = (arr, size) =>
 		arr.slice(i * size, i * size + size)
 	);
 
-const RecipeCardGrid = ({ recipes }) => {
+const CardGrid = ({ items, type }) => {
 	const classes = useStyles();
-	const recipeGroups = chunk(recipes, 3);
+	const itemGroups = chunk(items, 3);
 
 	return (
 		<Grid container className={classes.mainContainer}>
-			{recipeGroups.map((group, i) => (
+			{itemGroups.map((group, i) => (
 				<Grid container item xs={12} spacing={3} key={i} className={classes.rowContainer}>
-					<RecipeCardRow recipes={group} />
+					<CardRow items={group} type={type} />
 				</Grid>
 			))}
 		</Grid>
 	);
 };
 
-export default RecipeCardGrid;
+export default CardGrid;

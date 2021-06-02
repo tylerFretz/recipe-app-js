@@ -1,9 +1,8 @@
 import React from "react";
 import * as yup from "yup";
-import { Redirect, useLocation } from "react-router-dom";
 
 import SubmitRecipeContainer from "./SubmitRecipeContainer";
-import useAuthUser from "../../hooks/useAuthUser";
+import { useAuthUser } from "../../hooks/useAuthUser";
 import useRecipes from "../../hooks/useRecipes";
 
 const validationSchema = yup.object().shape({
@@ -29,19 +28,10 @@ const validationSchema = yup.object().shape({
 
 const SubmitRecipe = () => {
 	const { addRecipe } = useRecipes();
-	const { getAuthUser } = useAuthUser();
-	const { pathname } = useLocation();
-	const isLoggedIn = getAuthUser();
+	const { authUser } = useAuthUser();
 
-	if (!isLoggedIn) {
-		return (
-			<Redirect
-				to={{
-					pathname: "/login",
-					state: { from: pathname }
-				}}
-			/>
-		);
+	if (!authUser) {
+		<div>Log in to submit a recipe.</div>;
 	}
 
 	const onSubmit = (values) => {

@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext, useContext } from "react";
 import axios from "axios";
 import { useMutation } from "react-query";
 import useNotifications from "./useNotifications";
 
 const BASE_URL = "/api/login";
+const AuthUserContext = createContext();
 
 const loginUser = async ({ email, password }) => {
 	const { data } = await axios.post(BASE_URL, {
@@ -13,21 +14,20 @@ const loginUser = async ({ email, password }) => {
 	return data;
 };
 
-const useAuthUser = () => {
+export const AuthProvider = ({ children }) => {
 	const { addNotification } = useNotifications();
-	const [auth, setAuth] = useState(null);
+	const [authUser, setAuthUser] = useState(null);
 
 	const setAuthData = (loggedInUser) => {
-		setAuth(JSON.parse(loggedInUser));
+		setAuthUser(JSON.parse(loggedInUser));
 	};
 
 	useEffect(() => {
 		const loggedInUser = window.localStorage.getItem("recipe-app-user");
-		if (loggedInUser) {
-			setAuthData(loggedInUser);
-		}
+		loggedInUser
+			? setAuthData(loggedInUser)
+			: setAuthData(null);
 	}, []);
-
 
 	const mutation = useMutation(loginUser, {
 		onError: (error) => {
@@ -52,18 +52,18 @@ const useAuthUser = () => {
 	};
 
 	const getAuthHeader = () => {
-		if (auth && auth.token) {
-			return { Authorization: "Bearer " + auth.token };
+		if (authUser && authUser.token) {
+			return { Authorization: "Bearer " + authUser.token };
 		} else {
 			return {};
 		}
 	};
 
-	const getAuthUser = () => {
-		return auth;
-	};
-
-	return { login, logout, getAuthHeader, getAuthUser };
+	return (
+		<AuthUserContext.Provider value={{ authUser, login, logout, getAuthHeader }}>
+			{children}
+		</AuthUserContext.Provider>
+	);
 };
 
-export default useAuthUser;
+export const useAuthUser = () => useContext(AuthUserContext);

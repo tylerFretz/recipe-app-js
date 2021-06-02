@@ -30,7 +30,7 @@ const ToggleableList = ({ items, isNumbered }) => {
 				const isChecked = checked.indexOf(value) !== -1;
 
 				return (
-					<ListItem key={value} role={undefined} dense button onClick={handleToggle(value)} style={{ textDecoration: isChecked ? "line-through" : "none" }}>
+					<ListItem key={value} role={undefined} dense onClick={handleToggle(value)} style={{ textDecoration: isChecked ? "line-through" : "none" }}>
 						<ListItemIcon style={{ alignSelf: "flex-start" }}>
 							<Checkbox
 								edge="start"
@@ -42,7 +42,12 @@ const ToggleableList = ({ items, isNumbered }) => {
 							/>
 						</ListItemIcon>
 						{isNumbered
-							? <ListItemText id={labelId} primary={`Step ${index + 1}`} secondary={value} />
+							? <ListItemText
+								id={labelId}
+								primary={`Step ${index + 1}`}
+								secondary={value}
+								primaryTypographyProps={{ variant: "h6" }}
+							/>
 							: <ListItemText id={labelId} secondary={value} />
 						}
 					</ListItem>

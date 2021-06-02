@@ -6,7 +6,7 @@ import Container from "@material-ui/core/Container";
 
 import LoadingIndicator from "../../components/LoadingIndicator";
 import JumboTronCarousel from "../../components/JumbotronCarousel";
-import RecipeCardRow from "../../components/RecipeCardRow";
+import CardRow from "../../components/CardRow";
 import SectionTitle from "./SectionTitle";
 
 import useRecipes from "../../hooks/useRecipes";
@@ -38,11 +38,11 @@ const Home = () => {
 			<Container className={classes.root}>
 				<div>
 					<SectionTitle title={"Top Rated"} />
-					<RecipeCardRow recipes={topRatedRecipes.data} />
+					<CardRow items={topRatedRecipes.data} type="recipes" />
 				</div>
 				<div>
 					<SectionTitle title={"Latest"} />
-					<RecipeCardRow recipes={latestRecipes.data} />
+					<CardRow items={latestRecipes.data} type="recipes" />
 				</div>
 			</Container>
 		</>
@@ -61,11 +61,11 @@ const Home = () => {
 			<Container className={classes.root}>
 				<div>
 					<SectionTitle title={"Top Rated"} />
-					<RecipeCardRow recipes={topRatedRecipes.data} />
+					<CardRow items={topRatedRecipes.data} type="recipes" />
 				</div>
 				<div>
 					<SectionTitle title={"Latest"} />
-					<RecipeCardRow recipes={latestRecipes.data} />
+					<CardRow items={latestRecipes.data} type="recipes" />
 				</div>
 			</Container>
 		</>

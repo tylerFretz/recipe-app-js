@@ -2,7 +2,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import useNotifications from "./useNotifications";
-import useAuthUser from "./useAuthUser";
+import { useAuthUser } from "./useAuthUser";
 
 const BASE_URL = "/api/recipes";
 
@@ -62,8 +62,7 @@ const useRecipes = () => {
 	};
 
 	const queryRecipeData = () => {
-		return useQuery(["recipeData"],
-			() => getRecipesData());
+		return useQuery("recipeData", () => getRecipesData());
 	};
 
 	const createMutation = useMutation(createRecipe, {

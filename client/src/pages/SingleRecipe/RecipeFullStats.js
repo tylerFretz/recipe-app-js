@@ -1,9 +1,10 @@
 import React from "react";
 import { format } from "date-fns";
 import { makeStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
 	statsContainer: {
 		backgroundColor: "#FFF",
 		padding: "5%",
@@ -24,24 +25,32 @@ const useStyles = makeStyles({
 	},
 	recipeOwner: {
 		listStyle: "none"
+	},
+	userLink: {
+		textDecoration: "none",
+		fontSize: "1.25em",
+		color: "#676767",
+		"&:hover": {
+			color: theme.palette.secondary.main
+		}
 	}
-});
+}));
 
-const RecipeFullStats = ({ username, prepTime, cookTime, servings, area, category, upvoteCount, dateAdded }) => {
+const RecipeFullStats = ({ recipe }) => {
 	const classes = useStyles();
 
-	const formattedDate = format( new Date(dateAdded), "MMMM dd, yyyy");
-	if (!prepTime) prepTime = "?";
-	if (!cookTime) cookTime = "?";
-	if (!servings) servings = "?";
+	const formattedDate = format( new Date(recipe.dateAdded), "MMMM dd, yyyy");
+	if (!recipe.prepTime) recipe.prepTime = "?";
+	if (!recipe.cookTime) recipe.cookTime = "?";
+	if (!recipe.servings) recipe.servings = "?";
 
 	const stats = [
-		{ title: "Preperation Time:", value: prepTime },
-		{ title: "Cook Time:", value: cookTime },
-		{ title: "Servings:", value: servings },
-		{ title: "Cuisine:", value: area },
-		{ title: "Category:", value: category },
-		{ title: "Upvotes:", value: upvoteCount },
+		{ title: "Preperation Time:", value: recipe.prepTime },
+		{ title: "Cook Time:", value: recipe.cookTime },
+		{ title: "Servings:", value: recipe.servings },
+		{ title: "Cuisine:", value: recipe.area },
+		{ title: "Category:", value: recipe.category },
+		{ title: "Upvotes:", value: recipe.upvoteCount },
 		{ title: "Created:", value: formattedDate },
 	];
 
@@ -49,7 +58,7 @@ const RecipeFullStats = ({ username, prepTime, cookTime, servings, area, categor
 		<Paper className={classes.statsContainer}>
 			<ul className={classes.statsList}>
 				<li className={classes.recipeOwner}>
-					<h4>By <span style={{ fontSize: "1.25em" }}>{username}</span></h4>
+					<h3>By <Link to={`/users/${recipe.user.id}`} className={classes.userLink}>{recipe.user.username}</Link></h3>
 				</li>
 				{stats.map(({ title, value }) => (
 					<li key={title} className={classes.listItem}>
@@ -63,5 +72,3 @@ const RecipeFullStats = ({ username, prepTime, cookTime, servings, area, categor
 };
 
 export default RecipeFullStats;
-
-//TODO: Add link to user's profile (also create user profile pages... scope creep is real)

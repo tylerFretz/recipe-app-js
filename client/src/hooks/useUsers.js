@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import useAuthUser from "./useAuthUser";
+import { useAuthUser } from "./useAuthUser";
 import useNotifications from "./useNotifications";
 
 const BASE_URL = "/api/users";
@@ -34,10 +34,9 @@ const addFavourite = async (id, recipeId, config) => {
 const useUsers = () => {
 	const queryClient = useQueryClient();
 	const history = useHistory();
-	const { getAuthHeader, getAuthUser } = useAuthUser();
+	const { getAuthHeader, authUser } = useAuthUser();
 	const { addNotification } = useNotifications();
 	const authHeader = getAuthHeader();
-	const authUser = getAuthUser();
 
 	const getUserById = (id) => {
 		return useQuery(["users", id],

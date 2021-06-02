@@ -3,13 +3,13 @@ import { useLocation, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Pagination from "@material-ui/lab/Pagination";
+import Typography from "@material-ui/core/Typography";
 
 import Banner from "../../components/Banner";
 import LoadingIndicator from "../../components/LoadingIndicator";
-import RecipeCardGrid from "../../components/RecipeCardGrid";
+import CardGrid from "../../components/CardGrid";
 import SearchForm from "./SearchForm";
 import useRecipes from "../../hooks/useRecipes";
-import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
 	mainContainer: {
@@ -27,11 +27,11 @@ const getBreadcrumbList = (queryObject) => {
 	let breadcrumbList = [{ title: "Browse Recipes", path: "recipes/search" }];
 	for (const [key, value] of Object.entries(queryObject)) {
 		if (key === "category") {
-			breadcrumbList = breadcrumbList.concat({ title: "Categories", path: "categories" }, { title: value.trim(), path: `recipes/search?category=${value.trim()}` });
+			breadcrumbList = breadcrumbList.concat({ title: value.trim(), path: `recipes/search?category=${value.trim()}` });
 		} else if (key === "tag") {
-			breadcrumbList = breadcrumbList.concat({ title: "Tags", path: "tags" }, { title: value.trim(), path: `recipes/search?tag=${value.trim()}` });
+			breadcrumbList = breadcrumbList.concat({ title: value.trim(), path: `recipes/search?tag=${value.trim()}` });
 		} else if (key === "area") {
-			breadcrumbList = breadcrumbList.concat({ title: "Areas", path: "areas" }, { title: value.trim(), path: `recipes/search?area=${value.trim()}` });
+			breadcrumbList = breadcrumbList.concat({ title: value.trim(), path: `recipes/search?area=${value.trim()}` });
 		}
 	}
 	return breadcrumbList;
@@ -68,12 +68,12 @@ const RecipeSearch = () => {
 			<SearchForm />
 			{totalPages === 0 && (
 				<div style={{ position: "relative", margin: "10% 30%" }}>
-					<Typography variant="body1" style={{ fontStyle: "italic" }}>No recipes found...</Typography>
+					<Typography variant="body1" style={{ fontStyle: "italic", textAlign: "center" }}>No recipes found...</Typography>
 				</div>
 			)}
 			{totalPages > 0 && (
 				<Container className={classes.mainContainer}>
-					<RecipeCardGrid recipes={data.slice((page * 12) - 12, page * 12)} />
+					<CardGrid items={data.slice((page * 12) - 12, page * 12)} type="recipes" />
 					<div className={classes.paginationContainer}>
 						<Pagination count={totalPages} page={page} onChange={handleChange} />
 					</div>
