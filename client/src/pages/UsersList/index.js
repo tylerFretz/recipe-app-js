@@ -11,62 +11,62 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import useUsers from '../../hooks/useUsers';
 
 const useStyles = makeStyles({
-    link: {
-        textDecoration: 'none',
-        display: 'block',
-        width: '50%',
-    },
-    userContainer: {
-        margin: '3% 0%',
-        border: '1px solid black',
-    },
+	link: {
+		textDecoration: 'none',
+		display: 'block',
+		width: '50%',
+	},
+	userContainer: {
+		margin: '3% 0%',
+		border: '1px solid black',
+	},
 });
 
 const UsersList = () => {
-    const classes = useStyles();
-    const { getAllUsers } = useUsers();
-    const { data, isLoading, error } = getAllUsers();
+	const classes = useStyles();
+	const { getAllUsers } = useUsers();
+	const { data, isLoading, error } = getAllUsers();
 
-    if (error) {
-        return <div>Error getting users...</div>;
-    }
+	if (error) {
+		return <div>Error getting users...</div>;
+	}
 
-    if (isLoading) {
-        return <LoadingIndicator />;
-    }
+	if (isLoading) {
+		return <LoadingIndicator />;
+	}
 
-    return (
-        <>
-            <Banner
-                title="Users"
-                breadcrumbList={[{ title: 'Members', path: 'users' }]}
-            />
-            <Container>
-                {data.map((user) => (
-                    <Link
-                        key={user.id}
-                        to={`/users/${user.id}`}
-                        className={classes.link}
-                    >
-                        <Container className={classes.userContainer}>
-                            <Typography>Username: {user.username}</Typography>
-                            <Typography>
-                                Join Date:{' '}
-                                {format(
-                                    new Date(user.joinDate),
-                                    'MMMM dd, yyyy'
-                                )}
-                            </Typography>
-                            <Typography>
-                                Submitted Recipes:{' '}
-                                {user.submittedRecipes.length}
-                            </Typography>
-                        </Container>
-                    </Link>
-                ))}
-            </Container>
-        </>
-    );
+	return (
+		<>
+			<Banner
+				title="Users"
+				breadcrumbList={[{ title: 'Members', path: 'users' }]}
+			/>
+			<Container>
+				{data.map((user) => (
+					<Link
+						key={user.id}
+						to={`/users/${user.id}`}
+						className={classes.link}
+					>
+						<Container className={classes.userContainer}>
+							<Typography>Username: {user.username}</Typography>
+							<Typography>
+								Join Date:{' '}
+								{format(
+									new Date(user.joinDate),
+									'MMMM dd, yyyy'
+								)}
+							</Typography>
+							<Typography>
+								Submitted Recipes:{' '}
+								{user.submittedRecipes.length}
+							</Typography>
+						</Container>
+					</Link>
+				))}
+			</Container>
+		</>
+	);
 };
 
 export default UsersList;

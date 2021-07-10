@@ -16,33 +16,33 @@ import UsersList from './pages/UsersList';
 import Categories from './pages/Categories';
 
 const App = () => (
-    <>
-        <ScrollToTop />
-        <Header />
-        <NavigationBar />
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignContent: 'center',
-                background: '#F5F5F5',
-                minHeight: '90vh',
-            }}
-        >
-            <Switch>
-                <Route path="/recipes/search" component={RecipeSearch} />
-                <Route path="/recipes/:id" component={SingleRecipe} />
-                <Route exact path="/categories" component={Categories} />
-                <Route path="/users/:id" component={Profile} />
-                <Route exact path="/users" component={UsersList} />
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/submit" component={SubmitRecipe} />
-                <Route path="/" component={Home} />
-            </Switch>
-        </div>
-        <Footer />
-    </>
+	<>
+		<ScrollToTop />
+		<Header />
+		<NavigationBar />
+		<div
+			style={{
+				display: 'flex',
+				flexDirection: 'column',
+				alignContent: 'center',
+				background: '#F5F5F5',
+				minHeight: '90vh',
+			}}
+		>
+			<Switch>
+				<Route path="/recipes/search" component={RecipeSearch} />
+				<Route path="/recipes/:id" component={SingleRecipe} />
+				<Route exact path="/categories" component={Categories} />
+				<Route path="/users/:id" component={Profile} />
+				<Route exact path="/users" component={UsersList} />
+				<Route exact path="/register" component={Register} />
+				<Route exact path="/login" component={Login} />
+				<Route exact path="/submit" component={SubmitRecipe} />
+				<Route path="/" component={Home} />
+			</Switch>
+		</div>
+		<Footer />
+	</>
 );
 
 export default App;

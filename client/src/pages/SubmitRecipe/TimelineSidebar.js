@@ -9,66 +9,66 @@ import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 
 const useStyles = makeStyles({
-    timelineContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '5% 1%',
-        backgroundColor: '#FFF',
-        borderRadius: '3px',
-        boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
-    },
+	timelineContainer: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		padding: '5% 1%',
+		backgroundColor: '#FFF',
+		borderRadius: '3px',
+		boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
+	},
 });
 
 const TimelineSidebar = ({ step }) => {
-    const classes = useStyles();
+	const classes = useStyles();
 
-    return (
-        <Container className={classes.timelineContainer}>
-            <Timeline>
-                <TimelineItem>
-                    <TimelineSeparator>
-                        <TimelineDot
-                            color={step >= 1 ? 'secondary' : 'grey'}
-                            variant="outlined"
-                        />
-                        <TimelineConnector />
-                    </TimelineSeparator>
-                    <TimelineContent>Step 1</TimelineContent>
-                </TimelineItem>
-                <TimelineItem>
-                    <TimelineSeparator>
-                        <TimelineDot
-                            color={step >= 2 ? 'secondary' : 'grey'}
-                            variant="outlined"
-                        />
-                        <TimelineConnector />
-                    </TimelineSeparator>
-                    <TimelineContent>Step 2</TimelineContent>
-                </TimelineItem>
-                <TimelineItem>
-                    <TimelineSeparator>
-                        <TimelineDot
-                            color={step >= 3 ? 'secondary' : 'grey'}
-                            variant="outlined"
-                        />
-                        <TimelineConnector />
-                    </TimelineSeparator>
-                    <TimelineContent>Step 3</TimelineContent>
-                </TimelineItem>
-                <TimelineItem>
-                    <TimelineSeparator>
-                        <TimelineDot
-                            color={step >= 4 ? 'secondary' : 'grey'}
-                            variant="outlined"
-                        />
-                        <TimelineConnector />
-                    </TimelineSeparator>
-                    <TimelineContent>Step 4</TimelineContent>
-                </TimelineItem>
-            </Timeline>
-        </Container>
-    );
+	return (
+		<Container className={classes.timelineContainer}>
+			<Timeline>
+				<TimelineItem>
+					<TimelineSeparator>
+						<TimelineDot
+							color={step >= 1 ? 'secondary' : 'grey'}
+							variant="outlined"
+						/>
+						<TimelineConnector />
+					</TimelineSeparator>
+					<TimelineContent>Step 1</TimelineContent>
+				</TimelineItem>
+				<TimelineItem>
+					<TimelineSeparator>
+						<TimelineDot
+							color={step >= 2 ? 'secondary' : 'grey'}
+							variant="outlined"
+						/>
+						<TimelineConnector />
+					</TimelineSeparator>
+					<TimelineContent>Step 2</TimelineContent>
+				</TimelineItem>
+				<TimelineItem>
+					<TimelineSeparator>
+						<TimelineDot
+							color={step >= 3 ? 'secondary' : 'grey'}
+							variant="outlined"
+						/>
+						<TimelineConnector />
+					</TimelineSeparator>
+					<TimelineContent>Step 3</TimelineContent>
+				</TimelineItem>
+				<TimelineItem>
+					<TimelineSeparator>
+						<TimelineDot
+							color={step >= 4 ? 'secondary' : 'grey'}
+							variant="outlined"
+						/>
+						<TimelineConnector />
+					</TimelineSeparator>
+					<TimelineContent>Step 4</TimelineContent>
+				</TimelineItem>
+			</Timeline>
+		</Container>
+	);
 };
 
 export default TimelineSidebar;

@@ -12,26 +12,26 @@ import theme from './theme';
 import CssBaseLine from '@material-ui/core/CssBaseline';
 
 const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            staleTime: 60 * 1000,
-        },
-    },
+	defaultOptions: {
+		queries: {
+			staleTime: 60 * 1000,
+		},
+	},
 });
 
 ReactDOM.render(
-    <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
-            <SnackbarProvider maxSnack={3}>
-                <AuthProvider>
-                    <Router>
-                        <CssBaseLine />
-                        <App />
-                        <ReactQueryDevtools initialIsOpen={false} />
-                    </Router>
-                </AuthProvider>
-            </SnackbarProvider>
-        </ThemeProvider>
-    </QueryClientProvider>,
-    document.getElementById('root')
+	<QueryClientProvider client={queryClient}>
+		<ThemeProvider theme={theme}>
+			<SnackbarProvider maxSnack={3}>
+				<AuthProvider>
+					<Router>
+						<CssBaseLine />
+						<App />
+						<ReactQueryDevtools initialIsOpen={false} />
+					</Router>
+				</AuthProvider>
+			</SnackbarProvider>
+		</ThemeProvider>
+	</QueryClientProvider>,
+	document.getElementById('root')
 );

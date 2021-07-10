@@ -20,7 +20,7 @@ module.exports = {
 	],
 	'rules': {
 		'indent': [
-			'error',
+			'warn',
 			'tab'
 		],
 		'quotes': [
@@ -37,6 +37,7 @@ module.exports = {
 		],
 		'eqeqeq': 'warn',
 		'no-trailing-spaces': 'warn',
-		'react/prop-types': 0
+		'react/prop-types': 0,
+		'no-unused-vars': 'warn'
 	}
 };
