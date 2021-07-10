@@ -1,46 +1,42 @@
 /* eslint-disable no-undef */
 module.exports = {
-	"env": {
-		"browser": true,
-		"es2021": true
+	'env': {
+		'browser': true,
+		'es2021': true
 	},
-	"extends": [
-		"eslint:recommended",
-		"plugin:react/recommended"
+	'extends': [
+		'eslint:recommended',
+		'plugin:react/recommended'
 	],
-	"parserOptions": {
-		"ecmaFeatures": {
-			"jsx": true
+	'parserOptions': {
+		'ecmaFeatures': {
+			'jsx': true
 		},
-		"ecmaVersion": 12,
-		"sourceType": "module"
+		'ecmaVersion': 12,
+		'sourceType': 'module'
 	},
-	"plugins": [
-		"react"
+	'plugins': [
+		'react'
 	],
-	"rules": {
-		"indent": [
-			"error",
-			"tab"
+	'rules': {
+		'indent': [
+			'error',
+			'tab'
 		],
-		"linebreak-style": [
-			"error",
-			"windows"
+		'quotes': [
+			'warn',
+			'single'
 		],
-		"quotes": [
-			"error",
-			"double"
+		'semi': [
+			'error',
+			'always'
 		],
-		"semi": [
-			"error",
-			"always"
+		'object-curly-spacing': [
+			'warn',
+			'always'
 		],
-		"object-curly-spacing": [
-			"warn",
-			"always"
-		],
-		"eqeqeq": "warn",
-		"no-trailing-spaces": "warn",
-		"react/prop-types": 0
+		'eqeqeq': 'warn',
+		'no-trailing-spaces': 'warn',
+		'react/prop-types': 0
 	}
 };

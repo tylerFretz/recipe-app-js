@@ -27,7 +27,7 @@ usersRouter.get("/:id", async (req, res) => {
 usersRouter.post("/",
 	body("username").not().isEmpty().isLength({ min: 3, max: 50 }).trim().escape().withMessage("Username must be between 3 and 50 characters"),
 	body("email").not().isEmpty().isEmail().withMessage("Improper Email format"),
-	body("password").not().isStrongPassword().withMessage("Password specifications: Min length: 8, Min lowercase: 1, Min uppercase: 1, minNumbers: 1, minSymbols: 1"),
+	body("password").isStrongPassword().withMessage("Password specifications: Min length: 8, Min lowercase: 1, Min uppercase: 1, minNumbers: 1, minSymbols: 1"),
 async (req, res) => {
 	const { body } = req;
 
