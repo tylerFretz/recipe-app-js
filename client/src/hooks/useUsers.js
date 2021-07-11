@@ -52,7 +52,8 @@ const useUsers = () => {
 				onError: () => {
 					addNotification('Error retrieving user.', 'error');
 				}
-			});
+			}
+		);
 	};
 
 	const getAllUsers = () => {
@@ -61,7 +62,8 @@ const useUsers = () => {
 				onError: () => {
 					addNotification('Error retrieving users.', 'error');
 				}
-			});
+			}
+		);
 	};
 
 	const createMutation = useMutation(createUser, {

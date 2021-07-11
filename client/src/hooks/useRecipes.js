@@ -62,19 +62,20 @@ const useRecipes = () => {
 	const authHeader = getAuthHeader();
 
 	const getRecipeById = (id) => {
-		return useQuery(['recipes', id], () => getRecipe(id)), {
-			onError: () => {
-				addNotification('Error retrieving recipe.', 'error');
+		return useQuery(['recipes', id], () => getRecipe(id),
+			{
+				onError: () => {
+					addNotification('Error retrieving recipe.', 'error');
+				}
 			}
-		};
+		);
 	};
 
 	const queryRecipes = (queryOptions) => {
-		return useQuery(['recipes', { ...queryOptions }], () =>
-			getRecipes(queryOptions),
+		return useQuery(['recipes', { ...queryOptions }], () => getRecipes(queryOptions),
 			{
 				onError: () => {
-					addNotification('Error retrieving user.', 'error');
+					addNotification('Error retrieving recipes.', 'error');
 				}
 			}
 		);

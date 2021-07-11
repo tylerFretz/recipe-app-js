@@ -15,13 +15,16 @@ const SingleRecipe = () => {
 	const { getRecipeById, upvoteRecipe, addComment } = useRecipes();
 	const { data: recipe, isLoading, error } = getRecipeById(id);
 
-	if (isLoading) {
+
+	if (isLoading || !recipe) {
 		return <LoadingIndicator />;
 	}
 
 	if (error) {
 		return <div>404: Recipe not found</div>;
 	}
+
+	console.log(recipe);
 
 	const handleVote = () => {
 		upvoteRecipe(id);
