@@ -47,11 +47,21 @@ const useUsers = () => {
 	const authHeader = getAuthHeader();
 
 	const getUserById = (id) => {
-		return useQuery(['users', id], () => getUser(id));
+		return useQuery(['users', id], () => getUser(id),
+			{
+				onError: () => {
+					addNotification('Error retrieving user.', 'error');
+				}
+			});
 	};
 
 	const getAllUsers = () => {
-		return useQuery(['users'], () => getUsers());
+		return useQuery(['users'], () => getUsers(),
+			{
+				onError: () => {
+					addNotification('Error retrieving users.', 'error');
+				}
+			});
 	};
 
 	const createMutation = useMutation(createUser, {
