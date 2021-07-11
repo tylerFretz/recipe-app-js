@@ -1,17 +1,17 @@
-const fs = require("fs");
-const nodePath = require("path");
-const logger = require("./logger");
+const fs = require('fs');
+const nodePath = require('path');
+const logger = require('./logger');
 
 const requestLogger = (req, res, next) => {
-	logger.info("Method:", req.method);
-	logger.info("Path:  ", req.path);
-	logger.info("Body:  ", req.body);
-	logger.info("---");
+	logger.info('Method:', req.method);
+	logger.info('Path:  ', req.path);
+	logger.info('Body:  ', req.body);
+	logger.info('---');
 	next();
 };
 
 const unknownEndpoint = (req, res) => {
-	const documentPath = nodePath.join(__dirname, "../build", "index.html");
+	const documentPath = nodePath.join(__dirname, '../build', 'index.html');
 	const documentExists = fs.existsSync(documentPath);
 
 	if (documentExists) {
@@ -23,10 +23,10 @@ const unknownEndpoint = (req, res) => {
 
 
 const tokenExtractor = (req, res, next) => {
-	const authorization = req.get("authorization");
+	const authorization = req.get('authorization');
 	req.token = null;
 
-	if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+	if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
 		req.token = authorization.substring(7);
 	}
 	next();
@@ -35,17 +35,17 @@ const tokenExtractor = (req, res, next) => {
 const errorHandler = (err, req, res, next) => {
 	if (!err) next();
 
-	if (err.name === "CastError") {
-		return res.status(400).send({ error: "malformatted id" });
+	if (err.name === 'CastError') {
+		return res.status(400).send({ error: 'malformatted id' });
 	}
-	else if (err.name === "ValidationError") {
+	else if (err.name === 'ValidationError') {
 		return res.status(400).json({ error: err.message });
 	}
-	else if (err.name === "JsonWebTokenError") {
-		return res.status(401).json({ error: "invalid token" });
+	else if (err.name === 'JsonWebTokenError') {
+		return res.status(401).json({ error: 'invalid token' });
 	}
-	else if (err.name === "TokenExpiredError") {
-		return res.status(401).json({ error: "token expired" });
+	else if (err.name === 'TokenExpiredError') {
+		return res.status(401).json({ error: 'token expired' });
 	}
 
 	logger.error(err);

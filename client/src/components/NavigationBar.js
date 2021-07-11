@@ -26,22 +26,22 @@ const useStyles = makeStyles((theme) => ({
 		background: '#FFF',
 		margin: 0,
 		width: '100%',
-		zIndex: 6,
+		zIndex: 6
 	},
 	flexList: {
 		display: 'flex',
 		justifyContent: 'space-between',
 		flexGrow: 1,
 		padding: '0% 10%',
-		maxWidth: '60%',
+		maxWidth: '60%'
 	},
 	listItem: {
 		textDecoration: 'none',
 		fontSize: '1.05rem',
 		color: theme.palette.darkGrey.main,
 		'&:hover': {
-			color: theme.palette.secondary.main,
-		},
+			color: theme.palette.secondary.main
+		}
 	},
 	search: {
 		position: 'relative',
@@ -115,41 +115,20 @@ const NavigationBar = () => {
 		<NavigationBarMobile />
 	) : (
 		<div className={classes.navBarDisplayFlex}>
-			<List
-				aria-labelledby="main navigation"
-				className={classes.flexList}
-			>
+			<List aria-labelledby="main navigation" className={classes.flexList}>
 				<ListItem style={{ justifyContent: 'center' }}>
 					<NavLink to="/" className={classes.listItem}>
-						<ListItemText
-							className={classes.listItem}
-							disableTypography
-						>
-							Home
-						</ListItemText>
+						<ListItemText className={classes.listItem} disableTypography>Home</ListItemText>
 					</NavLink>
 				</ListItem>
 				<ListItem>
 					<NavLink to="/users" className={classes.listItem}>
-						<ListItemText
-							className={classes.listItem}
-							disableTypography
-						>
-							Members
-						</ListItemText>
+						<ListItemText className={classes.listItem} disableTypography>Members</ListItemText>
 					</NavLink>
 				</ListItem>
 				<ListItem id="popoverMenuButton" onClick={handleMenuOpen}>
-					<ListItemText
-						className={classes.listItem}
-						disableTypography
-					>
-						Recipes
-					</ListItemText>
-					<KeyboardArrowDownIcon
-						fontSize="small"
-						style={{ color: '#676767' }}
-					/>
+					<ListItemText className={classes.listItem} disableTypography>Recipes</ListItemText>
+					<KeyboardArrowDownIcon fontSize="small" style={{ color: '#676767' }} />
 				</ListItem>
 				<Menu
 					anchorEl={document.getElementById('popoverMenuButton')}
@@ -160,36 +139,19 @@ const NavigationBar = () => {
 					variant="menu"
 				>
 					<NavLink to="/categories" className={classes.listItem}>
-						<MenuItem onClick={handleMenuClose}>
-							Category List
-						</MenuItem>
+						<MenuItem onClick={handleMenuClose}>Category List</MenuItem>
 					</NavLink>
-					<NavLink
-						to="/recipes/search?sortBy=dateAdded"
-						className={classes.listItem}
-					>
-						<MenuItem onClick={handleMenuClose}>
-							Latest Recipes
-						</MenuItem>
+					<NavLink to="/recipes/search?sortBy=dateAdded" className={classes.listItem}>
+						<MenuItem onClick={handleMenuClose}>Latest Recipes</MenuItem>
 					</NavLink>
-					<NavLink
-						to="/recipes/search?sortBy=upvoteCount"
-						className={classes.listItem}
-					>
-						<MenuItem onClick={handleMenuClose}>
-							Most Liked Recipes
-						</MenuItem>
+					<NavLink to="/recipes/search?sortBy=upvoteCount" className={classes.listItem}>
+						<MenuItem onClick={handleMenuClose}>Most Liked Recipes</MenuItem>
 					</NavLink>
 				</Menu>
 				{authUser && (
 					<ListItem>
 						<NavLink to="/submit" className={classes.listItem}>
-							<ListItemText
-								className={classes.listItem}
-								disableTypography
-							>
-								Submit Recipe
-							</ListItemText>
+							<ListItemText className={classes.listItem} disableTypography>Submit Recipe</ListItemText>
 						</NavLink>
 					</ListItem>
 				)}

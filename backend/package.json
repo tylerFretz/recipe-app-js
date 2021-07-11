@@ -1,48 +1,49 @@
 {
-  "name": "recipe-app",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "cross-env NODE_ENV=production node index.js",
-    "dev": "cross-env NODE_ENV=development nodemon index.js",
-    "build:client": "rm -rf build && cd ../client && npm run build --prod && cp -r build ../backend",
-    "deploy:full": "npm run build:client && git add --a && git commit -m uibuild && npm run deploy",
-    "deploy": "git push heroku master",
-    "logs:prod": "heroku logs --tail",
-    "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
-    "start:test": "cross-env NODE_ENV=test node index.js",
-    "lint": "eslint './**/*.{js,jsx}'"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tylerFretz/recipe-app-js.git"
-  },
-  "author": "Tyler Fretz",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/tylerFretz/recipe-app-js/issues"
-  },
-  "homepage": "https://github.com/tylerFretz/recipe-app-js#readme",
-  "devDependencies": {
-    "cross-env": "^7.0.3",
-    "eslint": "^7.23.0",
-    "jest": "^26.6.3",
-    "mongodb-memory-server-core": "^6.9.6",
-    "nodemon": "^2.0.7",
-    "supertest": "^6.1.3"
-  },
-  "dependencies": {
-    "bcrypt": "^5.0.1",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-async-errors": "^3.1.1",
-    "express-static-gzip": "^2.1.1",
-    "express-validator": "^6.11.1",
-    "helmet": "^4.6.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.2",
-    "mongoose-unique-validator": "^2.0.3"
-  }
+	"name": "recipe-app",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "cross-env NODE_ENV=production node index.js",
+		"dev": "cross-env NODE_ENV=development nodemon index.js",
+		"build:client": "rm -rf build && cd ../client && npm run build --prod && cp -r build ../backend",
+		"deploy:full": "npm run build:client && git add --a && git commit -m uibuild && npm run deploy",
+		"deploy": "git push heroku master",
+		"logs:prod": "heroku logs --tail",
+		"test": "cross-env NODE_ENV=test jest --verbose --runInBand",
+		"start:test": "cross-env NODE_ENV=test node index.js",
+		"lint": "eslint './**/*.{js,jsx}'"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/tylerFretz/recipe-app-js.git"
+	},
+	"author": "Tyler Fretz",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/tylerFretz/recipe-app-js/issues"
+	},
+	"homepage": "https://github.com/tylerFretz/recipe-app-js#readme",
+	"devDependencies": {
+		"cross-env": "^7.0.3",
+		"eslint": "^7.23.0",
+		"jest": "^26.6.3",
+		"mongodb-memory-server-core": "^6.9.6",
+		"nodemon": "^2.0.7",
+		"supertest": "^6.1.3"
+	},
+	"dependencies": {
+		"axios": "^0.21.1",
+		"bcrypt": "^5.0.1",
+		"cors": "^2.8.5",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"express-async-errors": "^3.1.1",
+		"express-static-gzip": "^2.1.1",
+		"express-validator": "^6.11.1",
+		"helmet": "^4.6.0",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^5.12.2",
+		"mongoose-unique-validator": "^2.0.3"
+	}
 }

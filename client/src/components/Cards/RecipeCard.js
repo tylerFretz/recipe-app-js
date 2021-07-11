@@ -6,8 +6,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 
-import RecipeStats from './RecipeStats';
-import noImageAvailable from '../assets/noImageAvailable.jpg';
+import RecipeStats from '../RecipeStats';
+import noImageAvailable from '../../assets/noImageAvailable.jpg';
 
 const useStyles = makeStyles({
 	recipeCard: {

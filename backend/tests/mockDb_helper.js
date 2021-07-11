@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const { MongoMemoryServer } = require("mongodb-memory-server-core");
-const Recipe = require("../models/recipe");
-const User = require("../models/user");
+const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server-core');
+const Recipe = require('../models/recipe');
+const User = require('../models/user');
 
 const mongod = new MongoMemoryServer();
 
@@ -13,8 +13,8 @@ module.exports.connect = async () => {
 		useUnifiedTopology: true,
 	};
 
-	mongoose.set("useCreateIndex", true);
-	mongoose.set("useFindAndModify", false);
+	mongoose.set('useCreateIndex', true);
+	mongoose.set('useFindAndModify', false);
 
 	await mongoose.connect(uri, mongooseOpts);
 };

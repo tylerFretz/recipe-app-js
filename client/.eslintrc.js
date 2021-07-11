@@ -19,10 +19,6 @@ module.exports = {
 		'react'
 	],
 	'rules': {
-		'indent': [
-			'warn',
-			'tab'
-		],
 		'quotes': [
 			'warn',
 			'single'

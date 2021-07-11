@@ -1,24 +1,24 @@
-const express = require("express");
-require("express-async-errors");
-const expressStaticGzip = require("express-static-gzip");
-const cors = require("cors");
-const helmet = require("helmet");
-const logger = require("./utils/logger");
-const db = require("./utils/db_helper");
-const mockDb = require("./tests/mockDb_helper");
-const middleware = require("./utils/middleware");
-const recipesRouter = require("./controllers/recipes");
-const usersRouter = require("./controllers/users");
-const loginRouter = require("./controllers/login");
-const testingRouter = require("./controllers/testing");
+const express = require('express');
+require('express-async-errors');
+const expressStaticGzip = require('express-static-gzip');
+const cors = require('cors');
+const helmet = require('helmet');
+const logger = require('./utils/logger');
+const db = require('./utils/db_helper');
+const mockDb = require('./tests/mockDb_helper');
+const middleware = require('./utils/middleware');
+const recipesRouter = require('./controllers/recipes');
+const usersRouter = require('./controllers/users');
+const loginRouter = require('./controllers/login');
+const testingRouter = require('./controllers/testing');
 
 const app = express();
 
-if (process.env.NODE_ENV === "test") {
+if (process.env.NODE_ENV === 'test') {
 	mockDb.connect().catch(err => {
 		logger.error(err);
 	});
-	app.use("/api/testing", testingRouter);
+	app.use('/api/testing', testingRouter);
 } else {
 	db.connect().catch(err => {
 		logger.error(err);
@@ -31,17 +31,17 @@ app.use(express.json());
 app.use(middleware.requestLogger);
 app.use(middleware.tokenExtractor);
 
-app.use("/api/recipes", recipesRouter);
-app.use("/api/users", usersRouter);
-app.use("/api/login", loginRouter);
+app.use('/api/recipes', recipesRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/login', loginRouter);
 
 app.use(
-	"/",
-	expressStaticGzip("build/", {
+	'/',
+	expressStaticGzip('build/', {
 		enableBrotli: true,
-		orderPreference: ["br", "gz"],
+		orderPreference: ['br', 'gz'],
 		setHeaders: (res) => {
-			res.setHeader("Cache-Control", "public, max-age=31536000");
+			res.setHeader('Cache-Control', 'public, max-age=31536000');
 		},
 	})
 );

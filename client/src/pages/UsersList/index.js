@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 
 import Banner from '../../components/Banner';
 import LoadingIndicator from '../../components/LoadingIndicator';
-// import CardGrid from "../../components/CardGrid";
 import useUsers from '../../hooks/useUsers';
 
 const useStyles = makeStyles({

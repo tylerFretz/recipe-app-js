@@ -1,10 +1,13 @@
 import React from 'react';
 import { Redirect, useParams, NavLink } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
 
 import useUsers from '../../hooks/useUsers';
+import useRecipes from '../../hooks/useRecipes';
 
 const Profile = () => {
 	const { getUserById } = useUsers();
+	const { removeRecipe } = useRecipes();
 	const { id } = useParams();
 	const user = getUserById(id);
 
@@ -40,6 +43,7 @@ const Profile = () => {
 							<NavLink to={`/recipes/${recipe.id}`}>
 								{recipe.name}
 							</NavLink>
+							<Button onClick={() => removeRecipe(recipe.id)}>delete</Button>
 						</li>
 					))}
 				</ul>

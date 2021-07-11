@@ -12,7 +12,6 @@ const useStyles = makeStyles({
 		backgroundColor: '#333333',
 		color: '#FFF',
 		minHeight: '5vh',
-		marginTop: '5%',
 	},
 	section: {
 		display: 'flex',

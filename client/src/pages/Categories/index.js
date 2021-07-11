@@ -7,7 +7,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 import Banner from '../../components/Banner';
 import LoadingIndicator from '../../components/LoadingIndicator';
-import CardGrid from '../../components/CardGrid';
+import CardGrid from '../../components/Cards/CardGrid';
 import useRecipes from '../../hooks/useRecipes';
 
 const useStyles = makeStyles({

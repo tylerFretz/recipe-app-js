@@ -144,6 +144,13 @@ const SubmitRecipeContainer = ({ onSubmit, validationSchema }) => {
 										Next
 									</Button>
 								</Container>
+								{errors && (
+									<ul>
+										{Object.keys(errors).map((err) => (
+											<li key={err}>Add recipe {err} to continue.</li>
+										))}
+									</ul>
+								)}
 							</>
 						)}
 					</Formik>

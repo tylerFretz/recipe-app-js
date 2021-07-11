@@ -6,7 +6,7 @@ import Container from '@material-ui/core/Container';
 
 import LoadingIndicator from '../../components/LoadingIndicator';
 import JumboTronCarousel from '../../components/JumbotronCarousel';
-import CardRow from '../../components/CardRow';
+import CardRow from '../../components/Cards/CardRow';
 import SectionTitle from './SectionTitle';
 
 import useRecipes from '../../hooks/useRecipes';
