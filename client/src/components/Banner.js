@@ -53,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
 		padding: '0px 2px',
 		display: 'inline',
 		textDecoration: 'none',
+		'&:hover': {
+			color: theme.palette.primary.main
+		}
 	},
 }));
 

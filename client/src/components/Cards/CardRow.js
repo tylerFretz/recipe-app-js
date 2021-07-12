@@ -2,7 +2,6 @@ import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Grid from '@material-ui/core/Grid';
-
 import MetaCard from './MetaCard';
 import RecipeCard from './RecipeCard';
 
@@ -10,7 +9,7 @@ const CardRow = ({ items, type }) => {
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-	return type === 'recipes' ? (
+	return (type === 'recipes' || type === 'profile') ? (
 		<Grid
 			container
 			spacing={3}
@@ -24,7 +23,7 @@ const CardRow = ({ items, type }) => {
 					key={recipe.id}
 					style={{ justifyContent: 'center' }}
 				>
-					<RecipeCard recipe={recipe} />
+					<RecipeCard recipe={recipe} type={type} />
 				</Grid>
 			))}
 		</Grid>

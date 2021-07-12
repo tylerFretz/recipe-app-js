@@ -1,64 +1,44 @@
 import React from 'react';
-import { Redirect, useParams, NavLink } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
+import { Redirect, useParams } from 'react-router-dom';
 
+import LoadingIndicator from '../../components/LoadingIndicator';
+import Banner from '../../components/Banner';
+import CardGrid from '../../components/Cards/CardGrid';
 import useUsers from '../../hooks/useUsers';
-import useRecipes from '../../hooks/useRecipes';
 
 const Profile = () => {
 	const { getUserById } = useUsers();
-	const { removeRecipe } = useRecipes();
 	const { id } = useParams();
 	const user = getUserById(id);
 
-	if (!user) {
-		return <Redirect to="/login" />;
-	}
-
 	if (user.isLoading) {
-		return <div>Loading...</div>;
+		return <LoadingIndicator />;
 	}
 
 	if (user.error) {
-		return <div>Error: 404</div>;
+		return <Redirect to="/" />;
 	}
 
-	const { submittedRecipes, savedRecipes, email, username } = user.data;
+	if (user) {
+		console.log(user);
+	}
+
+	const { submittedRecipes, savedRecipes, username } = user.data;
+	const breadcrumb = [{ title: 'Members', path: 'users' }, { title: username, path: `users/${id}` }];
 
 	return (
-		<div>
-			<div>
-				<h3>Username: </h3>
-				<span>{username}</span>
-			</div>
-			<div>
-				<h3>Email: </h3>
-				<span>{email}</span>
-			</div>
-			<div>
-				<h3>Submitted Recipes: </h3>
-				<ul>
-					{submittedRecipes.map((recipe) => (
-						<li key={recipe.id}>
-							<NavLink to={`/recipes/${recipe.id}`}>
-								{recipe.name}
-							</NavLink>
-							<Button onClick={() => removeRecipe(recipe.id)}>delete</Button>
-						</li>
-					))}
-				</ul>
-			</div>
-			<div>
-				<h3>Saved Recipes: </h3>
-				<ul>
-					{savedRecipes.map((recipe) => (
-						<li key={recipe.id}>
-							<a href={`recipes/${recipe.id}`}>{recipe.name}</a>
-						</li>
-					))}
-				</ul>
-			</div>
-		</div>
+		<>
+			<Banner
+				title={username}
+				breadcrumbList={breadcrumb}
+			/>
+			{submittedRecipes.length > 0 && (
+				<CardGrid
+					items={submittedRecipes}
+					type='profile'
+				/>
+			)}
+		</>
 	);
 };
 

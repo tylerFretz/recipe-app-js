@@ -179,9 +179,43 @@ recipesRouter.post('/',
 		res.status(201).json(savedRecipe);
 	});
 
+recipesRouter.put('/:id',
+	body('name').not().isEmpty().isLength({ max: 100 }).trim().escape().withMessage('Name must not have more than 100 characters.'),
+	body('instructions').not().isEmpty().isLength({ max: 10000 }).trim().escape().withMessage('Instructions too long'),
+	body('ingredients').isArray({ min: 1 }).withMessage('Need at least 1 ingredient'),
+	body('summary').optional().isString().isLength({ max: 500 }).trim().escape().withMessage('Summary must not have more than 500 characters.'),
+	body('category').optional().isString().trim().escape().withMessage('Category must be a string'),
+	body('area').optional().isString().trim().escape().withMessage('Area must be a string'),
+	body('thumbImageUrl').optional().matches(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/).withMessage('Thumb image must be provided as a url'),
+	body('youtubeUrl').optional().matches(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/).withMessage('Youtube url must be provided as a url'),
+	body('tags.*').optional().isString().trim().escape().withMessage('Tags must be strings'),
+	body('sourceUrl').optional().matches(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/).withMessage('Source url must be a valid url'),
+	body('prepTime').optional().isInt().withMessage('Prep time must be an integer'),
+	body('cookTime').optional().isInt().withMessage('Cook time must be an integer'),
+	body('servings').optional().isInt().withMessage('Servings must be an integer'),
+	async (req, res) => {
+		const errors = validationResult(req);
+
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
+		}
+
+		const { body } = req;
+		const { token } = req;
+		// a user must be logged in to add a new recipe
+		const decodedToken = jwt.verify(token, process.env.SECRET);
+		if (!token || !decodedToken.id) {
+			return res.status(401).json({ error: 'token missing or invalid' });
+		}
+
+		const updatedRecipe = await Recipe.findByIdAndUpdate(req.params.id, body, { new: true })
+			.populate('user', { username: 1, id: 1 });
+		res.status(201).json(updatedRecipe);
+	});
+
 // Update amount of upvotes a recipe has
 // a user can only change the amount of upvotes by +/- 1
-recipesRouter.put('/:id', async (req, res) => {
+recipesRouter.post('/:id/upvotes', async (req, res) => {
 	const { token } = req;
 
 	// a user must be logged in to vote

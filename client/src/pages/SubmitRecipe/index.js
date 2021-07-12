@@ -1,6 +1,6 @@
 import React from 'react';
 import * as yup from 'yup';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useLocation } from 'react-router-dom';
 
 import SubmitRecipeContainer from './SubmitRecipeContainer';
 import { useAuthUser } from '../../hooks/useAuthUser';
@@ -11,15 +11,19 @@ const validationSchema = yup.object().shape({
 		.string()
 		.max(256, 'Too long!')
 		.required('Recipe title is required.'),
-	category: yup.string().nullable(),
-	area: yup.string().nullable(),
-	instructions: yup.string().required('Instructions are required.'),
-	ingredients: yup.array().of(
-		yup.object().shape({
-			name: yup.string().required('Required'),
-			measure: yup.string().required('Required'),
-		})
-	),
+	category: yup
+		.string().nullable(),
+	area: yup
+		.string().nullable(),
+	instructions: yup
+		.string().required('Instructions are required.'),
+	ingredients: yup
+		.array().of(
+			yup.object().shape({
+				name: yup.string().required('Required'),
+				measure: yup.string().required('Required'),
+			})
+		),
 	thumbImageUrl: yup
 		.string()
 		.transform((v) => (v === '' ? null : v))
@@ -35,7 +39,8 @@ const validationSchema = yup.object().shape({
 		.transform((v) => (v === '' ? null : v))
 		.url('Must be a URL')
 		.nullable(),
-	tags: yup.array().of(yup.string()).max(5, 'Max 5 tags.'),
+	tags: yup
+		.array().of(yup.string()).max(5, 'Max 5 tags.'),
 	summary: yup
 		.string()
 		.trim()
@@ -55,9 +60,33 @@ const validationSchema = yup.object().shape({
 		.min(0, 'Minimum servings is 1'),
 });
 
+let initialValues = {
+	name: '',
+	category: '',
+	area: '',
+	instructions: '',
+	ingredients: [
+		{
+			name: '',
+			measure: '',
+		},
+	],
+	thumbImageUrl: '',
+	youtubeUrl: '',
+	tags: [],
+	sourceUrl: '',
+	summary: '',
+	prepTime: 0,
+	cookTime: 0,
+	servings: 1,
+};
+
 const SubmitRecipe = () => {
-	const { addRecipe } = useRecipes();
+	const { addRecipe, updateExistingRecipe } = useRecipes();
 	const { authUser } = useAuthUser();
+	const location = useLocation();
+
+	if (location.state) initialValues = location.state;
 
 	const onSubmit = (values) => {
 		const newRecipe = {
@@ -78,13 +107,20 @@ const SubmitRecipe = () => {
 		if (values.youtubeUrl !== '') newRecipe.youtubeUrl = values.youtubeUrl;
 		if (values.sourceUrl !== '') newRecipe.sourceUrl = values.sourceUrl;
 
-		addRecipe(newRecipe);
+		if (location.state) {
+			newRecipe.id = location.state.id;
+			updateExistingRecipe(newRecipe);
+		}
+		else {
+			addRecipe(newRecipe);
+		}
 	};
 
 	return authUser ? (
 		<SubmitRecipeContainer
 			onSubmit={onSubmit}
 			validationSchema={validationSchema}
+			initialValues={initialValues}
 		/>
 	) : (
 		<Redirect to="/login" />

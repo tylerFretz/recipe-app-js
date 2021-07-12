@@ -126,7 +126,7 @@ const NavigationBar = () => {
 						<ListItemText className={classes.listItem} disableTypography>Members</ListItemText>
 					</NavLink>
 				</ListItem>
-				<ListItem id="popoverMenuButton" onClick={handleMenuOpen}>
+				<ListItem id="popoverMenuButton" onMouseOver={handleMenuOpen}>
 					<ListItemText className={classes.listItem} disableTypography>Recipes</ListItemText>
 					<KeyboardArrowDownIcon fontSize="small" style={{ color: '#676767' }} />
 				</ListItem>

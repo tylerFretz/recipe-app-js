@@ -27,8 +27,15 @@ const createRecipe = async ({ newRecipe, config }) => {
 	return data;
 };
 
-const updateRecipe = async ({ id, config }) => {
-	const { data } = await axios.put(`${BASE_URL}/${id}`, null, {
+const likeRecipe = async ({ id, config }) => {
+	const { data } = await axios.post(`${BASE_URL}/${id}/upvotes`, null, {
+		headers: config,
+	});
+	return data;
+};
+
+const updateRecipe = async ({ updatedRecipe, config }) => {
+	const { data } = await axios.put(`${BASE_URL}/${updatedRecipe.id}`, updatedRecipe, {
 		headers: config,
 	});
 	return data;
@@ -100,7 +107,22 @@ const useRecipes = () => {
 		createMutation.mutate({ newRecipe: newRecipe, config: authHeader });
 	};
 
-	const upvoteMutation = useMutation(updateRecipe, {
+	const updateMutation = useMutation(updateRecipe, {
+		onError: (error) => {
+			addNotification(error.response.data.errors[0].msg, 'error');
+		},
+		onSuccess: (data) => {
+			queryClient.invalidateQueries('recipes');
+			history.push(`${BASE_URL}/${data.id}`);
+			addNotification(`Updated recipe: ${data.name}`, 'success');
+		},
+	});
+
+	const updateExistingRecipe = (updatedRecipe) => {
+		updateMutation.mutate({ updatedRecipe, config: authHeader });
+	};
+
+	const upvoteMutation = useMutation(likeRecipe, {
 		onError: () => {
 			addNotification('Must be logged in.', 'error');
 		},
@@ -118,8 +140,8 @@ const useRecipes = () => {
 			addNotification('Must be logged in.', 'error');
 		},
 		onSuccess: () => {
+			queryClient.invalidateQueries('users');
 			queryClient.invalidateQueries('recipes');
-			history.push('/');
 			addNotification('Deleted recipe.', 'success');
 		},
 	});
@@ -146,6 +168,7 @@ const useRecipes = () => {
 		getRecipeById,
 		queryRecipes,
 		addRecipe,
+		updateExistingRecipe,
 		upvoteRecipe,
 		removeRecipe,
 		addComment,

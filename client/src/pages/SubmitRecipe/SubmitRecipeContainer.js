@@ -58,28 +58,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const initialValues = {
-	name: '',
-	category: '',
-	area: '',
-	instructions: '',
-	ingredients: [
-		{
-			name: '',
-			measure: '',
-		},
-	],
-	thumbImageUrl: '',
-	youtubeUrl: '',
-	tags: [],
-	sourceUrl: '',
-	summary: '',
-	prepTime: 0,
-	cookTime: 0,
-	servings: 1,
-};
-
-const SubmitRecipeContainer = ({ onSubmit, validationSchema }) => {
+const SubmitRecipeContainer = ({ initialValues, onSubmit, validationSchema }) => {
 	const classes = useStyles();
 	const [step, setStep] = useState(1);
 
