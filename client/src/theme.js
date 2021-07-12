@@ -70,6 +70,11 @@ theme.overrides = {
 			color: 'red',
 		},
 	},
+	MuiListItem: {
+		root: {
+			width: ''
+		}
+	},
 	MuiTypography: {
 		root: {
 			color: '#676767',
