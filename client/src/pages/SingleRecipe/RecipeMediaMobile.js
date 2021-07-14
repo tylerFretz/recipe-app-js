@@ -43,8 +43,11 @@ const useStyles = makeStyles({
 	},
 	metaCount: {
 		display: 'flex',
+		background: '#edeaea',
 		justifyContent: 'space-around',
-		marginTop: '5%'
+		marginTop: '5%',
+		width: '80%',
+		borderRadius: '5px'
 	}
 });
 
