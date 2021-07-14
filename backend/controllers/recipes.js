@@ -224,7 +224,7 @@ recipesRouter.post('/:id/upvotes', async (req, res) => {
 		return res.status(401).json({ error: 'Must be logged in.' });
 	}
 
-	const recipe = await Recipe.findById(req.params.id);
+	const recipe = await Recipe.findById(req.params.id).populate('user', { username: 1, id: 1 });
 	if (!recipe) return res.status(404).end();
 
 	if (recipe.upvotedUsers.includes(decodedToken.id)) {
