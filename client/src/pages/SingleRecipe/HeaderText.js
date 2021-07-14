@@ -33,9 +33,9 @@ const useStyles = makeStyles((theme) => ({
 		marginRight: '2%',
 	},
 	breadCrumb: {
-		marginRight: '5%',
-		fontWeight: 500,
-		textDecoration: 'none',
+		'&:hover': {
+			color: theme.palette.secondary.main
+		}
 	},
 	title: {
 		variant: 'h2',
@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: '50%',
 		textDecoration: 'none',
 		'&:hover': {
-			backgroundColor: theme.palette.secondary.main,
+			backgroundColor: '#606060',
 		},
 	},
 	summary: {
@@ -106,13 +106,13 @@ const HeaderText = ({ recipe, handleVote, handleSave, executeCommentScroll }) =>
 				</Typography>
 				<Breadcrumbs separator="/" aria-label="breadcrumb">
 					<Link to="/" style={{ textDecoration: 'none' }}>
-						<Typography>Home</Typography>
+						<Typography className={classes.breadCrumb}>Home</Typography>
 					</Link>
 					<Link
 						to={`/recipes/search?category=${recipe.category}`}
 						style={{ textDecoration: 'none' }}
 					>
-						<Typography>{recipe.category}</Typography>
+						<Typography className={classes.breadCrumb}>{recipe.category}</Typography>
 					</Link>
 				</Breadcrumbs>
 			</Container>

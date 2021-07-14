@@ -96,13 +96,13 @@ usersRouter.post('/:id/savedRecipes', async (req, res) => {
 
 	if (user.savedRecipes.includes(recipeId)) {
 		user.savedRecipes = user.savedRecipes.filter(id => id.toString() !== recipeId);
-		const updatedUser = await user.save();
-		res.status(200).send(updatedUser);
+		await user.save();
+		res.status(200).send({ result: 'removed' });
 	}
 	else {
 		user.savedRecipes = user.savedRecipes.concat(recipeId);
-		const updatedUser = await user.save();
-		res.status(200).send(updatedUser);
+		await user.save();
+		res.status(200).send({ result: 'saved' });
 	}
 });
 

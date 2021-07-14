@@ -109,8 +109,8 @@ const useUsers = () => {
 		onError: (error) => {
 			addNotification(error.response.data.error, 'error');
 		},
-		onSuccess: () => {
-			addNotification('Saved Recipe!', 'success');
+		onSuccess: (data) => {
+			addNotification(data.result === 'saved' ? 'Saved recipe!' : 'Removed recipe!', 'success');
 			queryClient.invalidateQueries('users');
 		},
 	});
