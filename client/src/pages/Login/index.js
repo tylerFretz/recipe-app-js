@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
@@ -26,13 +26,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
 	const classes = useStyles();
-	const history = useHistory();
-	const { login, authUser } = useAuthUser();
+	const { authUser } = useAuthUser();
 
-	const onSubmit = (values) => {
-		login(values.email, values.password);
-		history.push('/');
-	};
 
 	return authUser ? (
 		<Redirect to="/" />
@@ -45,9 +40,7 @@ const Login = () => {
 				<Typography component="h1" variant="h5">
 					Log in
 				</Typography>
-
-				<LoginForm onSubmit={onSubmit} />
-
+				<LoginForm />
 				<Grid container>
 					<Grid item xs>
 						<Link href="#" variant="body2">

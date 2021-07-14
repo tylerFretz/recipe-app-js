@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -8,10 +8,13 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import Hidden from '@material-ui/core/Hidden';
 import Fab from '@material-ui/core/Fab';
 import Icon from '@material-ui/core/Icon';
 import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 import BackToTop from './BackToTop';
 
@@ -31,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '0.8rem',
 		},
+	},
+	menuText: {
+		textDecoration: 'none',
+		color: theme.palette.primary.main
 	},
 	logoContainer: {
 		display: 'inline-flex',
@@ -69,10 +76,22 @@ const Header = () => {
 	const classes = useStyles();
 	const history = useHistory();
 	const { logout, authUser } = useAuthUser();
+	const [menuOpen, setMenuOpen] = useState(false);
 
-	const handleLogout = () => {
-		logout();
-		history.push('/');
+	const handleMenuOpen = () => {
+		setMenuOpen(true);
+	};
+
+	const handleMenuClose = () => {
+		setMenuOpen(false);
+	};
+
+	const handleProfileClick = (page) => {
+		setMenuOpen(false);
+		history.push({
+			pathname: `/users/${authUser.id}`,
+			state: { page }
+		});
 	};
 
 	return (
@@ -102,32 +121,30 @@ const Header = () => {
 						>
 							{authUser && (
 								<>
-									<NavLink
-										to={`/users/${authUser.id}`}
+									<ListItem
+										id='profilePopoverButton'
+										onClick={handleMenuOpen}
 										className={classes.linkText}
+										style={{ cursor: 'pointer' }}
 									>
-										<ListItem
-											button
-											className={classes.linkButton}
+										<Icon
+											fontSize="small"
+											style={{ marginRight: '2px' }}
 										>
-											<Icon
-												fontSize="small"
-												style={{ marginRight: '2px' }}
-											>
-												person
-											</Icon>
-											<ListItemText disableTypography>
-												My Profile
-											</ListItemText>
-										</ListItem>
-									</NavLink>
+											person
+										</Icon>
+										<ListItemText disableTypography>
+											My Profile
+										</ListItemText>
+										<KeyboardArrowDownIcon fontSize="small" />
+									</ListItem>
 									<NavLink
 										to="/"
 										className={classes.linkText}
 									>
 										<ListItem
 											button
-											onClick={handleLogout}
+											onClick={() => logout()}
 											className={classes.linkButton}
 										>
 											<Icon
@@ -141,6 +158,18 @@ const Header = () => {
 											</ListItemText>
 										</ListItem>
 									</NavLink>
+									<Menu
+										anchorEl={document.getElementById('profilePopoverButton')}
+										keepMounted
+										open={menuOpen}
+										onClose={handleMenuClose}
+										MenuListProps={{ onMouseLeave: handleMenuClose }}
+										variant='menu'
+									>
+										<MenuItem onClick={() => handleProfileClick('submitted')} className={classes.menuText}>My submitted recipes</MenuItem>
+										<MenuItem onClick={() => handleProfileClick('saved')} className={classes.menuText}>My saved recipes</MenuItem>
+										<MenuItem onClick={() => handleProfileClick('account')} className={classes.menuText}>Account details</MenuItem>
+									</Menu>
 								</>
 							)}
 							{!authUser && (

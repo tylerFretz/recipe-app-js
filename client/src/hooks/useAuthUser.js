@@ -1,6 +1,7 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import axios from 'axios';
 import { useMutation } from 'react-query';
+import { useHistory } from 'react-router';
 import useNotifications from './useNotifications';
 
 const BASE_URL = '/api/login';
@@ -17,6 +18,7 @@ const loginUser = async ({ email, password }) => {
 export const AuthProvider = ({ children }) => {
 	const { addNotification } = useNotifications();
 	const [authUser, setAuthUser] = useState(null);
+	const history = useHistory();
 
 	const setAuthData = (loggedInUser) => {
 		setAuthUser(JSON.parse(loggedInUser));
@@ -38,7 +40,7 @@ export const AuthProvider = ({ children }) => {
 				'recipe-app-user',
 				JSON.stringify({ ...user, token: token })
 			);
-			addNotification('Logged in!', 'success');
+			history.push('/');
 		},
 	});
 

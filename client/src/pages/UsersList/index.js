@@ -44,7 +44,10 @@ const UsersList = () => {
 				{data.map((user) => (
 					<Link
 						key={user.id}
-						to={`/users/${user.id}`}
+						to={{
+							pathname: `/users/${user.id}`,
+							state: { page: 'submitted' }
+						}}
 						className={classes.link}
 					>
 						<Container className={classes.userContainer}>

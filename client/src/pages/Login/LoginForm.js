@@ -9,6 +9,8 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 
+import { useAuthUser } from '../../hooks/useAuthUser';
+
 const useStyles = makeStyles((theme) => ({
 	form: {
 		width: '100%', // Fix IE 11 issue.
@@ -24,9 +26,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const LoginForm = ({ onSubmit }) => {
+const LoginForm = () => {
 	const classes = useStyles();
 	const [visible, setVisible] = useState(false);
+	const { login } = useAuthUser();
 
 	return (
 		<Formik
@@ -34,16 +37,15 @@ const LoginForm = ({ onSubmit }) => {
 				email: '',
 				password: '',
 			}}
-			onSubmit={onSubmit}
+			onSubmit={(values, actions) => {
+				login(values.email, values.password);
+				actions.setSubmitting(false);
+			}}
 			validate={(values) => {
 				const errors = {};
 				if (!values.email) {
 					errors.email = 'Email Address is required.';
-				} else if (
-					!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(
-						values.email
-					)
-				) {
+				} else if (!values.email.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i)) {
 					errors.email = 'Invalid email address.';
 				}
 				if (!values.password) {

@@ -16,33 +16,38 @@ const getUser = async (id) => {
 	return data;
 };
 
-const createUser = async (newUser) => {
+const createUser = async ({ newUser }) => {
 	const { data } = await axios.post(BASE_URL, newUser);
 	return data;
 };
 
-const update = async (updatedUser, config) => {
+const update = async ({ email, username, id, config }) => {
 	const { data } = await axios.put(
-		`${BASE_URL}/${updatedUser.id}`,
-		updatedUser,
-		config
+		`${BASE_URL}/${id}`,
+		{ email, username },
+		{ headers: config }
 	);
 	return data;
 };
 
-const addFavourite = async (id, recipeId, config) => {
+const addSaved = async ({ id, recipeId, config }) => {
 	const { data } = await axios.post(
-		`${BASE_URL}/${id}/favourites`,
-		recipeId,
-		config
+		`${BASE_URL}/${id}/savedRecipes`,
+		{ recipeId },
+		{ headers: config }
 	);
+	return data;
+};
+
+const deleteUser = async ({ id, config }) => {
+	const { data } = await axios.delete(`${BASE_URL}/${id}`, { headers: config });
 	return data;
 };
 
 const useUsers = () => {
 	const queryClient = useQueryClient();
 	const history = useHistory();
-	const { getAuthHeader, authUser } = useAuthUser();
+	const { getAuthHeader, authUser, logout } = useAuthUser();
 	const { addNotification } = useNotifications();
 	const authHeader = getAuthHeader();
 
@@ -66,57 +71,82 @@ const useUsers = () => {
 		);
 	};
 
+
+	// Creating a new user
 	const createMutation = useMutation(createUser, {
 		onError: (error) => {
 			addNotification(error.response.data.errors[0].msg, 'error');
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries('users');
-			addNotification('Successfully registered', 'success');
 			history.push('/login');
+			addNotification('Successfully registered', 'success');
 		},
 	});
 
-	const addUser = (username, email, password) => {
-		createMutation.mutate({
-			username: username,
-			email: email,
-			password: password,
-		});
+	const addUser = (newUser) => {
+		createMutation.mutate({ newUser });
 	};
 
+
+	// Updating a users email OR username
 	const updateMutation = useMutation(update, {
 		onError: (error) => {
-			addNotification(error.response.data.error, 'error');
+			addNotification(error.response.data.errors[0].msg, 'error');
 		},
 		onSuccess: (data) => {
 			queryClient.setQueryData(['users', data.id], data);
 		},
 	});
 
-	const updateUser = (updatedUser) => {
-		updateMutation.mutate({ updatedUser, config: authHeader });
+	const updateUser = (email, username, id) => {
+		updateMutation.mutate({ email, username, id, config: authHeader });
 	};
 
-	const addFavoutiteMutation = useMutation(addFavourite, {
+
+	// Adding a recipe to a users saved recipes collection
+	const addSavedRecipeMutation = useMutation(addSaved, {
 		onError: (error) => {
 			addNotification(error.response.data.error, 'error');
 		},
-		onSuccess: (data) => {
-			queryClient.setQueryData(['users', data.id], data);
+		onSuccess: () => {
+			queryClient.invalidateQueries('users');
 		},
 	});
 
 	const saveRecipe = (recipeId) => {
 		const userId = authUser ? authUser.id : '';
-		addFavoutiteMutation.mutate({
+		addSavedRecipeMutation.mutate({
 			id: userId,
 			recipeId,
-			config: authHeader,
+			config: authHeader
 		});
 	};
 
-	return { getUserById, getAllUsers, addUser, updateUser, saveRecipe };
+
+	// Deleting a user
+	const deleteUserMutation = useMutation(deleteUser, {
+		onError: (error) => {
+			addNotification(error.response.data.error, 'error');
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries('users');
+			queryClient.invalidateQueries('recipes');
+			logout();
+			history.push('/');
+			addNotification('Account deleted.', 'success');
+		},
+	});
+
+	const removeUser = () => {
+		const userId = authUser ? authUser.id : '';
+		deleteUserMutation.mutate({
+			id: userId,
+			config: authHeader
+		});
+	};
+
+	return { getUserById, getAllUsers, addUser, updateUser, saveRecipe, removeUser };
 };
 
 export default useUsers;

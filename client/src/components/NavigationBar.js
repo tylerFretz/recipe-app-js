@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	flexList: {
 		display: 'flex',
-		justifyContent: 'space-between',
+		justifyContent: 'space-around',
 		flexGrow: 1,
 		padding: '0% 10%',
 		maxWidth: '60%'
@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-// home, recipes [category list, latest recipes, most liked recipes ], members, submit recipe, contact,
+
 const NavigationBar = () => {
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -116,18 +116,22 @@ const NavigationBar = () => {
 	) : (
 		<div className={classes.navBarDisplayFlex}>
 			<List aria-labelledby="main navigation" className={classes.flexList}>
-				<ListItem style={{ justifyContent: 'center' }}>
+
+				<ListItem>
 					<NavLink to="/" className={classes.listItem}>
-						<ListItemText className={classes.listItem} disableTypography>Home</ListItemText>
+						<ListItemText disableTypography>Home</ListItemText>
 					</NavLink>
 				</ListItem>
+
 				<ListItem>
 					<NavLink to="/users" className={classes.listItem}>
-						<ListItemText className={classes.listItem} disableTypography>Members</ListItemText>
+						<ListItemText disableTypography>Members</ListItemText>
 					</NavLink>
 				</ListItem>
+
+				{/* Drop down list for recipe search options */}
 				<ListItem id="popoverMenuButton" onMouseOver={handleMenuOpen}>
-					<ListItemText className={classes.listItem} disableTypography>Recipes</ListItemText>
+					<ListItemText disableTypography className={classes.listItem}>Recipes</ListItemText>
 					<KeyboardArrowDownIcon fontSize="small" style={{ color: '#676767' }} />
 				</ListItem>
 				<Menu
@@ -148,20 +152,24 @@ const NavigationBar = () => {
 						<MenuItem onClick={handleMenuClose}>Most Liked Recipes</MenuItem>
 					</NavLink>
 				</Menu>
+
+				{/* Conditional recipe submission link */}
 				{authUser && (
 					<ListItem>
 						<NavLink to="/submit" className={classes.listItem}>
-							<ListItemText className={classes.listItem} disableTypography>Submit Recipe</ListItemText>
+							<ListItemText disableTypography>Submit Recipe</ListItemText>
 						</NavLink>
 					</ListItem>
 				)}
 			</List>
+
+			{/* Search bar that query's db for recipes matching recipes %LIKE% name*/}
 			<div className={classes.search}>
 				<div className={classes.searchIcon}>
 					<SearchIcon />
 				</div>
 				<InputBase
-					placeholder="Search recipes..."
+					placeholder="search recipes..."
 					classes={{
 						root: classes.inputRoot,
 						input: classes.inputInput,

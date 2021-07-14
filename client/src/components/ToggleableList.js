@@ -44,7 +44,6 @@ const ToggleableList = ({ items, isNumbered }) => {
 								checked={isChecked}
 								tabIndex={-1}
 								disableRipple
-								inputProps={{ 'aria-labelledby': labelId }}
 							/>
 						</ListItemIcon>
 						{isNumbered ? (

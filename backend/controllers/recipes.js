@@ -202,7 +202,7 @@ recipesRouter.put('/:id',
 
 		const { body } = req;
 		const { token } = req;
-		// a user must be logged in to add a new recipe
+		// a user must be logged in
 		const decodedToken = jwt.verify(token, process.env.SECRET);
 		if (!token || !decodedToken.id) {
 			return res.status(401).json({ error: 'token missing or invalid' });

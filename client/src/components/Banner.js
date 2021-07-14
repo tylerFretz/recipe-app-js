@@ -59,6 +59,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+// Props:
+// title -> String to be used as main text on banner
+// breadcrumbList -> array of objects containing title and path string properties
 const Banner = ({ title, breadcrumbList }) => {
 	const classes = useStyles();
 

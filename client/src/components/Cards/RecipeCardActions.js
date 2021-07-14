@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.secondary.main,
 		color: '#FFF',
 		'&:hover': {
-			backgroundColor: '#000',
+			backgroundColor: '#a9c483',
 		}
 	},
 	deleteButton: {
@@ -65,21 +65,18 @@ const RecipeCardActions = ({ recipe }) => {
 			>
 				Delete Recipe
 			</Button>
-			<Dialog
-				open={dialogOpen}
-				onClose={() => setDialogOpen(false)}
-			>
+			<Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
 				<DialogTitle>Delete Recipe?</DialogTitle>
 				<DialogContent>
 					<DialogContentText>
-						Are you sure you want to delete <strong>{recipe.name}</strong>? This action can not be undone.
+						Are you sure you want to delete <strong>{recipe.name}</strong>? This action cannot be undone.
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
 					<Button autoFocus onClick={() => setDialogOpen(false)} color='primary'>
 						Cancel
 					</Button>
-					<Button autoFocus onClick={() => handleDelete(recipe.id)} color='secondary'>
+					<Button onClick={() => handleDelete(recipe.id)} color='secondary'>
 						Delete
 					</Button>
 				</DialogActions>

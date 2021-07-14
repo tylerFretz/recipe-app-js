@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { TextField } from 'formik-material-ui';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,6 +8,8 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
+
+import useUsers from '../../hooks/useUsers';
 
 const useStyles = makeStyles((theme) => ({
 	form: {
@@ -28,10 +29,10 @@ const useStyles = makeStyles((theme) => ({
 // 	 pointsPerUnique: 1, pointsPerRepeat: 0.5, pointsForContainingLower: 10,
 // 	 pointsForContainingUpper: 10, pointsForContainingNumber: 10, pointsForContainingSymbol: 10 }
 
-const RegisterForm = ({ onSubmit }) => {
+const RegisterForm = () => {
 	const classes = useStyles();
 	const [pVisible, setPVisible] = useState(false);
-	const [pCVisible, setPCVisible] = useState(false);
+	const { addUser } = useUsers();
 
 	return (
 		<Formik
@@ -41,27 +42,26 @@ const RegisterForm = ({ onSubmit }) => {
 				password: '',
 				passwordConfirm: '',
 			}}
-			onSubmit={onSubmit}
+			onSubmit={(values, actions) => {
+				addUser({ username: values.username, email: values.email, password: values.password });
+				actions.setSubmitting(false);
+			}}
 			validate={(values) => {
 				const errors = {};
 				if (!values.username) {
 					errors.username = 'Username is required.';
-				} else if (values.username.length < 3) {
-					errors.username = 'Username must be at least 5 characters.';
+				} else if (values.username.length < 5 || values.username.length > 50) {
+					errors.username = 'Username must be between 5 and 50 characters.';
 				}
 				if (!values.email) {
 					errors.email = 'Email Address is required.';
-				} else if (
-					!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(
-						values.email
-					)
-				) {
+				} else if (!values.email.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i)) {
 					errors.email = 'Invalid email address.';
 				}
 				if (!values.password) {
 					errors.password = 'Password is required.';
-				} else if (values.password.length < 8) {
-					errors.password = 'Password must be at least 8 characters.';
+				} else if (!values.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)) {
+					errors.password = 'Password must contain at least 1 number, 1 special character, 1 uppercase letter, and be 8 or more characters.';
 				}
 				if (!values.passwordConfirm) {
 					errors.passwordConfirm =
@@ -130,7 +130,7 @@ const RegisterForm = ({ onSubmit }) => {
 							<Field
 								component={TextField}
 								name="passwordConfirm"
-								type={pCVisible ? 'text' : 'password'}
+								type={pVisible ? 'text' : 'password'}
 								label="Confirm password"
 								variant="outlined"
 								className={classes.feild}
@@ -140,10 +140,10 @@ const RegisterForm = ({ onSubmit }) => {
 											<IconButton
 												aria-label="toggle password visibility"
 												onClick={() =>
-													setPCVisible(!pCVisible)
+													setPVisible(!pVisible)
 												}
 											>
-												{pCVisible ? (
+												{pVisible ? (
 													<Visibility />
 												) : (
 													<VisibilityOff />
@@ -164,13 +164,6 @@ const RegisterForm = ({ onSubmit }) => {
 					>
 						Register
 					</Button>
-					<Grid container>
-						<Grid item>
-							<Link href="/login" variant="body2">
-								Already have an account? Sign in
-							</Link>
-						</Grid>
-					</Grid>
 				</Form>
 			)}
 		</Formik>

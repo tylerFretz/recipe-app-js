@@ -32,6 +32,8 @@ const NavigationBarMobile = () => {
 	const classes = useStyles();
 	const [menuOpen, setMenuOpen] = useState(false);
 	const { authUser } = useAuthUser();
+	// test user device for Mui Swipeable drawer compenent
+	// https://material-ui.com/components/drawers/
 	const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 	const toggleDrawer = () => (event) => {
@@ -44,6 +46,7 @@ const NavigationBarMobile = () => {
 		setMenuOpen(!menuOpen);
 	};
 
+	// Drop down list
 	const list = () => (
 		<div
 			role="presentation"
@@ -51,6 +54,7 @@ const NavigationBarMobile = () => {
 			onKeyDown={toggleDrawer()}
 		>
 			<List aria-labelledby="main navigation">
+
 				<ListItem button>
 					<NavLink to="/" className={classes.listItem}>
 						<Icon style={{ marginRight: '5px' }}>home</Icon>
@@ -58,6 +62,7 @@ const NavigationBarMobile = () => {
 					</NavLink>
 				</ListItem>
 				<Divider />
+
 				<ListItem>
 					<NavLink to="/users" className={classes.listItem}>
 						<Icon style={{ marginRight: '5px' }}>people</Icon>
@@ -65,6 +70,7 @@ const NavigationBarMobile = () => {
 					</NavLink>
 				</ListItem>
 				<Divider />
+
 				<ListItem>
 					<NavLink to="/recipes/search" className={classes.listItem}>
 						<Icon style={{ marginRight: '5px' }}>
@@ -74,6 +80,8 @@ const NavigationBarMobile = () => {
 					</NavLink>
 				</ListItem>
 				<Divider />
+
+				{/* Conditional link to submit recipe form */}
 				{authUser && (
 					<>
 						<ListItem>
@@ -87,12 +95,6 @@ const NavigationBarMobile = () => {
 						<Divider />
 					</>
 				)}
-				<ListItem>
-					<NavLink to="/contact" className={classes.listItem}>
-						<Icon style={{ marginRight: '5px' }}>email</Icon>
-						<ListItemText>Contact</ListItemText>
-					</NavLink>
-				</ListItem>
 			</List>
 		</div>
 	);

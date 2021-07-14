@@ -1,30 +1,25 @@
 import React from 'react';
-import { Redirect, useParams } from 'react-router-dom';
+import { Redirect, useParams, useLocation } from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
 
 import LoadingIndicator from '../../components/LoadingIndicator';
 import Banner from '../../components/Banner';
 import CardGrid from '../../components/Cards/CardGrid';
 import useUsers from '../../hooks/useUsers';
+import AccountDetails from './AccountDetails';
 
 const Profile = () => {
 	const { getUserById } = useUsers();
 	const { id } = useParams();
+	const { state } = useLocation();
 	const user = getUserById(id);
 
-	if (user.isLoading) {
-		return <LoadingIndicator />;
-	}
+	if (user.isLoading) return <LoadingIndicator />;
 
-	if (user.error) {
-		return <Redirect to="/" />;
-	}
-
-	if (user) {
-		console.log(user);
-	}
+	if (user.error || !state) return <Redirect to="/" />;
 
 	const { submittedRecipes, savedRecipes, username } = user.data;
-	const breadcrumb = [{ title: 'Members', path: 'users' }, { title: username, path: `users/${id}` }];
+	const breadcrumb = [{ title: 'Members', path: 'users' }];
 
 	return (
 		<>
@@ -32,13 +27,43 @@ const Profile = () => {
 				title={username}
 				breadcrumbList={breadcrumb}
 			/>
-			{submittedRecipes.length > 0 && (
-				<CardGrid
-					items={submittedRecipes}
-					type='profile'
-				/>
+			{state.page === 'submitted' && (
+				<>
+					<div style={{ display: 'flex', justifyContent: 'center' }}>
+						<Typography component='h2' style={{ fontSize: '2.5rem' }}>Submitted Recipes</Typography>
+					</div>
+					{renderRecipes(submittedRecipes)}
+				</>
+			)}
+			{state.page === 'saved' && (
+				<>
+					<div style={{ display: 'flex', justifyContent: 'center' }}>
+						<Typography component='h2' style={{ fontSize: '2.5rem' }}>Saved Recipes</Typography>
+					</div>
+					{renderRecipes(savedRecipes)}
+				</>
+			)}
+			{state.page === 'account' && (
+				<AccountDetails user={user.data} />
 			)}
 		</>
+	);
+};
+
+const renderRecipes = (recipes) => {
+	if (recipes.length === 0) {
+		return (
+			<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+				<h3>No Recipes here yet...</h3>
+			</div>
+		);
+	}
+
+	return (
+		<CardGrid
+			items={recipes}
+			type='profile'
+		/>
 	);
 };
 

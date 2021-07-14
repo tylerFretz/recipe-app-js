@@ -42,9 +42,7 @@ const updateRecipe = async ({ updatedRecipe, config }) => {
 };
 
 const deleteRecipe = async ({ id, config }) => {
-	const { data } = await axios.delete(`${BASE_URL}/${id}`, {
-		headers: config,
-	});
+	const { data } = await axios.delete(`${BASE_URL}/${id}`, { headers: config });
 	return data;
 };
 
@@ -55,7 +53,6 @@ const createComment = async ({ id, comment, config }) => {
 	return data;
 };
 
-//returns unique categories, tags, and areas of all recipes in db
 const getRecipesData = async () => {
 	const { data } = await axios.get(`${BASE_URL}/data`);
 	return data;
@@ -88,10 +85,13 @@ const useRecipes = () => {
 		);
 	};
 
+	// Returns unique categories, tags, and areas of all recipes in db
 	const queryRecipeData = () => {
 		return useQuery('recipeData', () => getRecipesData());
 	};
 
+
+	// Creating a new recipe
 	const createMutation = useMutation(createRecipe, {
 		onError: (error) => {
 			addNotification(error.response.data.errors[0].msg, 'error');
@@ -104,9 +104,11 @@ const useRecipes = () => {
 	});
 
 	const addRecipe = (newRecipe) => {
-		createMutation.mutate({ newRecipe: newRecipe, config: authHeader });
+		createMutation.mutate({ newRecipe, config: authHeader });
 	};
 
+
+	// Updating a recipe
 	const updateMutation = useMutation(updateRecipe, {
 		onError: (error) => {
 			addNotification(error.response.data.errors[0].msg, 'error');
@@ -122,6 +124,8 @@ const useRecipes = () => {
 		updateMutation.mutate({ updatedRecipe, config: authHeader });
 	};
 
+
+	// Updating the number of upvotes a recipe has
 	const upvoteMutation = useMutation(likeRecipe, {
 		onError: () => {
 			addNotification('Must be logged in.', 'error');
@@ -132,9 +136,11 @@ const useRecipes = () => {
 	});
 
 	const upvoteRecipe = (id) => {
-		upvoteMutation.mutate({ id: id, config: authHeader });
+		upvoteMutation.mutate({ id, config: authHeader });
 	};
 
+
+	// Deleting a recipe
 	const deleteMutation = useMutation(deleteRecipe, {
 		onError: () => {
 			addNotification('Must be logged in.', 'error');
@@ -150,6 +156,8 @@ const useRecipes = () => {
 		deleteMutation.mutate({ id, config: authHeader });
 	};
 
+
+	// Adding a comment to a recipe
 	const commentMutation = useMutation(createComment, {
 		onError: () => {
 			addNotification('Must be logged in.', 'error');
@@ -163,6 +171,7 @@ const useRecipes = () => {
 	const addComment = (id, comment) => {
 		commentMutation.mutate({ id, comment, config: authHeader });
 	};
+
 
 	return {
 		getRecipeById,

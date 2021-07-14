@@ -98,8 +98,10 @@ const SubmitRecipeContainer = ({ initialValues, onSubmit, validationSchema }) =>
 					<Formik
 						initialValues={initialValues}
 						validationSchema={validationSchema}
-						onSubmit={onSubmit}
-					>
+						onSubmit={(values, actions) => {
+							onSubmit(values);
+							actions.setSubmitting(false);
+						}}>
 						{({ values, errors, touched }) => (
 							<>
 								<SubmitRecipeForm

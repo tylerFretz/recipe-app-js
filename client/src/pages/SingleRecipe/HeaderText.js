@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,8 +6,10 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ModeCommentIcon from '@material-ui/icons/ModeComment';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import Chip from '@material-ui/core/Chip';
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
 		display: 'inline-flex',
 		width: '40%',
 		padding: 0,
-		justifyContent: 'flex-start',
+		justifyContent: 'space-around',
+		alignItems: 'center'
 	},
 	postDate: {
 		marginRight: '2%',
@@ -38,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 	title: {
 		variant: 'h2',
 		marginTop: '2%',
-		marginBottom: '3%',
+		marginBottom: '2%',
 		fontWeight: 500,
 		fontSize: '2.25rem',
 	},
@@ -89,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const HeaderText = ({ recipe }) => {
+const HeaderText = ({ recipe, handleVote, handleSave }) => {
 	const classes = useStyles();
 	const formattedDate = format(new Date(recipe.dateAdded), 'MMMM dd, yyyy');
 
@@ -116,22 +118,30 @@ const HeaderText = ({ recipe }) => {
 			</Container>
 			<Typography className={classes.title}>{recipe.name}</Typography>
 			<Container className={classes.metaCount}>
-				<Container
-					style={{ display: 'flex', justifyContent: 'space-around' }}
-				>
-					<ThumbUpAltIcon />
+				<div>
+					<IconButton onClick={() => handleSave()} color='secondary'>
+						<FavoriteIcon />
+					</IconButton>
+				</div>
+				<div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
+					<IconButton onClick={() => handleVote()} color='secondary'>
+						<ThumbUpAltIcon />
+					</IconButton>
 					<Typography>{recipe.upvoteCount}</Typography>
-				</Container>
-				<Container
-					style={{ display: 'flex', justifyContent: 'space-around' }}
-				>
-					<ModeCommentIcon />
+				</div>
+				<div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
+					<IconButton onClick={() => console.log('I need to add a scroll to comments here')} color='secondary'>
+						<ModeCommentIcon />
+					</IconButton>
 					<Typography>{recipe.comments.length}</Typography>
-				</Container>
+				</div>
 			</Container>
 			<Container className={classes.summaryContainer}>
 				<Link
-					to={`/users/${recipe.user.id}`}
+					to={{
+						pathname: `/users/${recipe.user.id}`,
+						state: { page: 'submitted' }
+					}}
 					className={classes.summaryLabel}
 					title="view user's page"
 				>
@@ -170,16 +180,6 @@ const HeaderText = ({ recipe }) => {
 			)}
 		</Container>
 	);
-};
-
-HeaderText.propTypes = {
-	category: PropTypes.string,
-	name: PropTypes.string,
-	upvotes: PropTypes.number,
-	comments: PropTypes.array,
-	summary: PropTypes.string,
-	dateAdded: PropTypes.string,
-	tags: PropTypes.array,
 };
 
 export default HeaderText;

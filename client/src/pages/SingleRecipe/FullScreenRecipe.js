@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Button from '@material-ui/core/Button';
 
 import HeaderText from './HeaderText';
 import ContentInnerFullScreen from './ContentInnerFullScreen';
@@ -75,7 +74,7 @@ const useStyles = makeStyles({
 	},
 });
 
-const FullScreenRecipe = ({ recipe, handleVote }) => {
+const FullScreenRecipe = ({ recipe, handleVote, handleAddComment, handleSave }) => {
 	const classes = useStyles();
 
 	if (!recipe.thumbImageUrl) recipe.thumbImageUrl = noImageAvailable;
@@ -91,7 +90,7 @@ const FullScreenRecipe = ({ recipe, handleVote }) => {
 						title={recipe.name}
 					/>
 				</div>
-				<HeaderText recipe={recipe} />
+				<HeaderText recipe={recipe} handleVote={handleVote} handleSave={handleSave} />
 			</Container>
 			<Container className={classes.primaryContentArea}>
 				<Container className={classes.ingredientsInstructionsContainer}>
@@ -109,7 +108,6 @@ const FullScreenRecipe = ({ recipe, handleVote }) => {
 					</div>
 				</Container>
 			</Container>
-			<Button onClick={handleVote}>Vote</Button>
 		</Container>
 	);
 };
