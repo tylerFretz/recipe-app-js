@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Button from '@material-ui/core/Button';
 
 import RecipeMediaMobile from './RecipeMediaMobile';
 import ContentInnerMobile from './ContentInnerMobile';
 import RecipeFullStats from './RecipeFullStats';
 import RelatedSideBar from './RelatedSideBar';
+import CommentForm from './CommentForm';
+import CommentList from './CommentList';
 
 const useStyles = makeStyles({
 	mobileContainer: {
@@ -27,10 +28,20 @@ const useStyles = makeStyles({
 		padding: 0,
 		boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
 	},
+	commentSection: {
+		maxWidth: 360,
+		padding: '5%',
+		background: '#FFF',
+		boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
+		borderRadius: '3px',
+	}
 });
 
-const MobileRecipe = ({ recipe, handleVote }) => {
+const MobileRecipe = ({ recipe, handleVote, handleAddComment, handleSave }) => {
 	const classes = useStyles();
+	const commentRef = useRef(null);
+
+	const executeCommentScroll = () => commentRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
 	return (
 		<Container className={classes.mobileContainer}>
@@ -40,6 +51,12 @@ const MobileRecipe = ({ recipe, handleVote }) => {
 						thumbImageUrl={recipe.thumbImageUrl}
 						youtubeUrl={recipe.youtubeUrl}
 						name={recipe.name}
+						commentsLength={recipe.comments.length}
+						upvoteCount={recipe.upvoteCount}
+						handleVote={handleVote}
+						handleSave={handleSave}
+						handleAddComment={handleAddComment}
+						executeCommentScroll={executeCommentScroll}
 					/>
 					<ContentInnerMobile
 						name={recipe.name}
@@ -55,7 +72,10 @@ const MobileRecipe = ({ recipe, handleVote }) => {
 			<Container className={classes.sectionContainer}>
 				<RelatedSideBar category={recipe.category} />
 			</Container>
-			<Button onClick={handleVote}>Vote</Button>
+			<Container className={classes.commentSection} ref={commentRef}>
+				<CommentList comments={recipe.comments} />
+				<CommentForm handleAddComment={handleAddComment} />
+			</Container>
 		</Container>
 	);
 };
