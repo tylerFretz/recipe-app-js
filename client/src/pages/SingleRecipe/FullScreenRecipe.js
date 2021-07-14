@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
@@ -6,6 +6,9 @@ import HeaderText from './HeaderText';
 import ContentInnerFullScreen from './ContentInnerFullScreen';
 import RecipeFullStats from './RecipeFullStats';
 import RelatedSideBar from './RelatedSideBar';
+import CommentForm from './CommentForm';
+import CommentList from './CommentList';
+
 import noImageAvailable from '../../assets/noImageAvailable.jpg';
 
 const useStyles = makeStyles({
@@ -72,10 +75,21 @@ const useStyles = makeStyles({
 		padding: 0,
 		borderRadius: '10px',
 	},
+	commentSection: {
+		maxWidth: '70%',
+		padding: '5%',
+		margin: '5% 15%',
+		background: '#FFF',
+		boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
+		borderRadius: '3px',
+	}
 });
 
 const FullScreenRecipe = ({ recipe, handleVote, handleAddComment, handleSave }) => {
 	const classes = useStyles();
+	const commentRef = useRef(null);
+
+	const executeCommentScroll = () => commentRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
 	if (!recipe.thumbImageUrl) recipe.thumbImageUrl = noImageAvailable;
 
@@ -90,7 +104,12 @@ const FullScreenRecipe = ({ recipe, handleVote, handleAddComment, handleSave }) 
 						title={recipe.name}
 					/>
 				</div>
-				<HeaderText recipe={recipe} handleVote={handleVote} handleSave={handleSave} />
+				<HeaderText
+					recipe={recipe}
+					handleVote={handleVote}
+					handleSave={handleSave}
+					executeCommentScroll={executeCommentScroll}
+				/>
 			</Container>
 			<Container className={classes.primaryContentArea}>
 				<Container className={classes.ingredientsInstructionsContainer}>
@@ -107,6 +126,10 @@ const FullScreenRecipe = ({ recipe, handleVote, handleAddComment, handleSave }) 
 						<RelatedSideBar category={recipe.category} />
 					</div>
 				</Container>
+			</Container>
+			<Container className={classes.commentSection} ref={commentRef}>
+				<CommentList comments={recipe.comments} />
+				<CommentForm handleAddComment={handleAddComment} />
 			</Container>
 		</Container>
 	);

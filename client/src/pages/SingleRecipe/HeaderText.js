@@ -91,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const HeaderText = ({ recipe, handleVote, handleSave }) => {
+const HeaderText = ({ recipe, handleVote, handleSave, executeCommentScroll }) => {
 	const classes = useStyles();
 	const formattedDate = format(new Date(recipe.dateAdded), 'MMMM dd, yyyy');
 
@@ -130,7 +130,7 @@ const HeaderText = ({ recipe, handleVote, handleSave }) => {
 					<Typography>{recipe.upvoteCount}</Typography>
 				</div>
 				<div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
-					<IconButton onClick={() => console.log('I need to add a scroll to comments here')} color='secondary'>
+					<IconButton onClick={() => executeCommentScroll()} color='secondary'>
 						<ModeCommentIcon />
 					</IconButton>
 					<Typography>{recipe.comments.length}</Typography>

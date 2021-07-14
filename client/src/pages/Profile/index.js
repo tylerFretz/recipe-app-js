@@ -15,12 +15,15 @@ const Profile = () => {
 	const user = getUserById(id);
 
 	if (user.isLoading) return <LoadingIndicator />;
-
 	if (user.error || !state) return <Redirect to="/" />;
 
 	const { submittedRecipes, savedRecipes, username } = user.data;
-	const breadcrumb = [{ title: 'Members', path: 'users' }];
 
+	// wait for react query to refetch populated user data
+	if ((submittedRecipes[0] && typeof submittedRecipes[0] !== 'object') ||
+		(savedRecipes[0] && typeof savedRecipes[0] !== 'object')) return <LoadingIndicator />;
+
+	const breadcrumb = [{ title: 'Members', path: 'users' }];
 	return (
 		<>
 			<Banner

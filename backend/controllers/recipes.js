@@ -88,7 +88,15 @@ recipesRouter.get('/data', async (req, res) => {
 
 // get specific recipe based on it's id
 recipesRouter.get('/:id', async (req, res) => {
-	const recipe = await Recipe.findById(req.params.id).populate('user', { username: 1, id: 1 });
+	const recipe = await Recipe.findById(req.params.id)
+		.populate('user', { username: 1, id: 1 })
+		.populate({
+			path: 'comments',
+			populate: {
+				path: 'user',
+				select: { 'username': 1, 'avatarImageUrl': 1 }
+			}
+		});
 	if (recipe) {
 		res.json(recipe);
 	}
@@ -243,7 +251,7 @@ recipesRouter.post('/:id/upvotes', async (req, res) => {
 
 // Add a comment to a specific recipe based on it's id
 recipesRouter.post('/:id/comments',
-	body('comment').not().isEmpty().isLength({ max: 20000 }).trim().escape().withMessage('Comment max length is 20000'),
+	body('comment').not().isEmpty().isLength({ max: 10000 }).trim().escape().withMessage('Comment max length is 10000'),
 	async (req, res) => {
 		const errors = validationResult(req);
 
@@ -264,7 +272,14 @@ recipesRouter.post('/:id/comments',
 			req.params.id,
 			{ $push: { comments: { commentText: comment, user: new ObjectId(decodedToken.id), dateAdded: new Date() } } },
 			{ new: true, runValidators: true })
-			.populate('user', { username: 1, id: 1 });
+			.populate('user', { username: 1, id: 1 })
+			.populate({
+				path: 'comments',
+				populate: {
+					path: 'user',
+					select: { 'username': 1, 'avatarImageUrl': 1 }
+				}
+			});
 
 		res.status(updatedRecipe ? 200 : 404).json(updatedRecipe);
 	});

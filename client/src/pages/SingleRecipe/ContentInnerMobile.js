@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 const ContentInnerMobile = ({ name, summary, ingredients, instructions }) => {
 	const classes = useStyles();
 
-	const ingredientValues = ingredients.map((i) => i.measure + ' ' + i.name);
+	const ingredientValues = ingredients.map((i) => i.measure + ' - ' + i.name);
 
 	// some of the recipes from theMealDb have numbered steps and some don't. Let's just get rid of them
 	instructions = instructions

@@ -26,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
 		background: '#FFF',
 		margin: 0,
 		width: '100%',
-		zIndex: 6
+		zIndex: 6,
+		boxShadow: '0 8px 30px -6px rgba(0,0,0,.1)'
 	},
 	flexList: {
 		display: 'flex',

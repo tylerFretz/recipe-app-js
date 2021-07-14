@@ -24,7 +24,11 @@ const SingleRecipe = () => {
 
 	const handleVote = () => upvoteRecipe(id);
 
-	const handleAddComment = (comment) => addComment(id, comment);
+	const handleAddComment = (comment) => {
+		if (comment.length < 10000) {
+			addComment(id, comment);
+		}
+	};
 
 	const handleSave = () => saveRecipe(id);
 

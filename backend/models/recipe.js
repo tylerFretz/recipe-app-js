@@ -6,7 +6,7 @@ const ingredientSchema = new mongoose.Schema({
 });
 
 const commentSchema = new mongoose.Schema({
-	commentText: { type: String, required: true, maxLength: [20000, 'Comment too long'] },
+	commentText: { type: String, required: true, maxLength: [10000, 'Comment too long'] },
 	user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 	dateAdded: { type: Date, default: Date.now },
 });

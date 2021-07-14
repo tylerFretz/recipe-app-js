@@ -47,7 +47,7 @@ const deleteRecipe = async ({ id, config }) => {
 };
 
 const createComment = async ({ id, comment, config }) => {
-	const { data } = await axios.post(`${BASE_URL}/${id}/comments`, comment, {
+	const { data } = await axios.post(`${BASE_URL}/${id}/comments`, { comment }, {
 		headers: config,
 	});
 	return data;
@@ -159,12 +159,12 @@ const useRecipes = () => {
 
 	// Adding a comment to a recipe
 	const commentMutation = useMutation(createComment, {
-		onError: () => {
-			addNotification('Must be logged in.', 'error');
+		onError: (error) => {
+			console.log(error.response.data);
+			addNotification(error.response.data.errors[0].msg, 'error');
 		},
 		onSuccess: (data) => {
 			queryClient.setQueryData(['recipes', data.id], data);
-			addNotification('Voted!', 'success');
 		},
 	});
 

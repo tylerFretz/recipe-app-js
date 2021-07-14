@@ -27,7 +27,7 @@ theme.overrides = {
 			boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
 		},
 		contained: {
-			color: '#FFFFFF',
+			color: '#FFF',
 			backgroundColor: '#7AA93C',
 			'&:hover': {
 				backgroundColor: '#000',
