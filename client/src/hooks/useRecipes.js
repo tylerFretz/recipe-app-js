@@ -159,9 +159,8 @@ const useRecipes = () => {
 
 	// Adding a comment to a recipe
 	const commentMutation = useMutation(createComment, {
-		onError: (error) => {
-			console.log(error.response.data);
-			addNotification(error.response.data.errors[0].msg, 'error');
+		onError: () => {
+			addNotification('Must be logged in', 'error');
 		},
 		onSuccess: (data) => {
 			queryClient.setQueryData(['recipes', data.id], data);

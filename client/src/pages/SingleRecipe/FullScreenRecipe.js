@@ -8,6 +8,7 @@ import RecipeFullStats from './RecipeFullStats';
 import RelatedSideBar from './RelatedSideBar';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
+import YouTubePlayer from './YouTubePlayer';
 
 import noImageAvailable from '../../assets/noImageAvailable.jpg';
 
@@ -76,9 +77,9 @@ const useStyles = makeStyles({
 		borderRadius: '10px',
 	},
 	commentSection: {
-		maxWidth: '70%',
+		maxWidth: '40%',
 		padding: '5%',
-		margin: '5% 15%',
+		margin: '4% 0%',
 		background: '#FFF',
 		boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
 		borderRadius: '3px',
@@ -125,6 +126,11 @@ const FullScreenRecipe = ({ recipe, handleVote, handleAddComment, handleSave }) 
 					<div className={classes.sidebarItem}>
 						<RelatedSideBar category={recipe.category} />
 					</div>
+					{recipe.youtubeUrl && (
+						<div className={classes.sidebarItem}>
+							<YouTubePlayer youtubeUrl={recipe.youtubeUrl} />
+						</div>
+					)}
 				</Container>
 			</Container>
 			<Container className={classes.commentSection} ref={commentRef}>

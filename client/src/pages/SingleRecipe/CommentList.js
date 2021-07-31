@@ -11,10 +11,9 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
 	root: {
-		paddingBottom: '5%'
+		paddingBottom: '2%'
 	},
 	title: {
-		marginBottom: '2%',
 		fontSize: '1.5rem',
 		fontWeight: 500
 	},

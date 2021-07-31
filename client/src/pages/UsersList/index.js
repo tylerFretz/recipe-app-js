@@ -37,7 +37,7 @@ const UsersList = () => {
 	return (
 		<>
 			<Banner
-				title="Users"
+				title="Members"
 				breadcrumbList={[{ title: 'Members', path: 'users' }]}
 			/>
 			<Container>

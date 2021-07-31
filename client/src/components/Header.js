@@ -65,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	linkButton: {
 		opacity: 0.8,
+		textTransform: 'uppercase',
 		marginRight: '2px',
 		'&:hover': {
 			opacity: 1,
@@ -124,7 +125,7 @@ const Header = () => {
 									<ListItem
 										id='profilePopoverButton'
 										onClick={handleMenuOpen}
-										className={classes.linkText}
+										className={classes.linkButton}
 										style={{ cursor: 'pointer' }}
 									>
 										<Icon

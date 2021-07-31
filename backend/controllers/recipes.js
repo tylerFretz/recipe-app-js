@@ -18,7 +18,7 @@ const User = require('../models/user');
 *   - tag [any string]
 *   - name [any string]
 *   - random ["true"]
-*	@Returns - list of recipes in JSON that match query params.
+*	@Return - list of recipes in JSON that match query params.
 */
 recipesRouter.get('/',
 	param('sortBy').trim().escape().isIn(['upvoteCount', 'dateAdded']).optional(),
@@ -187,6 +187,7 @@ recipesRouter.post('/',
 		res.status(201).json(savedRecipe);
 	});
 
+// update recipe content
 recipesRouter.put('/:id',
 	body('name').not().isEmpty().isLength({ max: 100 }).trim().escape().withMessage('Name must not have more than 100 characters.'),
 	body('instructions').not().isEmpty().isLength({ max: 10000 }).trim().escape().withMessage('Instructions too long'),

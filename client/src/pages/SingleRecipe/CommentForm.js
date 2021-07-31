@@ -26,8 +26,8 @@ const CommentForm = ({ handleAddComment }) => {
 			}}
 			onSubmit={(values, actions) => {
 				handleAddComment(values.comment);
-				actions.resetForm();
 				actions.setSubmitting(false);
+				actions.resetForm({ values: { comment: '' } });
 			}}
 			validate={(values) => {
 				const errors = {};

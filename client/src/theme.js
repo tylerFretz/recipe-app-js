@@ -70,6 +70,13 @@ theme.overrides = {
 			color: 'red',
 		},
 	},
+	MuiIconButton: {
+		colorSecondary: {
+			'&:hover': {
+				color: '#c6c6c6'
+			}
+		}
+	},
 	MuiListItem: {
 		root: {
 			width: ''

@@ -141,7 +141,7 @@ const SearchForm = () => {
 								component={TextField}
 								name="name"
 								variant="outlined"
-								placeholder="Find a recipe..."
+								placeholder="Search by name..."
 								className={classes.feild}
 							/>
 						</Grid>

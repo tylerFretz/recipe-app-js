@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
+import { Tooltip } from '@material-ui/core';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ModeCommentIcon from '@material-ui/icons/ModeComment';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -39,10 +40,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 	title: {
 		variant: 'h2',
-		marginTop: '2%',
 		marginBottom: '2%',
 		fontWeight: 500,
-		fontSize: '2.25rem',
+		fontSize: '2.5rem',
 	},
 	summaryContainer: {
 		display: 'flex',
@@ -65,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
 		textAlign: 'center',
 		borderRadius: '50%',
 		textDecoration: 'none',
+		overflow: 'hidden',
 		'&:hover': {
 			backgroundColor: '#606060',
 		},
@@ -119,66 +120,75 @@ const HeaderText = ({ recipe, handleVote, handleSave, executeCommentScroll }) =>
 			<Typography className={classes.title}>{recipe.name}</Typography>
 			<Container className={classes.metaCount}>
 				<div>
-					<IconButton onClick={() => handleSave()} color='secondary'>
-						<FavoriteIcon />
-					</IconButton>
+					<Tooltip title="Save recipe">
+						<IconButton onClick={() => handleSave()} color='secondary'>
+							<FavoriteIcon />
+						</IconButton>
+					</Tooltip>
 				</div>
 				<div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
-					<IconButton onClick={() => handleVote()} color='secondary'>
-						<ThumbUpAltIcon />
-					</IconButton>
+					<Tooltip title="Like recipe">
+						<IconButton onClick={() => handleVote()} color='secondary'>
+							<ThumbUpAltIcon />
+						</IconButton>
+					</Tooltip>
 					<Typography>{recipe.upvoteCount}</Typography>
 				</div>
 				<div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
-					<IconButton onClick={() => executeCommentScroll()} color='secondary'>
-						<ModeCommentIcon />
-					</IconButton>
+					<Tooltip title="Comment">
+						<IconButton onClick={() => executeCommentScroll()} color='secondary'>
+							<ModeCommentIcon />
+						</IconButton>
+					</Tooltip>
 					<Typography>{recipe.comments.length}</Typography>
 				</div>
 			</Container>
 			<Container className={classes.summaryContainer}>
-				<Link
-					to={{
-						pathname: `/users/${recipe.user.id}`,
-						state: { page: 'submitted' }
-					}}
-					className={classes.summaryLabel}
-					title="view user's page"
-				>
-					<span>From {recipe.user.username}</span>
-				</Link>
+				<Tooltip title="visit user's profile">
+					<Link
+						to={{
+							pathname: `/users/${recipe.user.id}`,
+							state: { page: 'submitted' }
+						}}
+						className={classes.summaryLabel}
+					>
+						<span>From {recipe.user.username}</span>
+					</Link>
+				</Tooltip>
 				<Typography className={classes.summary}>
 					{recipe.summary}
 				</Typography>
 			</Container>
 			<Divider />
-			{recipe.tags.length > 0 && (
-				<Container className={classes.tagContainer}>
-					<Typography variant="h6" style={{ marginRight: '2%' }}>
-						Tags:
-					</Typography>
-					{recipe.tags.map((tag) => (
-						<Link
-							key={tag}
-							to={`/recipes/search?tag=${tag}`}
-							style={{
-								display: 'flex',
-								margin: '0% 1%',
-								alignItems: 'center',
-								textDecoration: 'none',
-							}}
-						>
-							<Chip
-								label={tag}
-								className={classes.tag}
-								clickable={true}
-								size="small"
-							/>
-						</Link>
-					))}
-				</Container>
-			)}
-		</Container>
+			{
+				recipe.tags.length > 0 && (
+					<Container className={classes.tagContainer}>
+						<Typography variant="h6" style={{ marginRight: '2%' }}>
+							Tags:
+						</Typography>
+						{recipe.tags.map((tag) => (
+							<Link
+								key={tag}
+								to={`/recipes/search?tag=${tag}`}
+								style={{
+									display: 'flex',
+									margin: '0% 1%',
+									alignItems: 'center',
+									textDecoration: 'none',
+								}}
+							>
+								<Chip
+									label={tag}
+									className={classes.tag}
+									clickable={true}
+									size="small"
+								/>
+							</Link>
+						))}
+					</Container>
+				)
+			}
+		</Container >
 	);
 };
 
