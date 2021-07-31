@@ -75,7 +75,7 @@ const useUsers = () => {
 	// Creating a new user
 	const createMutation = useMutation(createUser, {
 		onError: (error) => {
-			addNotification(error.response.data.errors[0].msg, 'error');
+			addNotification(error.response.data.error, 'error');
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries('users');
@@ -92,7 +92,7 @@ const useUsers = () => {
 	// Updating a users email OR username
 	const updateMutation = useMutation(update, {
 		onError: (error) => {
-			addNotification(error.response.data.errors[0].msg, 'error');
+			addNotification(error.response.data.error, 'error');
 		},
 		onSuccess: (data) => {
 			queryClient.setQueryData(['users', data.id], data);

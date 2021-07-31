@@ -94,7 +94,7 @@ const useRecipes = () => {
 	// Creating a new recipe
 	const createMutation = useMutation(createRecipe, {
 		onError: (error) => {
-			addNotification(error.response.data.errors[0].msg, 'error');
+			addNotification(error.response.data.error, 'error');
 		},
 		onSuccess: (data) => {
 			queryClient.invalidateQueries('recipes');
@@ -111,7 +111,7 @@ const useRecipes = () => {
 	// Updating a recipe
 	const updateMutation = useMutation(updateRecipe, {
 		onError: (error) => {
-			addNotification(error.response.data.errors[0].msg, 'error');
+			addNotification(error.response.data.error, 'error');
 		},
 		onSuccess: (data) => {
 			queryClient.invalidateQueries('recipes');
@@ -159,8 +159,8 @@ const useRecipes = () => {
 
 	// Adding a comment to a recipe
 	const commentMutation = useMutation(createComment, {
-		onError: () => {
-			addNotification('Must be logged in', 'error');
+		onError: (error) => {
+			addNotification(error.response.data.error, 'error');
 		},
 		onSuccess: (data) => {
 			queryClient.setQueryData(['recipes', data.id], data);

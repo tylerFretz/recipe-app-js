@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 const jwt = require('jsonwebtoken');
 const { body, param, validationResult } = require('express-validator');
+const Filter = require('bad-words');
 const ObjectId = require('mongoose').Types.ObjectId;
 const recipesRouter = require('express').Router();
 const Recipe = require('../models/recipe');
@@ -161,6 +162,11 @@ recipesRouter.post('/',
 
 		const user = await User.findById(decodedToken.id);
 
+		const filter = new Filter();
+		for (const property in body) {
+			if (filter.isProfane(body[property])) return res.status(400).json({ error: `${property} contains profanity` });
+		}
+
 		const recipe = new Recipe({
 			name: body.name,
 			category: body.category || 'Miscellaneous',
@@ -217,6 +223,11 @@ recipesRouter.put('/:id',
 			return res.status(401).json({ error: 'token missing or invalid' });
 		}
 
+		const filter = new Filter();
+		for (const property in body) {
+			if (filter.isProfane(body[property])) return res.status(400).json({ error: `${property} contains profanity` });
+		}
+
 		const updatedRecipe = await Recipe.findByIdAndUpdate(req.params.id, body, { new: true })
 			.populate('user', { username: 1, id: 1 });
 		res.status(201).json(updatedRecipe);
@@ -268,6 +279,9 @@ recipesRouter.post('/:id/comments',
 		if (!token || !decodedToken.id) {
 			return res.status(401).json({ error: 'Token missing or invalid' });
 		}
+
+		const filter = new Filter();
+		if (filter.isProfane(comment)) return res.status(400).json({ error: 'Comment contains profanity' });
 
 		const updatedRecipe = await Recipe.findByIdAndUpdate(
 			req.params.id,

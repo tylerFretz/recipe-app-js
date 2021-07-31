@@ -2,6 +2,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { body, validationResult } = require('express-validator');
+const Filter = require('bad-words');
 const usersRouter = require('express').Router();
 const User = require('../models/user');
 const Recipe = require('../models/recipe');
@@ -43,6 +44,10 @@ usersRouter.post('/',
 		}
 
 		const { body } = req;
+
+		const filter = new Filter();
+		if (filter.isProfane(body.username)) return res.status(400).json({ error: 'Username contains profanity' });
+
 		const saltRounds = 10;
 		const passwordHash = await bcrypt.hash(body.password, saltRounds);
 
@@ -68,6 +73,10 @@ usersRouter.put('/:id',
 
 		const { email, username } = req.body;
 		const { token } = req;
+
+		const filter = new Filter();
+		if (filter.isProfane(username)) return res.status(400).json({ error: 'Username contains profanity' });
+
 		// a user must be logged in
 		const decodedToken = jwt.verify(token, process.env.SECRET);
 		if (!token || !decodedToken.id) {
