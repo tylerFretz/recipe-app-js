@@ -14,9 +14,8 @@ jobs:
     env: 
       SKIP_PREFLIGHT_CHECK: true
       MONGODB_URI: ${{ secrets.MONGODB_URI }} 
-      TEST_MONGO_URI: ${{secrets.TEST_MONGO_URI}}
-      PORT: ${{secrets.PORT}}
-      SECRET: ${{secrets.SECRET}}
+      PORT: ${{ secrets.PORT }}
+      SECRET: ${{ secrets.SECRET }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -32,7 +31,7 @@ jobs:
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "recipe-app-tyler-fretz" 
           heroku_email: "fretztyler@gmail.com"
           procfile: "web: npm start"
