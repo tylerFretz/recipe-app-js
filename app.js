@@ -1,3 +1,4 @@
+const compression = require('compression');
 const express = require('express');
 require('express-async-errors');
 const expressStaticGzip = require('express-static-gzip');
@@ -25,6 +26,7 @@ if (process.env.NODE_ENV === 'test') {
 	});
 }
 
+app.use(compression());
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
@@ -35,15 +37,13 @@ app.use('/api/recipes', recipesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
 
-app.use(
-	'/',
-	expressStaticGzip('build/', {
-		enableBrotli: true,
-		orderPreference: ['br', 'gz'],
-		setHeaders: (res) => {
-			res.setHeader('Cache-Control', 'public, max-age=31536000');
-		},
-	})
+app.use('/static', expressStaticGzip('build/', {
+	enableBrotli: true,
+	orderPreference: ['br', 'gz'],
+	setHeaders: (res) => {
+		res.setHeader('Cache-Control', 'public, max-age=31536000');
+	},
+})
 );
 
 app.use(middleware.unknownEndpoint);

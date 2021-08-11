@@ -1,0 +1,44 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+
+jobs:
+  deployment_pipeline:
+    runs-on: ubuntu-latest
+    env: 
+      SKIP_PREFLIGHT_CHECK: true
+      MONGODB_URI: ${{ secrets.MONGODB_URI }} 
+      TEST_MONGO_URI: ${{secrets.TEST_MONGO_URI}}
+      PORT: ${{secrets.PORT}}
+      SECRET: ${{secrets.SECRET}}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - name: npm install
+        run: npm install && cd client && npm install
+      - name: lint
+        run: npm run lint:all
+      - name: build
+        run: npm run build:client
+      - name: test
+        run: npm run test
+      - name: deploy to heroku
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "recipe-app-tyler-fretz" 
+          heroku_email: "fretztyler@gmail.com"
+          procfile: "web: npm start"
+        env:
+          PORT: ${{ secrets.PORT }}
+          MONGODB_URI: ${{ secrets.MONGO_URI }} 
+          SECRET: ${{ secrets.SECRET }}
