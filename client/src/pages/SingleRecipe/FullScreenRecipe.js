@@ -22,16 +22,15 @@ const useStyles = makeStyles({
 	primaryContentArea: {
 		position: 'relative',
 		display: 'flex',
-		justifyContent: 'space-between',
 		padding: 0,
 	},
 	ingredientsInstructionsContainer: {
-		width: '70%',
+		width: '90%',
 		margin: 0,
 		padding: 0,
 	},
 	sidebar: {
-		width: '25%',
+		width: '40%',
 		padding: 0,
 		margin: 0,
 		position: 'relative',
@@ -77,7 +76,7 @@ const useStyles = makeStyles({
 		borderRadius: '10px',
 	},
 	commentSection: {
-		maxWidth: '40%',
+		width: '90%',
 		padding: '5%',
 		margin: '4% 0%',
 		background: '#FFF',
@@ -96,7 +95,7 @@ const FullScreenRecipe = ({ recipe, handleVote, handleAddComment, handleSave }) 
 
 	return (
 		<Container className={classes.mainContainer}>
-			<Container className={classes.contentHeader}>
+			<div className={classes.contentHeader}>
 				<div className={classes.headerMediaContainer}>
 					<img
 						className={classes.headerMedia}
@@ -111,14 +110,20 @@ const FullScreenRecipe = ({ recipe, handleVote, handleAddComment, handleSave }) 
 					handleSave={handleSave}
 					executeCommentScroll={executeCommentScroll}
 				/>
-			</Container>
+			</div>
 			<Container className={classes.primaryContentArea}>
-				<Container className={classes.ingredientsInstructionsContainer}>
-					<ContentInnerFullScreen
-						instructions={recipe.instructions}
-						ingredients={recipe.ingredients}
-					/>
-				</Container>
+				<div style={{ display: 'flex', flexDirection: 'column' }}>
+					<Container className={classes.ingredientsInstructionsContainer}>
+						<ContentInnerFullScreen
+							instructions={recipe.instructions}
+							ingredients={recipe.ingredients}
+						/>
+					</Container>
+					<Container className={classes.commentSection} ref={commentRef}>
+						<CommentList comments={recipe.comments} />
+						<CommentForm handleAddComment={handleAddComment} />
+					</Container>
+				</div>
 				<Container className={classes.sidebar}>
 					<div className={classes.sidebarItem}>
 						<RecipeFullStats recipe={recipe} />
@@ -132,10 +137,6 @@ const FullScreenRecipe = ({ recipe, handleVote, handleAddComment, handleSave }) 
 						</div>
 					)}
 				</Container>
-			</Container>
-			<Container className={classes.commentSection} ref={commentRef}>
-				<CommentList comments={recipe.comments} />
-				<CommentForm handleAddComment={handleAddComment} />
 			</Container>
 		</Container>
 	);

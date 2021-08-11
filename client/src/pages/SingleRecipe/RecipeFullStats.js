@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	userLink: {
 		textDecoration: 'none',
-		fontSize: '1.25em',
+		fontSize: '1.5rem',
 		color: '#676767',
 		'&:hover': {
 			color: theme.palette.secondary.main,

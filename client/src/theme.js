@@ -65,6 +65,11 @@ theme.overrides = {
 			color: '#FFF',
 		},
 	},
+	MuiFilledInput: {
+		root: {
+			color: '#FFF'
+		}
+	},
 	MuiFormHelperText: {
 		root: {
 			color: 'red',
@@ -75,6 +80,11 @@ theme.overrides = {
 			'&:hover': {
 				color: '#c6c6c6'
 			}
+		}
+	},
+	MuiInputLabel: {
+		filled: {
+			color: '#FFF'
 		}
 	},
 	MuiListItem: {

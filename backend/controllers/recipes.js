@@ -41,7 +41,7 @@ recipesRouter.get('/',
 		const { query } = req;
 
 		if (query.random) {
-			const recipes = await Recipe.aggregate([{ $sample: { size: 5 } },
+			const recipes = await Recipe.aggregate([{ $sample: { size: 6 } },
 			{ $lookup: { from: 'users', localField: 'user', foreignField: '_id', as: 'user' } },
 			{ $unwind: { path: '$user' } },
 			{ $addFields: { id: '$_id' } },
