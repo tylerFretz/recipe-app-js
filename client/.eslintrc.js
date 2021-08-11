@@ -34,6 +34,7 @@ module.exports = {
 		'eqeqeq': 'warn',
 		'no-trailing-spaces': 'warn',
 		'react/prop-types': 0,
-		'no-unused-vars': 'warn'
+		'no-unused-vars': 'warn',
+		'linebreak-style': 0
 	}
 };
