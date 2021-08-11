@@ -20,6 +20,7 @@ const App = () => (
 		<ScrollToTop />
 		<Header />
 		<NavigationBar />
+
 		<div
 			style={{
 				display: 'flex',
