@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 	},
 });
 
-const RecipeCard = ({ recipe, type }) => {
+const RecipeCard = ({ recipe, type, isSubmitted }) => {
 	const history = useHistory();
 	const classes = useStyles();
 	const { authUser } = useAuthUser();
@@ -77,7 +77,7 @@ const RecipeCard = ({ recipe, type }) => {
 
 			{/* Display delete option if recipe card is used in the profile page and recipe belongs to user */}
 			{type && type === 'profile' && authUser && authUser.id === recipe.user.id && (
-				<RecipeCardActions recipe={recipe} />
+				<RecipeCardActions recipe={recipe} isSubmitted={isSubmitted} />
 			)}
 		</>
 	);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
+import { DropzoneArea } from 'material-ui-dropzone';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { TextField } from 'formik-material-ui';
@@ -41,9 +42,15 @@ const RegisterForm = () => {
 				email: '',
 				password: '',
 				passwordConfirm: '',
+				avatarImageUrl: ''
 			}}
 			onSubmit={(values, actions) => {
-				addUser({ username: values.username, email: values.email, password: values.password });
+				addUser({
+					username: values.username,
+					email: values.email,
+					password: values.password,
+					avatarImageUrl: values.avatarImageUrl
+				});
 				actions.setSubmitting(false);
 			}}
 			validate={(values) => {
@@ -73,8 +80,8 @@ const RegisterForm = () => {
 				return errors;
 			}}
 		>
-			{({ submitForm }) => (
-				<Form className={classes.form}>
+			{({ submitForm, setFieldValue }) => (
+				<Form className={classes.form} encType='multipart/form-data' method='post'>
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
 							<Field
@@ -152,6 +159,17 @@ const RegisterForm = () => {
 										</InputAdornment>
 									),
 								}}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<Field
+								component={DropzoneArea}
+								name='avatarImageUrl'
+								acceptedFiles={['image/*']}
+								dropzoneText="Add an avatar"
+								showAlerts={false}
+								filesLimit={1}
+								onChange={(file) => setFieldValue('avatarImageUrl', file[0])}
 							/>
 						</Grid>
 					</Grid>

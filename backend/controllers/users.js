@@ -7,12 +7,41 @@ const usersRouter = require('express').Router();
 const User = require('../models/user');
 const Recipe = require('../models/recipe');
 const ObjectId = require('mongoose').Types.ObjectId;
+const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
 
+// using disk storage for user avatar
+const imageDir = './public/';
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, imageDir);
+	},
+	filename: (req, file, cb) => {
+		const fileName = file.originalname.toLowerCase().split(' ').join('-');
+		cb(null, uuidv4() + '-' + fileName);
+	}
+});
+
+// multer upload for user avater
+const upload = multer({
+	storage: storage,
+	fileFilter: (req, file, cb) => {
+		if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+			cb(null, true);
+		} else {
+			cb(null, false);
+			return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+		}
+	}
+});
+
+// get all users
 usersRouter.get('/', async (req, res) => {
 	const users = await User.find({});
 	res.json(users);
 });
 
+// get specific user by id
 usersRouter.get('/:id', async (req, res) => {
 	const user = await User.findById(req.params.id)
 		.populate({
@@ -32,35 +61,45 @@ usersRouter.get('/:id', async (req, res) => {
 	}
 });
 
-usersRouter.post('/',
+
+// creating a new user
+usersRouter.post('/', upload.single('avatarImageUrl'),
 	body('username').not().isEmpty().isLength({ min: 3, max: 50 }).trim().escape().withMessage('Username must be between 5 and 50 characters'),
 	body('email').not().isEmpty().isEmail().withMessage('Improper email format'),
 	body('password').isStrongPassword().withMessage('Password specifications: Min length: 8, Min lowercase: 1, Min uppercase: 1, minNumbers: 1, minSymbols: 1'),
 	async (req, res) => {
 		const errors = validationResult(req);
 
+		// return errors if errors in req text fields
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ errors: errors.array() });
 		}
 
+		// return error if username is profane
 		const { body } = req;
-
 		const filter = new Filter();
 		if (filter.isProfane(body.username)) return res.status(400).json({ error: 'Username contains profanity' });
 
+		// create hashed password
 		const saltRounds = 10;
 		const passwordHash = await bcrypt.hash(body.password, saltRounds);
+
+		// url where user avtar will be saved
+		const url = req.protocol + '://' + req.get('host');
 
 		const user = new User({
 			username: body.username,
 			email: body.email,
-			passwordHash
+			passwordHash,
+			avatarImageUrl: url + '/public/' + req.file.filename
 		});
 
 		const savedUser = await user.save();
 		res.status(201).json(savedUser);
 	});
 
+
+// updating a user's username or email
 usersRouter.put('/:id',
 	body('username').not().isEmpty().isLength({ min: 5, max: 50 }).trim().escape().withMessage('Username must be between 5 and 50 characters'),
 	body('email').not().isEmpty().isEmail().withMessage('Improper email format'),
@@ -74,6 +113,7 @@ usersRouter.put('/:id',
 		const { email, username } = req.body;
 		const { token } = req;
 
+		// return error if username is profane
 		const filter = new Filter();
 		if (filter.isProfane(username)) return res.status(400).json({ error: 'Username contains profanity' });
 

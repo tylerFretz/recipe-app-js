@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import MetaCard from './MetaCard';
 import RecipeCard from './RecipeCard';
 
-const CardRow = ({ items, type }) => {
+const CardRow = ({ items, type, isSubmitted }) => {
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -23,7 +23,7 @@ const CardRow = ({ items, type }) => {
 					key={recipe.id}
 					style={{ justifyContent: 'center' }}
 				>
-					<RecipeCard recipe={recipe} type={type} />
+					<RecipeCard recipe={recipe} type={type} isSubmitted={isSubmitted} />
 				</Grid>
 			))}
 		</Grid>

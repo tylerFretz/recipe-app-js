@@ -29,7 +29,7 @@ const chunk = (arr, size) =>
 		arr.slice(i * size, i * size + size)
 	);
 
-const CardGrid = ({ items, type }) => {
+const CardGrid = ({ items, type, isSubmitted }) => {
 	const classes = useStyles();
 	const itemGroups = chunk(items, 3);
 
@@ -44,7 +44,7 @@ const CardGrid = ({ items, type }) => {
 					key={i}
 					className={classes.rowContainer}
 				>
-					<CardRow items={group} type={type} />
+					<CardRow items={group} type={type} isSubmitted={isSubmitted} />
 				</Grid>
 			))}
 		</Grid>

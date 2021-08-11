@@ -16,6 +16,7 @@
 		"formik-material-ui-lab": "0.0.8",
 		"helmet": "^4.4.1",
 		"jest": "^26.6.3",
+		"material-ui-dropzone": "^3.5.0",
 		"notistack": "^1.0.5",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",

@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const RecipeCardActions = ({ recipe }) => {
+const RecipeCardActions = ({ recipe, isSubmitted }) => {
 	const classes = useStyles();
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const { removeRecipe } = useRecipes();
@@ -49,14 +49,16 @@ const RecipeCardActions = ({ recipe }) => {
 
 	return (
 		<div style={{ width: '100%', display: 'flex', justifyContent: 'space-around', marginTop: '5%' }}>
-			<Button
-				disabled={dialogOpen}
-				onClick={() => handleUpdate()}
-				type='contained'
-				className={classes.updateButton}
-			>
-				Update Recipe
-			</Button>
+			{isSubmitted && (
+				<Button
+					disabled={dialogOpen}
+					onClick={() => handleUpdate()}
+					type='contained'
+					className={classes.updateButton}
+				>
+					Update Recipe
+				</Button>
+			)}
 			<Button
 				disabled={dialogOpen}
 				onClick={() => setDialogOpen(true)}

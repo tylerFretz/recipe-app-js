@@ -35,7 +35,7 @@ const Profile = () => {
 					<div style={{ display: 'flex', justifyContent: 'center' }}>
 						<Typography component='h2' style={{ fontSize: '2.5rem' }}>Submitted Recipes</Typography>
 					</div>
-					{renderRecipes(submittedRecipes)}
+					{renderRecipes(submittedRecipes, true)}
 				</>
 			)}
 			{state.page === 'saved' && (
@@ -43,7 +43,7 @@ const Profile = () => {
 					<div style={{ display: 'flex', justifyContent: 'center' }}>
 						<Typography component='h2' style={{ fontSize: '2.5rem' }}>Saved Recipes</Typography>
 					</div>
-					{renderRecipes(savedRecipes)}
+					{renderRecipes(savedRecipes, false)}
 				</>
 			)}
 			{state.page === 'account' && (
@@ -53,7 +53,7 @@ const Profile = () => {
 	);
 };
 
-const renderRecipes = (recipes) => {
+const renderRecipes = (recipes, isSubmitted) => {
 	if (recipes.length === 0) {
 		return (
 			<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -66,6 +66,7 @@ const renderRecipes = (recipes) => {
 		<CardGrid
 			items={recipes}
 			type='profile'
+			isSubmitted={isSubmitted}
 		/>
 	);
 };
