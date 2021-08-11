@@ -28,8 +28,6 @@ jobs:
         run: npm run lint:all
       - name: build
         run: npm run build:client
-      - name: test
-        run: npm run test
       - name: deploy to heroku
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
         uses: akhileshns/heroku-deploy@v3.12.12
