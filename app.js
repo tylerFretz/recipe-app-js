@@ -3,7 +3,6 @@ const express = require('express');
 require('express-async-errors');
 const expressStaticGzip = require('express-static-gzip');
 const cors = require('cors');
-const helmet = require('helmet');
 const logger = require('./utils/logger');
 const db = require('./utils/db_helper');
 const mockDb = require('./tests/mockDb_helper');
@@ -26,9 +25,17 @@ if (process.env.NODE_ENV === 'test') {
 	});
 }
 
-app.use(compression());
-app.use(helmet());
 app.use(cors());
+app.use('/static', expressStaticGzip('build', {
+	index: false,
+	enableBrotli: true,
+	orderPreference: ['br', 'gz'],
+	setHeaders: (res) => {
+		res.setHeader('Cache-Control', 'public, max-age=31536000');
+	},
+})
+);
+app.use(compression());
 app.use(express.json());
 app.use(middleware.requestLogger);
 app.use(middleware.tokenExtractor);
@@ -37,14 +44,6 @@ app.use('/api/recipes', recipesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
 
-app.use('/static', expressStaticGzip('build/', {
-	enableBrotli: true,
-	orderPreference: ['br', 'gz'],
-	setHeaders: (res) => {
-		res.setHeader('Cache-Control', 'public, max-age=31536000');
-	},
-})
-);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
