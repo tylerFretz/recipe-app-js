@@ -1,7 +1,5 @@
-const compression = require('compression');
 const express = require('express');
 require('express-async-errors');
-const expressStaticGzip = require('express-static-gzip');
 const cors = require('cors');
 const logger = require('./utils/logger');
 const db = require('./utils/db_helper');
@@ -26,16 +24,7 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 app.use(cors());
-app.use('/static', expressStaticGzip('build', {
-	index: false,
-	enableBrotli: true,
-	orderPreference: ['br', 'gz'],
-	setHeaders: (res) => {
-		res.setHeader('Cache-Control', 'public, max-age=31536000');
-	},
-})
-);
-app.use(compression());
+app.use(express.static('build'));
 app.use(express.json());
 app.use(middleware.requestLogger);
 app.use(middleware.tokenExtractor);
