@@ -2,8 +2,6 @@
 
 Full-stack MERN recipe CRUD app. Back-end is an express API to a MongoDB database with hundreds of recipes. It also serves the front-end's static react files. 
 
-![gif of recipe app site](https://media.giphy.com/media/aTsBz1d7ZECSoMgqD1/giphy.gif)
-
 This was the first MERN stack app I built after finishing [FullStackOpen](https://fullstackopen.com/en/). As such, much of the front end is clunky and should be refactored but likely will not be as this was done for the learning experience. 
 
 Initial database data was populated using the amazing API at [TheMealDB](https://www.themealdb.com/). Unfortunately I found the structure of the data returned from this API difficult to work with, so I scraped it, reformatted it, and put it into my own database.
