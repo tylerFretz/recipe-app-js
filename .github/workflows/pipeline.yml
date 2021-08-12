@@ -17,23 +17,25 @@ jobs:
       PORT: ${{ secrets.PORT }}
       SECRET: ${{ secrets.SECRET }}
     steps:
-      - uses: actions/checkout@v2.3.4
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
         with:
-          node-version: "14.x"
+          node-version: "12.x"
       - name: npm install
         run: npm install && cd client && npm install
       - name: lint
         run: npm run lint:all
       - name: build
         run: npm run build:client
-      - name: deploy to netlify
-        if: ${{ github.event_name == 'push' }}
-        uses: nwtgck/actions-netlify@v1.2.2
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.RECIPE_APP_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      - name: deploy to heroku
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+        uses: akhileshns/heroku-deploy@v3.12.12
         with:
-          publish-dir: './client/build'
-          deploy-message: "Deployment from GitHub Actions"
-        timeout-minutes: 2
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "recipe-app-tyler-fretz" 
+          heroku_email: "fretztyler@gmail.com"
+          procfile: "web: npm start"
+        env:
+          PORT: ${{ secrets.PORT }}
+          MONGODB_URI: ${{ secrets.MONGO_URI }} 
+          SECRET: ${{ secrets.SECRET }}

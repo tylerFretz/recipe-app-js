@@ -27,6 +27,3 @@ yarn-error.log*
 requests/
 
 apiScrapper.js
-
-# Local Netlify folder
-.netlify
