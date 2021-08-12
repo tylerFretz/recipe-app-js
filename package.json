@@ -7,7 +7,7 @@
 		"start": "NODE_ENV=production node index.js",
 		"start:prod": "cross-env NODE_ENV=production node index.js",
 		"dev": "cross-env NODE_ENV=development nodemon index.js",
-		"build:client": "rm -rf build && cd ./client && npm run build --prod && cp -r build ../",
+		"build:client": "cd client && npm run build",
 		"test": "cross-env NODE_ENV=test jest --verbose --runInBand",
 		"start:test": "cross-env NODE_ENV=test node index.js",
 		"lint": "eslint './**/*.{js,jsx}'",
