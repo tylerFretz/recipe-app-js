@@ -1,70 +1,122 @@
-# Getting Started with Create React App
+# Recipe App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Full-stack MERN recipe CRUD app. Back-end is an express API to a MongoDB database with hundreds of recipes. It also serves the front-end's static react files. 
 
-## Available Scripts
+![gif of recipe app site](https://media.giphy.com/media/aTsBz1d7ZECSoMgqD1/giphy.gif)
 
-In the project directory, you can run:
+This was the first MERN stack app I built after finishing [FullStackOpen](https://fullstackopen.com/en/). As such, much of the front end is clunky and should be refactored but likely will not be as this was done for the learning experience. 
 
-### `npm start`
+Initial database data was populated using the amazing API at [TheMealDB](https://www.themealdb.com/). Unfortunately I found the structure of the data returned from this API difficult to work with, so I scraped it, reformatted it, and put it into my own database.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Live site hosted on Heroku at [https://fathomless-hamlet-32500.herokuapp.com](https://fathomless-hamlet-32500.herokuapp.com)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Features (front-end)
+- Mobile-first responsive design
+- Consistent theming using Material UI
+- Responsive forms using Formik and Yup
+- Search recipes based on category, tag, area, name, popularity, date added, or any combination of the above
+- HTTP responses are cached using React Query to limit the amount of requests
+- User's can add easily add avatars using drag-and-drop file upload 
+- Ability to save favourite recipes, create new recipes, and discuss with others
+- Embedded YouTube player for recipe demonstration videos
+- Compressed image assets to reduce initial load time
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Features (back-end)
+- API Unit Testing using JEST
+- Error handling middleware
+- API request sanitation and validation
+- CI/CD pipeline using GitHub Actions
 
-### `npm run build`
+## Database Schema
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Recipe
+- Name - String
+- Category - String
+- Area - String
+- Instructions - String
+- Ingredients - [{ Name: String, Measure: String }]
+- ThumbImageURL - String
+- Tags - [String]
+- SourceURL - String
+- DateAdded - Date
+- User - ObjectID
+- Comments - [{ CommentText: String, User: ObjectID, DateAdded: Date }]
+- UpvoteCount - Number
+- Summary - String
+- PrepTime - Number
+- CookTime - Number
+- Servings - Number
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### User
+- Username - String
+- PasswordHash - String
+- Email - String
+- SubmittedRecipes: [ObjectID]
+- SavedRecipes: [ObjectID]
+- JoinDate: Date
+- AvatarImageURL - String
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## API end points
 
-### `npm run eject`
+### login
+- POST "/" --> 
+Logs in user if password matches saved password hash
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### recipes
+- GET "/" -->
+Searches database for recipes based on request query object variable.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- GET "/:id" -->
+Searches database for recipe that matches specific id.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- GET "/data" -->
+Retrieves distinct categories, tags, and areas in database.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- DELETE "/:id" -->
+Deletes recipe that matches specific id.
 
-## Learn More
+- POST "/" -->
+Creates a new recipe.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- PUT "/:id" --> 
+Updates a recipe that exists in the database.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- POST "/:id/upvotes" --> 
+Updates the amount of upvotes a recipe has. Users can only modify upvotes +- 1.
 
-### Code Splitting
+- POST "/:id/comments" -->
+Adds a comment to the specific recipe.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### users
 
-### Analyzing the Bundle Size
+- GET "/" -->
+Returns all users in the database.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- GET "/:id" -->
+Returns a specific user by ID.
 
-### Making a Progressive Web App
+- POST "/" -->
+Creates a new user.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- PUT "/:id" -->
+Updates a user's information.
 
-### Advanced Configuration
+- POST "/:id/savedRecipes" -->
+Adds a recipe to the user's saved recipes.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- DELETE "/:id" -->
+Removes a user with the specific ID, as well as all of their submitted recipes, from the database.
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Road Map
+I still plan on implementing the following features:
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Front-end integration testing using Cypress
+- Install rate-limiter-flexible package to prevent DDOS
+- Add contact page
+- Add pagination to user's submitted recipes
+- Set up image store for recipe images in AWS S3
+- Set up reverse proxy using NGINX
+- Add filter for user submitted recipe images
+- Add 404 page
