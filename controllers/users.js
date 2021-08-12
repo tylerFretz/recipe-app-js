@@ -91,7 +91,7 @@ usersRouter.post('/', upload.single('avatarImageUrl'),
 			username: body.username,
 			email: body.email,
 			passwordHash,
-			avatarImageUrl: url + '/public/' + req.file.filename
+			avatarImageUrl: req.file ? url + '/public/' + req.file.filename : ''
 		});
 
 		const savedUser = await user.save();

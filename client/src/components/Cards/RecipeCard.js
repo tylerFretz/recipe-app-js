@@ -21,6 +21,7 @@ const useStyles = makeStyles({
 		maxWidth: 360,
 	},
 	cardContent: {
+		height: '50%',
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'space-around',

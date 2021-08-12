@@ -30,7 +30,7 @@ const useStyles = makeStyles({
 		padding: 0,
 	},
 	sidebar: {
-		width: '40%',
+		width: '80%',
 		padding: 0,
 		margin: 0,
 		position: 'relative',
