@@ -1,6 +1,7 @@
 const express = require('express');
 require('express-async-errors');
 const cors = require('cors');
+const compression = require('compression');
 const logger = require('./utils/logger');
 const db = require('./utils/db_helper');
 const middleware = require('./utils/middleware');
@@ -9,6 +10,7 @@ const usersRouter = require('./controllers/users');
 const loginRouter = require('./controllers/login');
 
 const app = express();
+app.use(compression());
 
 if (process.env.NODE_ENV === 'test') {
 	const testingRouter = require('./controllers/testing');
