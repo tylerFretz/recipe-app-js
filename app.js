@@ -7,11 +7,11 @@ const middleware = require('./utils/middleware');
 const recipesRouter = require('./controllers/recipes');
 const usersRouter = require('./controllers/users');
 const loginRouter = require('./controllers/login');
-const testingRouter = require('./controllers/testing');
 
 const app = express();
 
 if (process.env.NODE_ENV === 'test') {
+	const testingRouter = require('./controllers/testing');
 	const mockDb = require('./tests/mockDb_helper');
 	mockDb.connect().catch(err => {
 		logger.error(err);
