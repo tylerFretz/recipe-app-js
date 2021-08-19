@@ -44,6 +44,7 @@ const RecipeCard = ({ recipe, type, isSubmitted }) => {
 			<Card className={classes.recipeCard}>
 				<div style={{ overflow: 'hidden', height: '50%' }}>
 					<CardMedia
+						style={{ height: '203px', width: '360px' }}
 						component="img"
 						alt={recipe.name}
 						image={recipe.thumbImageUrl}
