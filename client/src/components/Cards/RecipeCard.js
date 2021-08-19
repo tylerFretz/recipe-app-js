@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 import { useAuthUser } from '../../hooks/useAuthUser';
 import RecipeStats from '../RecipeStats';
@@ -31,6 +31,7 @@ const useStyles = makeStyles({
 });
 
 const RecipeCard = ({ recipe, type, isSubmitted }) => {
+	const [imageLoaded, setImageLoaded] = useState(false);
 	const history = useHistory();
 	const classes = useStyles();
 	const { authUser } = useAuthUser();
@@ -43,13 +44,16 @@ const RecipeCard = ({ recipe, type, isSubmitted }) => {
 		<>
 			<Card className={classes.recipeCard}>
 				<div style={{ overflow: 'hidden', height: '50%' }}>
-					<CardMedia
-						style={{ height: '203px', width: '360px' }}
-						component="img"
+
+					{/* Display skeleton loading indicator while waiting for recipe image to be fetched */}
+					{!imageLoaded && <Skeleton animation='wave' variant='rect' height='203px' width='360px' />}
+					<img
+						style={{ height: '203px', width: '360px', display: imageLoaded ? '' : 'none' }}
 						alt={recipe.name}
-						image={recipe.thumbImageUrl}
+						src={recipe.thumbImageUrl}
 						title={recipe.name}
 						onClick={() => handleClick()}
+						onLoad={() => setImageLoaded(true)}
 					/>
 				</div>
 				<CardContent className={classes.cardContent}>
