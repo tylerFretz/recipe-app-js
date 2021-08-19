@@ -33,6 +33,10 @@ app.use('/api/recipes', recipesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
 
+app.get('/*', function (req, res) {
+	res.sendFile('./client/build/index.html');
+});
+
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
