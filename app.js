@@ -1,6 +1,7 @@
 const express = require('express');
 require('express-async-errors');
 const cors = require('cors');
+const path = require('path');
 const compression = require('compression');
 const logger = require('./utils/logger');
 const db = require('./utils/db_helper');
@@ -36,7 +37,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
 
 app.get('/*', function (req, res) {
-	res.sendFile('./client/build/index.html');
+	res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
 });
 
 
