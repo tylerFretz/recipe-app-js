@@ -28,6 +28,13 @@ const useStyles = makeStyles({
 		borderBottom: '1px solid #EEE',
 		flexGrow: 1,
 	},
+	multiLineEllipsis: {
+		overflow: 'hidden',
+		textOverflow: 'ellipsis',
+		display: '-webkit-box',
+		'-webkit-line-clamp': 4,
+		'-webkit-box-orient': 'vertical'
+	}
 });
 
 const RecipeCard = ({ recipe, type, isSubmitted }) => {
@@ -43,7 +50,7 @@ const RecipeCard = ({ recipe, type, isSubmitted }) => {
 	return (
 		<>
 			<Card className={classes.recipeCard}>
-				<div style={{ overflow: 'hidden', height: '50%' }}>
+				<div style={{ overflow: 'hidden', height: '50%', cursor: 'pointer' }}>
 
 					{/* Display skeleton loading indicator while waiting for recipe image to be fetched */}
 					{!imageLoaded && <Skeleton animation='wave' variant='rect' height='203px' width='360px' />}
@@ -61,7 +68,7 @@ const RecipeCard = ({ recipe, type, isSubmitted }) => {
 						{recipe.name}
 					</Typography>
 					{recipe.summary && (
-						<Typography variant="body1">{recipe.summary}</Typography>
+						<Typography variant="body1" className={classes.multiLineEllipsis}>{recipe.summary}</Typography>
 					)}
 					<Typography variant="subtitle2">
 						By{' '}

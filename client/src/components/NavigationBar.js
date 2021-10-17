@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
-import { makeStyles, fade } from '@material-ui/core/styles';
+import { makeStyles, alpha } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import List from '@material-ui/core/List';
@@ -47,9 +47,9 @@ const useStyles = makeStyles((theme) => ({
 	search: {
 		position: 'relative',
 		borderRadius: theme.shape.borderRadius,
-		backgroundColor: fade(theme.palette.common.white, 0.15),
+		backgroundColor: alpha(theme.palette.common.white, 0.15),
 		'&:hover': {
-			backgroundColor: fade(theme.palette.common.white, 0.25),
+			backgroundColor: alpha(theme.palette.common.white, 0.25),
 		},
 		marginLeft: 0,
 		width: '100%',
@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
 	inputInput: {
 		padding: theme.spacing(1, 1, 1, 0),
 		// vertical padding + font size from searchIcon
-		paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+		paddingLeft: `calc(1em + ${theme.spacing(4)})`,
 		transition: theme.transitions.create('width'),
 		width: '100%',
 		border: '2px solid #D3D3D3',

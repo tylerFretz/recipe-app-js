@@ -94,7 +94,6 @@ const hashPasswordMixin = (users) => {
 		const passwordHash = bcrypt.hashSync(user.password, saltRounds);
 		user.passwordHash = passwordHash;
 		delete user.password;
-
 		return user;
 	});
 
