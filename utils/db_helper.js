@@ -30,6 +30,13 @@ module.exports.connect = async () => {
 	mongoose.set('useCreateIndex', true);
 	mongoose.set('useFindAndModify', false);
 
+	if (process.env.NODE_ENV === 'development') {
+		return mongoose.connect(config.MONGODB_URI_DEV, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true
+		});
+	}
+
 	return mongoose.connect(config.MONGODB_URI, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
