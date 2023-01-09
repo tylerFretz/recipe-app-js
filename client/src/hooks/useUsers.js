@@ -106,8 +106,8 @@ const useUsers = () => {
 
 	// Adding a recipe to a users saved recipes collection
 	const addSavedRecipeMutation = useMutation(addSaved, {
-		onError: (error) => {
-			addNotification(error.response.data.error, 'error');
+		onError: () => {
+			addNotification('Must be logged in.', 'error');
 		},
 		onSuccess: (data) => {
 			addNotification(data.result === 'saved' ? 'Saved recipe!' : 'Removed recipe!', 'success');

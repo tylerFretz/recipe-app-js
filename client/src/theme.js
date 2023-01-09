@@ -92,6 +92,20 @@ theme.overrides = {
 			width: ''
 		}
 	},
+	MuiOutlinedInput: {
+		root: {
+			backgroundColor: '#FFF'
+		}
+	},
+	MuiSelect: {
+		root: {
+			backgroundColor: '#FFF',
+			color: '#000'
+		},
+		filled: {
+			color: '#000',
+		}
+	},
 	MuiTypography: {
 		root: {
 			color: '#676767',

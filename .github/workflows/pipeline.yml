@@ -31,4 +31,3 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "recipe-app-js"
           heroku_email: "fretztyler@gmail.com"
-          rollbackonhealthcheckfailed: true

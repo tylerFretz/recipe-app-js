@@ -8,7 +8,6 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
-import Container from '@material-ui/core/Container';
 
 import LoadingIndicator from '../../components/LoadingIndicator';
 import useRecipes from '../../hooks/useRecipes';
@@ -16,7 +15,6 @@ import useRecipes from '../../hooks/useRecipes';
 const useStyles = makeStyles((theme) => ({
 	listContainer: {
 		width: '100%',
-		maxWidth: 360,
 		backgroundColor: '#FFF',
 		padding: '5%',
 		borderRadius: '3px',
@@ -59,7 +57,7 @@ const RelatedSideBar = ({ category }) => {
 	}
 
 	return (
-		<Container className={classes.listContainer}>
+		<div className={classes.listContainer}>
 			<List
 				subheader={
 					<Typography variant="h4">Related Recipes</Typography>
@@ -101,7 +99,7 @@ const RelatedSideBar = ({ category }) => {
 					</Link>
 				))}
 			</List>
-		</Container>
+		</div>
 	);
 };
 
