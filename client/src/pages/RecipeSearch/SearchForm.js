@@ -1,14 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import { Form, Field, Formik } from 'formik';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import SearchIcon from '@material-ui/icons/Search';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import SearchIcon from '@mui/icons-material/Search';
 import { Select, TextField } from 'formik-material-ui';
 
 import useRecipes from '../../hooks/useRecipes';
@@ -68,7 +68,7 @@ const SearchForm = () => {
 				<Form className={classes.form}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} sm={4}>
-							<FormControl className={classes.feild}>
+							<FormControl variant="standard" className={classes.feild}>
 								<InputLabel
 									id="category-search-select-label"
 									className={classes.label}
@@ -93,7 +93,7 @@ const SearchForm = () => {
 							</FormControl>
 						</Grid>
 						<Grid item xs={12} sm={4}>
-							<FormControl className={classes.feild}>
+							<FormControl variant="standard" className={classes.feild}>
 								<InputLabel
 									id="tag-search-select-label"
 									className={classes.label}
@@ -115,7 +115,7 @@ const SearchForm = () => {
 							</FormControl>
 						</Grid>
 						<Grid item xs={12} sm={4}>
-							<FormControl className={classes.feild}>
+							<FormControl variant="standard" className={classes.feild}>
 								<InputLabel
 									id="area-search-select-label"
 									className={classes.label}
@@ -146,7 +146,7 @@ const SearchForm = () => {
 							/>
 						</Grid>
 						<Grid item xs={8} sm={4}>
-							<FormControl className={classes.feild}>
+							<FormControl variant="standard" className={classes.feild}>
 								<InputLabel
 									id="sortBy-search-select-label"
 									className={classes.label}

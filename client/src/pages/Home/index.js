@@ -1,8 +1,8 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Container from '@material-ui/core/Container';
+import makeStyles from '@mui/styles/makeStyles';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Container from '@mui/material/Container';
 
 import LoadingIndicator from '../../components/LoadingIndicator';
 import JumboTronCarousel from '../../components/JumbotronCarousel';
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 const Home = () => {
 	const classes = useStyles();
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 	const { queryRecipes } = useRecipes();
 
 	const topRatedRecipes = queryRecipes({

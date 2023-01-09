@@ -1,9 +1,9 @@
 import React from 'react';
 import { v4 as uuid } from 'uuid';
-import Container from '@material-ui/core/Container';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import Icon from '@material-ui/core/Icon';
+import Container from '@mui/material/Container';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import Icon from '@mui/material/Icon';
 
 const RecipeStats = ({ stats, variant }) => {
 	let totalTime = '';

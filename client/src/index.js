@@ -1,15 +1,15 @@
 /* eslint-disable linebreak-style */
+import CssBaseLine from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import { SnackbarProvider } from 'notistack';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import { SnackbarProvider } from 'notistack';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { ThemeProvider } from '@material-ui/core/styles';
+import App from './App';
 import { AuthProvider } from './hooks/useAuthUser';
 import theme from './theme';
-import CssBaseLine from '@material-ui/core/CssBaseline';
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -20,18 +20,18 @@ const queryClient = new QueryClient({
 });
 
 ReactDOM.render(
-	<QueryClientProvider client={queryClient}>
-		<ThemeProvider theme={theme}>
-			<SnackbarProvider maxSnack={3}>
-				<AuthProvider>
-					<Router>
-						<CssBaseLine />
-						<App />
-						<ReactQueryDevtools initialIsOpen={false} />
-					</Router>
-				</AuthProvider>
-			</SnackbarProvider>
-		</ThemeProvider>
-	</QueryClientProvider>,
+		<QueryClientProvider client={queryClient}>
+			<ThemeProvider theme={theme}>
+				<SnackbarProvider maxSnack={3}>
+					<AuthProvider>
+						<Router>
+							<CssBaseLine />
+							<App />
+							<ReactQueryDevtools initialIsOpen={false} />
+						</Router>
+					</AuthProvider>
+				</SnackbarProvider>
+			</ThemeProvider>
+		</QueryClientProvider>,
 	document.getElementById('root')
 );

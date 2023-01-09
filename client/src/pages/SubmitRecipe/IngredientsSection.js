@@ -1,17 +1,15 @@
-import React from 'react';
+import { AddCircle } from '@mui/icons-material';
+import { Button, Grid, Typography } from '@mui/material';
 import { Field, FieldArray } from 'formik';
-import { TextField as FormikTextField } from 'formik-material-ui';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import Typography from '@material-ui/core/Typography';
+import { TextField as FormikTextField } from 'formik-mui';
+import React from 'react';
 
 const IngredientsSection = ({ values, errors }) => {
 	return (
 		<FieldArray name="ingredients">
 			{({ remove, push }) => (
 				<>
-					<Grid item xs={12} style={{ marginBottom: '2%' }}>
+					<Grid item xs={12} sx={{ marginBottom: '2%' }}>
 						<Typography variant="h4">Ingredients</Typography>
 					</Grid>
 					{values.ingredients.length > 0 &&
@@ -21,7 +19,7 @@ const IngredientsSection = ({ values, errors }) => {
 									item
 									xs={12}
 									sm={4}
-									style={{ marginBottom: '2%' }}
+									sx={{ marginBottom: '2%' }}
 								>
 									<Field
 										component={FormikTextField}
@@ -34,7 +32,7 @@ const IngredientsSection = ({ values, errors }) => {
 									item
 									xs={12}
 									sm={4}
-									style={{ marginBottom: '2%' }}
+									sx={{ marginBottom: '2%' }}
 								>
 									<Field
 										component={FormikTextField}
@@ -60,7 +58,7 @@ const IngredientsSection = ({ values, errors }) => {
 						<Button
 							onClick={() => push({ name: '', measure: '' })}
 							variant="contained"
-							startIcon={<AddCircleIcon />}
+							startIcon={<AddCircle />}
 							disabled={!!errors.ingredients}
 						>
 							Add ingredient

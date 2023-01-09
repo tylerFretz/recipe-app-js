@@ -1,66 +1,63 @@
-import React, { useState } from 'react';
+import { Button, Container, useTheme } from '@mui/material';
 import { Formik } from 'formik';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Button from '@material-ui/core/Button';
-
+import React, { useState } from 'react';
 import Banner from '../../components/Banner';
-import TimelineSidebar from './TimelineSidebar';
 import SubmitRecipeForm from './SubmitRecipeForm';
-
-const useStyles = makeStyles((theme) => ({
-	mainContainer: {
-		marginTop: '5%',
-		display: 'flex',
-		justifyContent: 'space-between',
-		[theme.breakpoints.down('sm')]: {
-			padding: '1% 1%',
-		},
-	},
-	timelineContainer: {
-		width: '20%',
-		padding: 0,
-		margin: 0,
-		[theme.breakpoints.down('sm')]: {
-			width: '25%',
-		},
-	},
-	formContainer: {
-		width: '75%',
-		marginLeft: '5%',
-		margin: '0%',
-		padding: '3%',
-		backgroundColor: '#FFF',
-		borderRadius: '3px',
-		boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
-	},
-	buttonContainer: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		width: '40%',
-		margin: '3% 30%',
-	},
-	prevButton: {
-		margin: '0% 5%',
-		backgroundColor: theme.palette.primary.main,
-		color: '#FFF',
-		'&:hover': {
-			backgroundColor: '#000',
-		},
-	},
-	nextButton: {
-		backgroundColor: theme.palette.secondary.main,
-		color: '#FFF',
-		'&:hover': {
-			backgroundColor: '#000',
-		},
-	},
-}));
+import TimelineSidebar from './TimelineSidebar';
 
 const SubmitRecipeContainer = ({ initialValues, onSubmit, validationSchema }) => {
-	const classes = useStyles();
+	const theme = useTheme();
 	const [step, setStep] = useState(1);
+
+	const styles = {
+		mainContainer: {
+			marginTop: '5%',
+			display: 'flex',
+			justifyContent: 'space-between',
+			[theme.breakpoints.down('md')]: {
+				padding: '1% 1%',
+			},
+		},
+		timelineContainer: {
+			width: '20%',
+			padding: 0,
+			margin: 0,
+			[theme.breakpoints.down('md')]: {
+				width: '25%',
+			},
+		},
+		formContainer: {
+			width: '75%',
+			marginLeft: '5%',
+			margin: '0%',
+			padding: '3%',
+			backgroundColor: '#FFF',
+			borderRadius: '3px',
+			boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
+		},
+		buttonContainer: {
+			display: 'flex',
+			justifyContent: 'center',
+			alignItems: 'center',
+			width: '40%',
+			margin: '3% 30%',
+		},
+		prevButton: {
+			margin: '0% 5%',
+			backgroundColor: theme.palette.primary.main,
+			color: '#FFF',
+			'&:hover': {
+				backgroundColor: '#000',
+			},
+		},
+		nextButton: {
+			backgroundColor: theme.palette.secondary.main,
+			color: '#FFF',
+			'&:hover': {
+				backgroundColor: '#000',
+			},
+		},
+	};
 
 	const handleNext = () => {
 		if (step < 4) {
@@ -90,11 +87,11 @@ const SubmitRecipeContainer = ({ initialValues, onSubmit, validationSchema }) =>
 				title="Submit Recipe"
 				breadcrumbList={[{ title: 'Submit Recipe', path: 'submit' }]}
 			/>
-			<Container className={classes.mainContainer}>
-				<Container className={classes.timelineContainer}>
+			<Container sx={styles.mainContainer}>
+				<Container sx={styles.timelineContainer}>
 					<TimelineSidebar step={step} />
 				</Container>
-				<Container className={classes.formContainer}>
+				<Container sx={styles.formContainer}>
 					<Formik
 						initialValues={initialValues}
 						validationSchema={validationSchema}
@@ -110,16 +107,16 @@ const SubmitRecipeContainer = ({ initialValues, onSubmit, validationSchema }) =>
 									touched={touched}
 									step={step}
 								/>
-								<Container className={classes.buttonContainer}>
+								<Container sx={styles.buttonContainer}>
 									<Button
 										onClick={() => handlePrev()}
-										className={classes.prevButton}
+										sx={styles.prevButton}
 									>
 										Prev
 									</Button>
 									<Button
 										onClick={() => handleNext()}
-										className={classes.nextButton}
+										sx={styles.nextButton}
 										disabled={isDisabled(errors)}
 									>
 										Next

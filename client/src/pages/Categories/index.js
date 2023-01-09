@@ -1,9 +1,9 @@
 /* eslint-disable indent */
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
+import makeStyles from '@mui/styles/makeStyles';
+import Container from '@mui/material/Container';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 import Banner from '../../components/Banner';
 import LoadingIndicator from '../../components/LoadingIndicator';

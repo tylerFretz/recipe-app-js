@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, useParams, useLocation } from 'react-router-dom';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 
 import LoadingIndicator from '../../components/LoadingIndicator';
 import Banner from '../../components/Banner';

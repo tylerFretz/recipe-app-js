@@ -1,17 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import { Tooltip } from '@material-ui/core';
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
-import ModeCommentIcon from '@material-ui/icons/ModeComment';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import Chip from '@material-ui/core/Chip';
+import makeStyles from '@mui/styles/makeStyles';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import { Tooltip } from '@mui/material';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import ModeCommentIcon from '@mui/icons-material/ModeComment';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import Chip from '@mui/material/Chip';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -99,7 +99,7 @@ const HeaderText = ({ recipe, handleVote, handleSave, executeCommentScroll }) =>
 	if (!recipe.comments) recipe.comments = [];
 
 	return (
-		<Container className={classes.root}>
+        <Container className={classes.root}>
 			<Container className={classes.meta}>
 				<Typography className={classes.postDate}>
 					{formattedDate}
@@ -121,14 +121,14 @@ const HeaderText = ({ recipe, handleVote, handleSave, executeCommentScroll }) =>
 			<Container className={classes.metaCount}>
 				<div>
 					<Tooltip title="Save recipe">
-						<IconButton onClick={() => handleSave()} color='secondary'>
+						<IconButton onClick={() => handleSave()} color='secondary' size="large">
 							<FavoriteIcon />
 						</IconButton>
 					</Tooltip>
 				</div>
 				<div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
 					<Tooltip title="Like recipe">
-						<IconButton onClick={() => handleVote()} color='secondary'>
+						<IconButton onClick={() => handleVote()} color='secondary' size="large">
 							<ThumbUpAltIcon />
 						</IconButton>
 					</Tooltip>
@@ -136,7 +136,7 @@ const HeaderText = ({ recipe, handleVote, handleSave, executeCommentScroll }) =>
 				</div>
 				<div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
 					<Tooltip title="Comment">
-						<IconButton onClick={() => executeCommentScroll()} color='secondary'>
+						<IconButton onClick={() => executeCommentScroll()} color='secondary' size="large">
 							<ModeCommentIcon />
 						</IconButton>
 					</Tooltip>
@@ -189,7 +189,7 @@ const HeaderText = ({ recipe, handleVote, handleSave, executeCommentScroll }) =>
 				)
 			}
 		</Container >
-	);
+    );
 };
 
 export default HeaderText;

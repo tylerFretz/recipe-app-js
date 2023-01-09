@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Icon from '@material-ui/core/Icon';
+import makeStyles from '@mui/styles/makeStyles';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import Icon from '@mui/material/Icon';
 
 import { useAuthUser } from '../hooks/useAuthUser';
 
@@ -99,29 +99,27 @@ const NavigationBarMobile = () => {
 		</div>
 	);
 
-	return (
-		<>
-			<div className={classes.navButtonMobileContainer}>
-				<IconButton aria-label="menu" onClick={toggleDrawer()}>
-					{menuOpen ? (
-						<Icon fontSize="large">close</Icon>
-					) : (
-						<Icon fontSize="large">menu</Icon>
-					)}
-				</IconButton>
-			</div>
-			<SwipeableDrawer
-				anchor="top"
-				open={menuOpen}
-				onClose={toggleDrawer()}
-				onOpen={toggleDrawer()}
-				disableBackdropTransition={!iOS}
-				disableDiscovery={iOS}
-			>
-				{list()}
-			</SwipeableDrawer>
-		</>
-	);
+	return <>
+        <div className={classes.navButtonMobileContainer}>
+            <IconButton aria-label="menu" onClick={toggleDrawer()} size="large">
+                {menuOpen ? (
+                    <Icon fontSize="large">close</Icon>
+                ) : (
+                    <Icon fontSize="large">menu</Icon>
+                )}
+            </IconButton>
+        </div>
+        <SwipeableDrawer
+            anchor="top"
+            open={menuOpen}
+            onClose={toggleDrawer()}
+            onOpen={toggleDrawer()}
+            disableBackdropTransition={!iOS}
+            disableDiscovery={iOS}
+        >
+            {list()}
+        </SwipeableDrawer>
+    </>;
 };
 
 export default NavigationBarMobile;

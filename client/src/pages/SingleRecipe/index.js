@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import LoadingIndicator from '../../components/LoadingIndicator';
 import FullScreenRecipe from './FullScreenRecipe';
@@ -11,7 +11,7 @@ import useUsers from '../../hooks/useUsers';
 
 const SingleRecipe = () => {
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 	const { id } = useParams();
 	const { getRecipeById, upvoteRecipe, addComment } = useRecipes();
 	const { saveRecipe } = useUsers();

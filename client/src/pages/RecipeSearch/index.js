@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Pagination from '@material-ui/lab/Pagination';
-import Typography from '@material-ui/core/Typography';
+import makeStyles from '@mui/styles/makeStyles';
+import Container from '@mui/material/Container';
+import Pagination from '@mui/material/Pagination';
+import Typography from '@mui/material/Typography';
 
 import Banner from '../../components/Banner';
 import LoadingIndicator from '../../components/LoadingIndicator';

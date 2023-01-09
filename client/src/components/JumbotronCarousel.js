@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import Carousel from 'react-material-ui-carousel';
-import Paper from '@material-ui/core/Paper';
-import Hidden from '@material-ui/core/Hidden';
+import Paper from '@mui/material/Paper';
+import Hidden from '@mui/material/Hidden';
 
 import RecipeStats from './RecipeStats';
 import useRecipes from '../hooks/useRecipes';
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	imageOverlay: {
 		position: 'absolute',
-		[theme.breakpoints.down('sm')]: {
+		[theme.breakpoints.down('md')]: {
 			top: '55%',
 		},
 		[theme.breakpoints.up('md')]: {
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	svgOverlay: {
 		position: 'absolute',
-		[theme.breakpoints.down('sm')]: {
+		[theme.breakpoints.down('md')]: {
 			top: '55%',
 		},
 		[theme.breakpoints.up('md')]: {
@@ -98,53 +98,51 @@ const JumboTronCarousel = () => {
 const CarouselItem = ({ recipe }) => {
 	const classes = useStyles();
 
-	return (
-		<>
-			<NavLink to={`/recipes/${recipe.id}`}>
-				<Paper className={classes.imageContainer}>
-					<img src={recipe.thumbImageUrl} className={classes.image} />
-					<div className={classes.imageOverlay}>
-						<div className={classes.captionContent}>
-							<h1 className={classes.title}>{recipe.name}</h1>
-							<Hidden smDown>
-								<h4>{recipe.summary}</h4>
-								<div className={classes.recipeStatsContainer}>
-									<h3
-										style={{ fontSize: '1.3em', margin: 0 }}
-									>
-										By {recipe.user.username}
-									</h3>
-									<RecipeStats
-										stats={{
-											upvoteCount: recipe.upvoteCount,
-											prepTime: recipe.prepTime,
-											cookTime: recipe.cookTime,
-											servings: recipe.servings,
-										}}
-										variant="body2"
-									/>
-								</div>
-							</Hidden>
-						</div>
-					</div>
-				</Paper>
-			</NavLink>
-			<svg className={classes.svgOverlay}>
-				<defs>
-					<filter id="blur">
-						<feGaussianBlur in="SourceGraphic" stdDeviation="20" />
-					</filter>
-				</defs>
-				<image
-					filter="url(#blur)"
-					xlinkHref={recipe.thumbImageUrl}
-					x="0"
-					y="0"
-					width="100%"
-				/>
-			</svg>
-		</>
-	);
+	return <>
+        <NavLink to={`/recipes/${recipe.id}`}>
+            <Paper className={classes.imageContainer}>
+                <img src={recipe.thumbImageUrl} className={classes.image} />
+                <div className={classes.imageOverlay}>
+                    <div className={classes.captionContent}>
+                        <h1 className={classes.title}>{recipe.name}</h1>
+                        <Hidden mdDown>
+                            <h4>{recipe.summary}</h4>
+                            <div className={classes.recipeStatsContainer}>
+                                <h3
+                                    style={{ fontSize: '1.3em', margin: 0 }}
+                                >
+                                    By {recipe.user.username}
+                                </h3>
+                                <RecipeStats
+                                    stats={{
+                                        upvoteCount: recipe.upvoteCount,
+                                        prepTime: recipe.prepTime,
+                                        cookTime: recipe.cookTime,
+                                        servings: recipe.servings,
+                                    }}
+                                    variant="body2"
+                                />
+                            </div>
+                        </Hidden>
+                    </div>
+                </div>
+            </Paper>
+        </NavLink>
+        <svg className={classes.svgOverlay}>
+            <defs>
+                <filter id="blur">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="20" />
+                </filter>
+            </defs>
+            <image
+                filter="url(#blur)"
+                xlinkHref={recipe.thumbImageUrl}
+                x="0"
+                y="0"
+                width="100%"
+            />
+        </svg>
+    </>;
 };
 
 export default JumboTronCarousel;

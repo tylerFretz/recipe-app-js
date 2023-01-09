@@ -1,12 +1,12 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import Avatar from '@mui/material/Avatar';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
+import Container from '@mui/material/Container';
 import LoginForm from './LoginForm';
 
 import { useAuthUser } from '../../hooks/useAuthUser';
@@ -43,12 +43,12 @@ const Login = () => {
 				<LoginForm />
 				<Grid container>
 					<Grid item xs>
-						<Link href="#" variant="body2">
+						<Link href="#" variant="body2" underline="hover">
 							Forgot password?
 						</Link>
 					</Grid>
 					<Grid item>
-						<Link href="/register" variant="body2">
+						<Link href="/register" variant="body2" underline="hover">
 							{'Don\'t have an account? Sign Up'}
 						</Link>
 					</Grid>

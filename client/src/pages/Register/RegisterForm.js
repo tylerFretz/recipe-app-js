@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { DropzoneArea } from 'material-ui-dropzone';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 import { TextField } from 'formik-material-ui';
-import { makeStyles } from '@material-ui/core/styles';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
+import makeStyles from '@mui/styles/makeStyles';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
 
 import useUsers from '../../hooks/useUsers';
 
@@ -36,7 +36,7 @@ const RegisterForm = () => {
 	const { addUser } = useUsers();
 
 	return (
-		<Formik
+        <Formik
 			initialValues={{
 				username: '',
 				email: '',
@@ -117,11 +117,11 @@ const RegisterForm = () => {
 									endAdornment: (
 										<InputAdornment position="end">
 											<IconButton
-												aria-label="toggle password visibility"
-												onClick={() =>
+                                                aria-label="toggle password visibility"
+                                                onClick={() =>
 													setPVisible(!pVisible)
 												}
-											>
+                                                size="large">
 												{pVisible ? (
 													<Visibility />
 												) : (
@@ -145,11 +145,11 @@ const RegisterForm = () => {
 									endAdornment: (
 										<InputAdornment position="end">
 											<IconButton
-												aria-label="toggle password visibility"
-												onClick={() =>
+                                                aria-label="toggle password visibility"
+                                                onClick={() =>
 													setPVisible(!pVisible)
 												}
-											>
+                                                size="large">
 												{pVisible ? (
 													<Visibility />
 												) : (
@@ -185,7 +185,7 @@ const RegisterForm = () => {
 				</Form>
 			)}
 		</Formik>
-	);
+    );
 };
 
 export default RegisterForm;

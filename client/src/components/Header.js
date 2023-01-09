@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Hidden from '@material-ui/core/Hidden';
-import Fab from '@material-ui/core/Fab';
-import Icon from '@material-ui/core/Icon';
-import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import makeStyles from '@mui/styles/makeStyles';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Hidden from '@mui/material/Hidden';
+import Fab from '@mui/material/Fab';
+import Icon from '@mui/material/Icon';
+import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import BackToTop from './BackToTop';
 
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 		textDecoration: 'none',
 		textTransform: 'uppercase',
 		color: '#FFF',
-		[theme.breakpoints.down('sm')]: {
+		[theme.breakpoints.down('md')]: {
 			fontSize: '0.8rem',
 		},
 	},
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	brandTitle: {
 		fontFamily: 'Courgette, cursive',
-		[theme.breakpoints.down('sm')]: {
+		[theme.breakpoints.down('md')]: {
 			fontSize: '1.5em',
 		},
 		fontSize: '2em',
@@ -95,142 +95,140 @@ const Header = () => {
 		});
 	};
 
-	return (
-		<>
-			<AppBar position="relative">
-				<Toolbar>
-					<Container className={classes.navBarDisplayFlex}>
-						<NavLink to="/" className={classes.logoContainer}>
-							<Hidden smDown>
-								<img
-									className={classes.logo}
-									src={chefHat}
-									alt="logo"
-								/>
-							</Hidden>
-							<Typography
-								variant="h1"
-								className={classes.brandTitle}
-							>
-								RECIPE APP
-							</Typography>
-						</NavLink>
-						<List
-							component="nav"
-							aria-labelledby="top navigation"
-							className={classes.navBarDisplayFlex}
-						>
-							{authUser && (
-								<>
-									<ListItem
-										id='profilePopoverButton'
-										onClick={handleMenuOpen}
-										className={classes.linkButton}
-										style={{ cursor: 'pointer' }}
-									>
-										<Icon
-											fontSize="small"
-											style={{ marginRight: '2px' }}
-										>
-											person
-										</Icon>
-										<ListItemText disableTypography>
-											My Profile
-										</ListItemText>
-										<KeyboardArrowDownIcon fontSize="small" />
-									</ListItem>
-									<NavLink
-										to="/"
-										className={classes.linkText}
-									>
-										<ListItem
-											button
-											onClick={() => logout()}
-											className={classes.linkButton}
-										>
-											<Icon
-												fontSize="small"
-												style={{ marginRight: '2px' }}
-											>
-												exit_to_app
-											</Icon>
-											<ListItemText disableTypography>
-												Logout
-											</ListItemText>
-										</ListItem>
-									</NavLink>
-									<Menu
-										anchorEl={document.getElementById('profilePopoverButton')}
-										keepMounted
-										open={menuOpen}
-										onClose={handleMenuClose}
-										MenuListProps={{ onMouseLeave: handleMenuClose }}
-										variant='menu'
-									>
-										<MenuItem onClick={() => handleProfileClick('submitted')} className={classes.menuText}>My submitted recipes</MenuItem>
-										<MenuItem onClick={() => handleProfileClick('saved')} className={classes.menuText}>My saved recipes</MenuItem>
-										<MenuItem onClick={() => handleProfileClick('account')} className={classes.menuText}>Account details</MenuItem>
-									</Menu>
-								</>
-							)}
-							{!authUser && (
-								<>
-									<NavLink
-										to="/register"
-										className={classes.linkText}
-									>
-										<ListItem
-											button
-											className={classes.linkButton}
-										>
-											<Icon
-												fontSize="small"
-												style={{ marginRight: '2px' }}
-											>
-												person
-											</Icon>
-											<ListItemText disableTypography>
-												Register
-											</ListItemText>
-										</ListItem>
-									</NavLink>
-									<NavLink
-										to="/login"
-										className={classes.linkText}
-									>
-										<ListItem
-											button
-											className={classes.linkButton}
-										>
-											<Icon
-												fontSize="small"
-												style={{ marginRight: '2px' }}
-											>
-												exit_to_app
-											</Icon>
-											<ListItemText disableTypography>
-												Log In
-											</ListItemText>
-										</ListItem>
-									</NavLink>
-								</>
-							)}
-						</List>
-					</Container>
-				</Toolbar>
-			</AppBar>
-			<Toolbar id="back-to-top-anchor" style={{ minHeight: 0 }} />
-			<BackToTop>
-				<Fab
-					color="secondary"
-					size="small"
-					aria-label="scroll back to top"
-				>
-					<KeyboardArrowUp />
-				</Fab>
-			</BackToTop>
-		</>
-	);
+	return <>
+        <AppBar position="relative">
+            <Toolbar>
+                <Container className={classes.navBarDisplayFlex}>
+                    <NavLink to="/" className={classes.logoContainer}>
+                        <Hidden mdDown>
+                            <img
+                                className={classes.logo}
+                                src={chefHat}
+                                alt="logo"
+                            />
+                        </Hidden>
+                        <Typography
+                            variant="h1"
+                            className={classes.brandTitle}
+                        >
+                            RECIPE APP
+                        </Typography>
+                    </NavLink>
+                    <List
+                        component="nav"
+                        aria-labelledby="top navigation"
+                        className={classes.navBarDisplayFlex}
+                    >
+                        {authUser && (
+                            <>
+                                <ListItem
+                                    id='profilePopoverButton'
+                                    onClick={handleMenuOpen}
+                                    className={classes.linkButton}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    <Icon
+                                        fontSize="small"
+                                        style={{ marginRight: '2px' }}
+                                    >
+                                        person
+                                    </Icon>
+                                    <ListItemText disableTypography>
+                                        My Profile
+                                    </ListItemText>
+                                    <KeyboardArrowDownIcon fontSize="small" />
+                                </ListItem>
+                                <NavLink
+                                    to="/"
+                                    className={classes.linkText}
+                                >
+                                    <ListItem
+                                        button
+                                        onClick={() => logout()}
+                                        className={classes.linkButton}
+                                    >
+                                        <Icon
+                                            fontSize="small"
+                                            style={{ marginRight: '2px' }}
+                                        >
+                                            exit_to_app
+                                        </Icon>
+                                        <ListItemText disableTypography>
+                                            Logout
+                                        </ListItemText>
+                                    </ListItem>
+                                </NavLink>
+                                <Menu
+                                    anchorEl={document.getElementById('profilePopoverButton')}
+                                    keepMounted
+                                    open={menuOpen}
+                                    onClose={handleMenuClose}
+                                    MenuListProps={{ onMouseLeave: handleMenuClose }}
+                                    variant='menu'
+                                >
+                                    <MenuItem onClick={() => handleProfileClick('submitted')} className={classes.menuText}>My submitted recipes</MenuItem>
+                                    <MenuItem onClick={() => handleProfileClick('saved')} className={classes.menuText}>My saved recipes</MenuItem>
+                                    <MenuItem onClick={() => handleProfileClick('account')} className={classes.menuText}>Account details</MenuItem>
+                                </Menu>
+                            </>
+                        )}
+                        {!authUser && (
+                            <>
+                                <NavLink
+                                    to="/register"
+                                    className={classes.linkText}
+                                >
+                                    <ListItem
+                                        button
+                                        className={classes.linkButton}
+                                    >
+                                        <Icon
+                                            fontSize="small"
+                                            style={{ marginRight: '2px' }}
+                                        >
+                                            person
+                                        </Icon>
+                                        <ListItemText disableTypography>
+                                            Register
+                                        </ListItemText>
+                                    </ListItem>
+                                </NavLink>
+                                <NavLink
+                                    to="/login"
+                                    className={classes.linkText}
+                                >
+                                    <ListItem
+                                        button
+                                        className={classes.linkButton}
+                                    >
+                                        <Icon
+                                            fontSize="small"
+                                            style={{ marginRight: '2px' }}
+                                        >
+                                            exit_to_app
+                                        </Icon>
+                                        <ListItemText disableTypography>
+                                            Log In
+                                        </ListItemText>
+                                    </ListItem>
+                                </NavLink>
+                            </>
+                        )}
+                    </List>
+                </Container>
+            </Toolbar>
+        </AppBar>
+        <Toolbar id="back-to-top-anchor" style={{ minHeight: 0 }} />
+        <BackToTop>
+            <Fab
+                color="secondary"
+                size="small"
+                aria-label="scroll back to top"
+            >
+                <KeyboardArrowUp />
+            </Fab>
+        </BackToTop>
+    </>;
 };
 
 export default Header;

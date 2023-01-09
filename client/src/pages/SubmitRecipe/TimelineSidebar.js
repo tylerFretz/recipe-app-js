@@ -1,30 +1,22 @@
+import { Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from '@mui/lab';
+import { Container } from '@mui/material';
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Timeline from '@material-ui/lab/Timeline';
-import TimelineItem from '@material-ui/lab/TimelineItem';
-import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
-import TimelineConnector from '@material-ui/lab/TimelineConnector';
-import TimelineContent from '@material-ui/lab/TimelineContent';
-import TimelineDot from '@material-ui/lab/TimelineDot';
-
-const useStyles = makeStyles({
-	timelineContainer: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		padding: '5% 1%',
-		backgroundColor: '#FFF',
-		borderRadius: '3px',
-		boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
-	},
-});
 
 const TimelineSidebar = ({ step }) => {
-	const classes = useStyles();
+	const styles = {
+		timelineContainer: {
+			display: 'flex',
+			justifyContent: 'center',
+			alignItems: 'center',
+			padding: '5% 1%',
+			backgroundColor: '#FFF',
+			borderRadius: '3px',
+			boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
+		}
+	};
 
 	return (
-		<Container className={classes.timelineContainer}>
+		<Container sx={styles.timelineContainer}>
 			<Timeline>
 				<TimelineItem>
 					<TimelineSeparator>

@@ -1,10 +1,7 @@
-import React from 'react';
+import { Grid, TextField, Typography } from '@mui/material';
 import { Field } from 'formik';
-import { TextField as FormikTextField } from 'formik-material-ui';
-import TextField from '@material-ui/core/TextField';
-import { Autocomplete } from 'formik-material-ui-lab';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { Autocomplete, TextField as FormikTextField } from 'formik-mui';
+import React from 'react';
 
 import LoadingIndicator from '../../components/LoadingIndicator';
 import useRecipes from '../../hooks/useRecipes';
@@ -17,7 +14,7 @@ const MetaSection = ({ errors, touched }) => {
 		<LoadingIndicator />
 	) : (
 		<>
-			<Grid item xs={12} style={{ marginBottom: '2%' }}>
+			<Grid item xs={12} sx={{ marginBottom: '2%' }}>
 				<Typography variant="h4">
 					Add Some More Info (Optional)
 				</Typography>

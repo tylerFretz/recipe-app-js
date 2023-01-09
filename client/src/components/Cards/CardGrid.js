@@ -1,12 +1,12 @@
+import Grid from '@mui/material/Grid';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 
 import CardRow from './CardRow';
 
 const useStyles = makeStyles((theme) => ({
 	mainContainer: {
-		[theme.breakpoints.down('sm')]: {
+		[theme.breakpoints.down('md')]: {
 			flexDirection: 'column',
 		},
 		[theme.breakpoints.up('md')]: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	rowContainer: {
-		[theme.breakpoints.down('sm')]: {
+		[theme.breakpoints.down('md')]: {
 			flexDirection: 'column',
 		},
 		[theme.breakpoints.up('md')]: {

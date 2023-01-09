@@ -1,33 +1,32 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { Grid, useTheme } from '@mui/material';
 import { Form } from 'formik';
-import Grid from '@material-ui/core/Grid';
+import React from 'react';
 
 import IngredientsSection from './IngredientsSection';
 import LinkSection from './LinkSection';
 import MetaSection from './MetaSection';
 import TextSection from './TextSection';
 
-const useStyles = makeStyles((theme) => ({
-	form: {
-		width: '100%', // Fix IE 11 issue.
-		marginTop: theme.spacing(1),
-		display: 'flex',
-		flexDirection: 'column',
-	},
-	feild: {
-		width: '100%',
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2),
-	},
-}));
-
 const SubmitRecipeForm = ({ values, errors, touched, step }) => {
-	const classes = useStyles();
+	const theme = useTheme();
+
+	const styles = {
+		form: {
+			width: '100%', // Fix IE 11 issue.
+			marginTop: theme.spacing(1),
+			display: 'flex',
+			flexDirection: 'column',
+		},
+		feild: {
+			width: '100%',
+		},
+		submit: {
+			margin: theme.spacing(3, 0, 2),
+		},
+	};
 
 	return (
-		<Form className={classes.form}>
+		<Form className={styles.form}>
 			<Grid container spacing={2}>
 				{step === 1 && <TextSection />}
 				{step === 2 && (

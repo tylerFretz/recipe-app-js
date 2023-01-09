@@ -1,8 +1,8 @@
 import React from 'react';
 import { format } from 'date-fns';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import { Link } from 'react-router-dom';
-import Paper from '@material-ui/core/Paper';
+import Paper from '@mui/material/Paper';
 
 const useStyles = makeStyles((theme) => ({
 	statsContainer: {

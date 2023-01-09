@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogActions from '@material-ui/core/DialogActions';
+import makeStyles from '@mui/styles/makeStyles';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
 
 import useUsers from '../../hooks/useUsers';
 
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 		margin: '2%',
 		backgroundColor: '#FFF',
 		width: theme.spacing(50),
-		[theme.breakpoints.down('sm')]: {
+		[theme.breakpoints.down('md')]: {
 			width: theme.spacing(40),
 		}
 	},
@@ -74,7 +74,7 @@ const AccountDetails = ({ user }) => {
 	};
 
 	return (
-		<Container>
+        <Container>
 			<div style={{ display: 'flex', justifyContent: 'center' }}>
 				<Typography component='h2' style={{ fontSize: '2.5rem' }}>Account Details</Typography>
 			</div>
@@ -88,10 +88,10 @@ const AccountDetails = ({ user }) => {
 						<div style={{ display: usernameUpdateOpen ? 'block' : 'none' }}>
 							<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 								<TextField
-									label='New Username'
-									value={username}
-									onChange={handleUsernameChange}
-								/>
+                                    variant="standard"
+                                    label='New Username'
+                                    value={username}
+                                    onChange={handleUsernameChange} />
 								<Button
 									className={classes.updateButton}
 									onClick={handleUserUpdate}
@@ -110,10 +110,10 @@ const AccountDetails = ({ user }) => {
 						<div style={{ display: emailUpdateOpen ? 'block' : 'none' }}>
 							<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 								<TextField
-									label='New Email'
-									value={email}
-									onChange={handleEmailChange}
-								/>
+                                    variant="standard"
+                                    label='New Email'
+                                    value={email}
+                                    onChange={handleEmailChange} />
 								<Button
 									className={classes.updateButton}
 									onClick={handleUserUpdate}
@@ -168,7 +168,7 @@ const AccountDetails = ({ user }) => {
 				</div>
 			</div>
 		</Container >
-	);
+    );
 };
 
 export default AccountDetails;

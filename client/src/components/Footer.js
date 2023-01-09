@@ -2,20 +2,20 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { NavLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import PlaceIcon from '@material-ui/icons/Place';
-import EmailIcon from '@material-ui/icons/Email';
-import PhoneIcon from '@material-ui/icons/Phone';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import InstagramIcon from '@material-ui/icons/Instagram';
-import YouTubeIcon from '@material-ui/icons/YouTube';
+import makeStyles from '@mui/styles/makeStyles';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import PlaceIcon from '@mui/icons-material/Place';
+import EmailIcon from '@mui/icons-material/Email';
+import PhoneIcon from '@mui/icons-material/Phone';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import YouTubeIcon from '@mui/icons-material/YouTube';
 
 import bread from '../assets/bread.jpg';
 import cookies from '../assets/cookies.jpg';
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 		borderColor: '#FFF',
 		width: '16.67%', 		// 100/6
 		height: 'auto',
-		[theme.breakpoints.down('sm')]: {
+		[theme.breakpoints.down('md')]: {
 			width: '33.33%'
 		}
 	},
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 		backgroundImage: `url(${footerOverlay})`,
 		backgroundSize: 'cover',
 		display: 'flex',
-		[theme.breakpoints.down('sm')]: {
+		[theme.breakpoints.down('md')]: {
 			alignItems: 'center',
 			flexDirection: 'column'
 		}
@@ -60,12 +60,12 @@ const useStyles = makeStyles((theme) => ({
 			borderWidth: '0 1px 0px 1px',
 			borderColor: '#BC8F8F'
 		},
-		[theme.breakpoints.down('sm')]: {
+		[theme.breakpoints.down('md')]: {
 			width: '100%'
 		}
 	},
 	footerContentItem: {
-		[theme.breakpoints.down('sm')]: {
+		[theme.breakpoints.down('md')]: {
 			width: '80%'
 		},
 		display: 'flex',
@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		[theme.breakpoints.down('sm')]: {
+		[theme.breakpoints.down('md')]: {
 			alignItems: 'center',
 			flexDirection: 'column'
 		}
@@ -114,101 +114,99 @@ const useStyles = makeStyles((theme) => ({
 const Footer = () => {
 	const classes = useStyles();
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
 	const recipeImages = [bread, cookies, hamburger, pancake, steaks, vegetables];
 
-	return (
-		<>
-			{/* Image row */}
-			<Grid container wrap={isMobile ? 'wrap' : 'nowrap'} className={classes.footerGrid}>
-				{recipeImages.map((recipe, i) => (
-					<RecipeImage key={i} thumbImageUrl={recipe} />
-				))}
-			</Grid>
+	return <>
+        {/* Image row */}
+        <Grid container wrap={isMobile ? 'wrap' : 'nowrap'} className={classes.footerGrid}>
+            {recipeImages.map((recipe, i) => (
+                <RecipeImage key={i} thumbImageUrl={recipe} />
+            ))}
+        </Grid>
 
-			{/* Main footer content */}
-			<div className={classes.footerContentFlex}>
+        {/* Main footer content */}
+        <div className={classes.footerContentFlex}>
 
-				{/* Subscribe section */}
-				<div className={classes.footerContentItemContainer}>
-					<div className={classes.footerContentItem}>
-						<Typography variant='h5' className={classes.footerTitleText}>Subscribe</Typography>
-						<Typography variant='body2' className={classes.footerBodyText}>
-							Register and get notified about all the news & updates before it gets too late.
-						</Typography>
-						<SubscribeForm />
-					</div>
-				</div>
+            {/* Subscribe section */}
+            <div className={classes.footerContentItemContainer}>
+                <div className={classes.footerContentItem}>
+                    <Typography variant='h5' className={classes.footerTitleText}>Subscribe</Typography>
+                    <Typography variant='body2' className={classes.footerBodyText}>
+                        Register and get notified about all the news & updates before it gets too late.
+                    </Typography>
+                    <SubscribeForm />
+                </div>
+            </div>
 
-				{/* Explore section */}
+            {/* Explore section */}
 
-				<div className={classes.footerContentItemContainer}>
-					<div className={classes.footerContentItem}>
-						<Typography variant='h5' className={classes.footerTitleText}>Explore</Typography>
-						<NavLink to='/recipes/search' className={classes.footerLinkItem}>Browse Recipes</NavLink>
-						<NavLink to='/submit' className={classes.footerLinkItem}>Submit a Recipes</NavLink>
-						<NavLink to='/users' className={classes.footerLinkItem}>Members</NavLink>
-					</div>
-				</div>
+            <div className={classes.footerContentItemContainer}>
+                <div className={classes.footerContentItem}>
+                    <Typography variant='h5' className={classes.footerTitleText}>Explore</Typography>
+                    <NavLink to='/recipes/search' className={classes.footerLinkItem}>Browse Recipes</NavLink>
+                    <NavLink to='/submit' className={classes.footerLinkItem}>Submit a Recipes</NavLink>
+                    <NavLink to='/users' className={classes.footerLinkItem}>Members</NavLink>
+                </div>
+            </div>
 
-				{/* Contact section */}
-				<div className={classes.footerContentItemContainer}>
-					<div className={classes.footerContentItem}>
-						<Typography variant='h5' className={classes.footerTitleText}>Contact</Typography>
-						<div style={{ display: 'flex' }}>
-							<PlaceIcon style={{ color: theme.palette.secondary.main, marginRight: '5%' }} />
-							<Typography variant='body2' className={classes.footerBodyText}>
-								123 Fake Street,
-								Toronto, Ontario
-							</Typography>
-						</div>
-						<div style={{ display: 'flex' }}>
-							<EmailIcon style={{ color: theme.palette.secondary.main, marginRight: '5%' }} />
-							<Typography variant='body2' className={classes.footerBodyText}>
-								fakeEmail@mail.com
-							</Typography>
-						</div>
-						<div style={{ display: 'flex' }}>
-							<PhoneIcon style={{ color: theme.palette.secondary.main, marginRight: '5%' }} />
-							<Typography variant='body2' className={classes.footerBodyText}>
-								416 123 0000
-							</Typography>
-						</div>
-					</div>
-				</div>
-			</div>
+            {/* Contact section */}
+            <div className={classes.footerContentItemContainer}>
+                <div className={classes.footerContentItem}>
+                    <Typography variant='h5' className={classes.footerTitleText}>Contact</Typography>
+                    <div style={{ display: 'flex' }}>
+                        <PlaceIcon style={{ color: theme.palette.secondary.main, marginRight: '5%' }} />
+                        <Typography variant='body2' className={classes.footerBodyText}>
+                            123 Fake Street,
+                            Toronto, Ontario
+                        </Typography>
+                    </div>
+                    <div style={{ display: 'flex' }}>
+                        <EmailIcon style={{ color: theme.palette.secondary.main, marginRight: '5%' }} />
+                        <Typography variant='body2' className={classes.footerBodyText}>
+                            fakeEmail@mail.com
+                        </Typography>
+                    </div>
+                    <div style={{ display: 'flex' }}>
+                        <PhoneIcon style={{ color: theme.palette.secondary.main, marginRight: '5%' }} />
+                        <Typography variant='body2' className={classes.footerBodyText}>
+                            416 123 0000
+                        </Typography>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-			<div className={classes.bottomBar}>
-				<Typography variant='body2' style={{ opacity: 0.8 }}>
-					All rights reserved. Site built by Tyler Fretz
-				</Typography>
-				<div style={{ display: 'flex' }}>
-					<a href='https://www.facebook.com/' target='_blank' rel='noreferrer'>
-						<IconButton aria-label="facebook" className={classes.navButton}>
-							<FacebookIcon />
-						</IconButton>
-					</a>
-					<a href='https://www.twitter.com/' target='_blank' rel='noreferrer'>
-						<IconButton aria-label="twitter" className={classes.navButton}>
-							<TwitterIcon />
-						</IconButton>
-					</a>
-					<a href='https://www.instagram.com/' target='_blank' rel='noreferrer'>
-						<IconButton aria-label="instagram" className={classes.navButton}>
-							<InstagramIcon />
-						</IconButton>
-					</a>
-					<a href='https://www.youtube.com/' target='_blank' rel='noreferrer'>
-						<IconButton aria-label="youtube" className={classes.navButton}>
-							<YouTubeIcon />
-						</IconButton>
-					</a>
-				</div>
-			</div>
+        <div className={classes.bottomBar}>
+            <Typography variant='body2' style={{ opacity: 0.8 }}>
+                All rights reserved. Site built by Tyler Fretz
+            </Typography>
+            <div style={{ display: 'flex' }}>
+                <a href='https://www.facebook.com/' target='_blank' rel='noreferrer'>
+                    <IconButton aria-label="facebook" className={classes.navButton} size="large">
+                        <FacebookIcon />
+                    </IconButton>
+                </a>
+                <a href='https://www.twitter.com/' target='_blank' rel='noreferrer'>
+                    <IconButton aria-label="twitter" className={classes.navButton} size="large">
+                        <TwitterIcon />
+                    </IconButton>
+                </a>
+                <a href='https://www.instagram.com/' target='_blank' rel='noreferrer'>
+                    <IconButton aria-label="instagram" className={classes.navButton} size="large">
+                        <InstagramIcon />
+                    </IconButton>
+                </a>
+                <a href='https://www.youtube.com/' target='_blank' rel='noreferrer'>
+                    <IconButton aria-label="youtube" className={classes.navButton} size="large">
+                        <YouTubeIcon />
+                    </IconButton>
+                </a>
+            </div>
+        </div>
 
-		</>
-	);
+    </>;
 };
 
 

@@ -1,13 +1,13 @@
 import React from 'react';
-import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Grid from '@material-ui/core/Grid';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Grid from '@mui/material/Grid';
 import MetaCard from './MetaCard';
 import RecipeCard from './RecipeCard';
 
 const CardRow = ({ items, type, isSubmitted }) => {
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
 	return (type === 'recipes' || type === 'profile') ? (
 		<Grid

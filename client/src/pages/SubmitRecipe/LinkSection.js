@@ -1,13 +1,11 @@
-import React from 'react';
+import { Button, Grid, Typography } from '@mui/material';
 import { Field } from 'formik';
-import { TextField as FormikTextField } from 'formik-material-ui';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import { TextField as FormikTextField } from 'formik-mui';
+import React from 'react';
 
 const LinkSection = ({ errors, values }) => (
 	<>
-		<Grid item xs={12} style={{ marginBottom: '2%' }}>
+		<Grid item xs={12} sx={{ marginBottom: '2%' }}>
 			<Typography variant="h4">Add Links (Optional)</Typography>
 		</Grid>
 		<Grid item xs={12}>

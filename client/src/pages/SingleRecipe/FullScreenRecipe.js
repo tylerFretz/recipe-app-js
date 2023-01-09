@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import makeStyles from '@mui/styles/makeStyles';
+import Container from '@mui/material/Container';
 
 import HeaderText from './HeaderText';
 import ContentInnerFullScreen from './ContentInnerFullScreen';

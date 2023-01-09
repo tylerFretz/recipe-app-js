@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import IconButton from '@material-ui/core/IconButton';
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
-import ModeCommentIcon from '@material-ui/icons/ModeComment';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import makeStyles from '@mui/styles/makeStyles';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import IconButton from '@mui/material/IconButton';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import ModeCommentIcon from '@mui/icons-material/ModeComment';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import noVideo from '../../assets/noVideo.jpg';
 
@@ -69,70 +69,68 @@ const RecipeMediaMobile = ({
 		? youtubeUrl.substring(youtubeUrl.lastIndexOf('=') + 1)
 		: noVideo;
 
-	return (
-		<>
-			<Container className={classes.mediaContainer}>
-				{mediaUrl === thumbImageUrl ? (
-					<Container className={classes.embededResponsive16by9}>
-						<img
-							className={classes.embededResponsiveItem}
-							src={thumbImageUrl}
-							alt={`Image of ${name}`}
-							title={name}
-						/>
-					</Container>
-				) : youtubeUrl ? (
-					<Container className={classes.embededResponsive16by9}>
-						<iframe
-							className={classes.embededResponsiveItem}
-							src={`https://www.youtube.com/embed/${videoId}`}
-							allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-							allowFullScreen
-						/>
-					</Container>
-				) : (
-					<Container className={classes.embededResponsive16by9}>
-						<img
-							className={classes.embededResponsiveItem}
-							src={noVideo}
-							alt="No image available"
-						/>
-					</Container>
-				)}
-			</Container>
-			<Container className={classes.tabList}>
-				<ButtonGroup
-					size="large"
-					variant="contained"
-					aria-label="Media options"
-				>
-					<Button onClick={() => setMediaUrl(thumbImageUrl)}>
-						Image
-					</Button>
-					<Button onClick={() => setMediaUrl(videoId)}>Video</Button>
-				</ButtonGroup>
-			</Container>
-			<Container className={classes.metaCount}>
-				<div>
-					<IconButton onClick={() => handleSave()} color='secondary'>
-						<FavoriteIcon />
-					</IconButton>
-				</div>
-				<div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
-					<IconButton onClick={() => handleVote()} color='secondary'>
-						<ThumbUpAltIcon />
-					</IconButton>
-					<Typography>{upvoteCount}</Typography>
-				</div>
-				<div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
-					<IconButton onClick={() => executeCommentScroll()} color='secondary'>
-						<ModeCommentIcon />
-					</IconButton>
-					<Typography>{commentsLength}</Typography>
-				</div>
-			</Container>
-		</>
-	);
+	return <>
+        <Container className={classes.mediaContainer}>
+            {mediaUrl === thumbImageUrl ? (
+                <Container className={classes.embededResponsive16by9}>
+                    <img
+                        className={classes.embededResponsiveItem}
+                        src={thumbImageUrl}
+                        alt={`Image of ${name}`}
+                        title={name}
+                    />
+                </Container>
+            ) : youtubeUrl ? (
+                <Container className={classes.embededResponsive16by9}>
+                    <iframe
+                        className={classes.embededResponsiveItem}
+                        src={`https://www.youtube.com/embed/${videoId}`}
+                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                    />
+                </Container>
+            ) : (
+                <Container className={classes.embededResponsive16by9}>
+                    <img
+                        className={classes.embededResponsiveItem}
+                        src={noVideo}
+                        alt="No image available"
+                    />
+                </Container>
+            )}
+        </Container>
+        <Container className={classes.tabList}>
+            <ButtonGroup
+                size="large"
+                variant="contained"
+                aria-label="Media options"
+            >
+                <Button onClick={() => setMediaUrl(thumbImageUrl)}>
+                    Image
+                </Button>
+                <Button onClick={() => setMediaUrl(videoId)}>Video</Button>
+            </ButtonGroup>
+        </Container>
+        <Container className={classes.metaCount}>
+            <div>
+                <IconButton onClick={() => handleSave()} color='secondary' size="large">
+                    <FavoriteIcon />
+                </IconButton>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
+                <IconButton onClick={() => handleVote()} color='secondary' size="large">
+                    <ThumbUpAltIcon />
+                </IconButton>
+                <Typography>{upvoteCount}</Typography>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
+                <IconButton onClick={() => executeCommentScroll()} color='secondary' size="large">
+                    <ModeCommentIcon />
+                </IconButton>
+                <Typography>{commentsLength}</Typography>
+            </div>
+        </Container>
+    </>;
 };
 
 export default RecipeMediaMobile;
